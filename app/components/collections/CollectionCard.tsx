@@ -1,21 +1,29 @@
 import { Link } from '@remix-run/react';
+import { useState } from 'react';
 import { CollectionsQuery } from '~/generated/graphql';
+import { classNames } from '~/utils/class-names';
 
 export function CollectionCard({
   collection,
 }: {
   collection: CollectionsQuery['collections']['items'][number];
 }) {
+  const [isFocused, setFocused] = useState(false);
   return (
     <Link
       to={'/collections/' + collection.slug}
       prefetch="intent"
       key={collection.id}
-      className="max-w-[300px] relative rounded-lg overflow-hidden hover:opacity-75 xl:w-auto"
+      onMouseOver={()=> setFocused(true)}
+      onMouseLeave={()=> setFocused(false)}
+      className={classNames(
+        'max-w-[300px] position-relative rounded hover-shadow',
+        isFocused ? 'opacity-75' : '',
+      )}
     >
       <span aria-hidden="true" className="">
-        <div className="w-full h-full object-center object-cover">
-          <img src={collection.featuredAsset?.preview + '?w=300&h=300'} />
+        <div className="w-100 h-100">
+          <img className='w-100 h-100' src={collection.featuredAsset?.preview + '?w=300&h=300'} />
         </div>
       </span>
       <span

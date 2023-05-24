@@ -14,6 +14,7 @@ export function searchFacetValues(
 }
 
 export function getProductBySlug(slug: string, options: QueryOptions) {
+console.log("slug",slug);
   return sdk.product({ slug }, options);
 }
 

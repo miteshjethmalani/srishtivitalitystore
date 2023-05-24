@@ -1,5 +1,5 @@
 import { DataFunctionArgs, MetaFunction } from '@remix-run/server-runtime';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useParams } from '@remix-run/react';
 import { sdk } from '../../graphqlWrapper';
 import { CollectionCard } from '~/components/collections/CollectionCard';
 import { ProductCard } from '~/components/products/ProductCard';
@@ -10,7 +10,10 @@ import { useRef, useState } from 'react';
 import { FacetFilterTracker } from '~/components/facet-filter/facet-filter-tracker';
 import FacetFilterControls from '~/components/facet-filter/FacetFilterControls';
 import { FiltersButton } from '~/components/FiltersButton';
-import { PhotographIcon } from '@heroicons/react/solid';
+import { Container } from 'react-bootstrap';
+import Pagination, {
+  getCurrentSelectedPage,
+} from '~/components/pagination/Pagination';
 
 export const meta: MetaFunction = ({ data }) => {
   return {
@@ -21,6 +24,8 @@ export const meta: MetaFunction = ({ data }) => {
 };
 
 export async function loader({ params, request, context }: DataFunctionArgs) {
+  debugger;
+  console.log('params', params);
   const { result, resultWithoutFacetValueFilters, facetValueIds } =
     await filteredSearchLoader({
       params,
@@ -39,12 +44,18 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
     result,
     resultWithoutFacetValueFilters,
     facetValueIds,
+    pageNumber: getCurrentSelectedPage(request.url),
   };
 }
 
 export default function CollectionSlug() {
-  const { collection, result, resultWithoutFacetValueFilters, facetValueIds } =
-    useLoaderData<typeof loader>();
+  const {
+    collection,
+    result,
+    resultWithoutFacetValueFilters,
+    facetValueIds,
+    pageNumber,
+  } = useLoaderData<typeof loader>();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const facetValuesTracker = useRef(new FacetFilterTracker());
   facetValuesTracker.current.update(
@@ -52,8 +63,9 @@ export default function CollectionSlug() {
     resultWithoutFacetValueFilters,
     facetValueIds,
   );
+
   return (
-    <div className="max-w-6xl mx-auto px-4">
+    <div className=" m-5 mt-2">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
           {collection.name}
@@ -66,35 +78,32 @@ export default function CollectionSlug() {
       </div>
 
       <Breadcrumbs items={collection.breadcrumbs}></Breadcrumbs>
-      {collection.children?.length ? (
-        <div className="max-w-2xl mx-auto py-16 sm:py-16 lg:max-w-none border-b mb-16">
-          <h2 className="text-2xl font-light text-gray-900">Collections</h2>
-          <div className="mt-6 grid max-w-xs sm:max-w-none mx-auto sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
-            {collection.children.map((child) => (
-              <CollectionCard
-                key={child.id}
-                collection={child}
-              ></CollectionCard>
-            ))}
-          </div>
-        </div>
-      ) : (
-        ''
-      )}
 
-      <div className="mt-6 grid sm:grid-cols-5 gap-x-4">
-        <FacetFilterControls
-          facetFilterTracker={facetValuesTracker.current}
-          mobileFiltersOpen={mobileFiltersOpen}
-          setMobileFiltersOpen={setMobileFiltersOpen}
-        />
-        <div className="sm:col-span-5 lg:col-span-4">
-          <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+      <div className="mt-2 row">
+        <div className="col-lg-3">
+          <FacetFilterControls
+            facetFilterTracker={facetValuesTracker.current}
+            mobileFiltersOpen={mobileFiltersOpen}
+            setMobileFiltersOpen={setMobileFiltersOpen}
+          />
+        </div>
+        <Container fluid className="mt-12 col-lg-9">
+          <div className="row">
             {result.items.map((item) => (
-              <ProductCard key={item.productId} {...item}></ProductCard>
+              <div
+                key={item.productId}
+                className="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xxl-2 p-3 position-relative"
+              >
+                <ProductCard {...item}></ProductCard>
+              </div>
             ))}
           </div>
-        </div>
+
+          <Pagination
+            pageNumber={parseInt(pageNumber || '1') || 1}
+            totalItems={result.totalItems}
+          />
+        </Container>
       </div>
     </div>
   );
@@ -102,7 +111,7 @@ export default function CollectionSlug() {
 
 export function CatchBoundary() {
   return (
-    <div className="max-w-6xl mx-auto px-4">
+    <div className="m-5">
       <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
         Collection not found!
       </h2>

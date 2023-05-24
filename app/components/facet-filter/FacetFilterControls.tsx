@@ -17,6 +17,7 @@ export default function FacetFilterControls({
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
   const q = searchParams.getAll('q');
+  const p = searchParams.get('p') || '1';
 
   function handleChange(event: SyntheticEvent<HTMLFormElement>) {
     submit(event.currentTarget, { replace: false });
@@ -70,6 +71,7 @@ export default function FacetFilterControls({
                   method="get"
                   onChange={handleChange}
                 >
+                  <input type="hidden" name="p" value={p} />
                   <input type="hidden" name="q" value={q} />
                   {facetFilterTracker.facetsWithValues.map((facet) => (
                     <Disclosure
@@ -139,6 +141,7 @@ export default function FacetFilterControls({
 
       <Form method="get" className="hidden lg:block" onChange={handleChange}>
         <input type="hidden" name="q" value={q} />
+        <input type="hidden" name="p" value={p} />
         {facetFilterTracker.facetsWithValues.map((facet) => (
           <Disclosure
             as="div"

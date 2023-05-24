@@ -12,7 +12,8 @@ import {
   useRouteError,
 } from '@remix-run/react';
 import styles from './styles/app.css';
-import { Header } from './components/header/Header';
+import bootstrapCSS from "bootstrap/dist/css/bootstrap.min.css";
+import { Header, links as headerLinks } from './components/header/Header';
 import {
   DataFunctionArgs,
   MetaFunction,
@@ -33,7 +34,10 @@ export const meta: MetaFunction = () => {
 };
 
 export function links() {
-  return [{ rel: 'stylesheet', href: styles }];
+  return [
+    ...headerLinks()
+  ,  { rel: 'stylesheet', href: styles }
+  , { rel: 'stylesheet', href: bootstrapCSS }];
 }
 
 const devMode =
@@ -86,7 +90,6 @@ export async function loader({ request, params, context }: DataFunctionArgs) {
 }
 
 export default function App() {
-  const [open, setOpen] = useState(false);
   const loaderData = useLoaderData<RootLoaderData>();
   const { collections } = loaderData;
   const {
@@ -114,8 +117,9 @@ export default function App() {
       </head>
       <body>
         <Header
-          onCartIconClick={() => setOpen(!open)}
-          cartQuantity={activeOrder?.totalQuantity ?? 0}
+          adjustOrderLine={adjustOrderLine}
+          removeItem={removeItem}
+          activeOrder={activeOrder}
         />
         <main className="">
           <Outlet
@@ -127,13 +131,6 @@ export default function App() {
             }}
           />
         </main>
-        <CartTray
-          open={open}
-          onClose={setOpen}
-          activeOrder={activeOrder}
-          adjustOrderLine={adjustOrderLine}
-          removeItem={removeItem}
-        />
         <ScrollRestoration />
         <Scripts />
         <Footer collections={collections}></Footer>

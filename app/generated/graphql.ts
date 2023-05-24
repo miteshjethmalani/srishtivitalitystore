@@ -877,6 +877,7 @@ export enum ErrorCode {
   InsufficientStockError = 'INSUFFICIENT_STOCK_ERROR',
   InvalidCredentialsError = 'INVALID_CREDENTIALS_ERROR',
   MissingPasswordError = 'MISSING_PASSWORD_ERROR',
+  MissingMessageError = 'MISSING_MESSAGE_ERROR',
   NativeAuthStrategyError = 'NATIVE_AUTH_STRATEGY_ERROR',
   NegativeQuantityError = 'NEGATIVE_QUANTITY_ERROR',
   NotVerifiedError = 'NOT_VERIFIED_ERROR',
@@ -1546,6 +1547,13 @@ export enum LogicalOperator {
   And = 'AND',
   Or = 'OR'
 }
+
+/** Returned when attempting to register or verify a customer account without a password, when one is required. */
+export type MissingMessageError = ErrorResult & {
+  __typename?: 'MissingMessageError';
+  errorCode: ErrorCode;
+  message: Scalars['String'];
+};
 
 /** Returned when attempting to register or verify a customer account without a password, when one is required. */
 export type MissingPasswordError = ErrorResult & {
@@ -2785,6 +2793,8 @@ export type Refund = Node & {
 
 export type RegisterCustomerAccountResult = MissingPasswordError | NativeAuthStrategyError | PasswordValidationError | Success;
 
+export type ContactUsResult = MissingMessageError | Success;
+
 export type RegisterCustomerInput = {
   emailAddress: Scalars['String'];
   firstName?: InputMaybe<Scalars['String']>;
@@ -2792,6 +2802,11 @@ export type RegisterCustomerInput = {
   password?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
+};
+
+export type ContactUsInput = {
+  emailAddress: Scalars['String'];
+  message?: InputMaybe<Scalars['String']>;
 };
 
 export type RelationCustomFieldConfig = CustomField & {
@@ -3200,8 +3215,13 @@ export type RegisterCustomerAccountMutationVariables = Exact<{
   input: RegisterCustomerInput;
 }>;
 
+export type ContactUsMutationVariables = Exact<{
+  input: ContactUsInput;
+}>;
 
 export type RegisterCustomerAccountMutation = { __typename?: 'Mutation', registerCustomerAccount: { __typename: 'MissingPasswordError', errorCode: ErrorCode, message: string } | { __typename: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } | { __typename: 'PasswordValidationError', errorCode: ErrorCode, message: string } | { __typename: 'Success', success: boolean } };
+
+export type ContactUsMutation = { __typename?: 'Mutation', contactUs: { __typename: 'MissingMessageError', errorCode: ErrorCode, message: string } | { __typename: 'Success', success: boolean } };
 
 export type VerifyCustomerAccountMutationVariables = Exact<{
   token: Scalars['String'];
@@ -3319,6 +3339,7 @@ export type CollectionsQuery = { __typename?: 'Query', collections: { __typename
 export type CollectionQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
+  pageNumber?: InputMaybe<Scalars['ID']>;
 }>;
 
 
@@ -3594,6 +3615,20 @@ export const LogoutDocument = gql`
 export const RegisterCustomerAccountDocument = gql`
     mutation registerCustomerAccount($input: RegisterCustomerInput!) {
   registerCustomerAccount(input: $input) {
+    __typename
+    ... on Success {
+      success
+    }
+    ... on ErrorResult {
+      errorCode
+      message
+    }
+  }
+}
+    `;
+export const ContactUsDocument = gql`
+    mutation contactUs($input: ContactUsInput!) {
+      contactUs(input: $input) {
     __typename
     ... on Success {
       success
@@ -4045,6 +4080,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     registerCustomerAccount(variables: RegisterCustomerAccountMutationVariables, options?: C): Promise<RegisterCustomerAccountMutation> {
       return requester<RegisterCustomerAccountMutation, RegisterCustomerAccountMutationVariables>(RegisterCustomerAccountDocument, variables, options) as Promise<RegisterCustomerAccountMutation>;
+    },
+    contactUs(variables: ContactUsMutationVariables, options?: C): Promise<ContactUsMutation> {
+      return requester<ContactUsMutation, ContactUsMutationVariables>(ContactUsDocument, variables, options) as Promise<ContactUsMutation>;
     },
     verifyCustomerAccount(variables: VerifyCustomerAccountMutationVariables, options?: C): Promise<VerifyCustomerAccountMutation> {
       return requester<VerifyCustomerAccountMutation, VerifyCustomerAccountMutationVariables>(VerifyCustomerAccountDocument, variables, options) as Promise<VerifyCustomerAccountMutation>;

@@ -1,6 +1,7 @@
 import { DataFunctionArgs } from '@remix-run/cloudflare';
 import { search, searchFacetValues } from '~/providers/products/products';
 import { sdk } from '~/graphqlWrapper';
+import { APP_NUMBER_OF_PRODUCTS_LISTING } from '~/constants';
 
 /**
  * This loader deals with loading product searches, which is used in both the search page and the
@@ -13,6 +14,7 @@ export async function filteredSearchLoader({
   const url = new URL(request.url);
   const term = url.searchParams.get('q');
   const facetValueIds = url.searchParams.getAll('fvid');
+  const page = url.searchParams.get('p') || `1`;
   const collectionSlug = params.slug;
 
   let resultPromises: [
@@ -26,6 +28,8 @@ export async function filteredSearchLoader({
         term,
         facetValueIds,
         collectionSlug: params.slug,
+        skip: ((parseInt(page)-1) * APP_NUMBER_OF_PRODUCTS_LISTING),
+        take: (parseInt(page) * APP_NUMBER_OF_PRODUCTS_LISTING)
       },
     },
     { request },
@@ -38,7 +42,7 @@ export async function filteredSearchLoader({
           input: {
             groupByProduct: true,
             term,
-            collectionSlug: params.slug,
+            collectionSlug: params.slug
           },
         },
         { request },
