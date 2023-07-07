@@ -6,14 +6,19 @@ import {
 } from '@heroicons/react/24/solid';
 import { Form, Outlet, useLoaderData, useMatches } from '@remix-run/react';
 import { DataFunctionArgs, json, redirect } from '@remix-run/server-runtime';
+import { Container } from 'react-bootstrap';
 import { TabProps } from '~/components/tabs/Tab';
 import { TabsContainer } from '~/components/tabs/TabsContainer';
 import { getActiveCustomerDetails } from '~/providers/customer/customer';
+import { authenticator } from '~/server/auth.server';
 
 export async function loader({ request }: DataFunctionArgs) {
   const { activeCustomer } = await getActiveCustomerDetails({ request });
   if (!activeCustomer) {
-    return redirect('/sign-in');
+    const user: any = await authenticator.isAuthenticated(request, {
+      failureRedirect: "/sign-in",
+    });
+    return json({ activeCustomer: user.authenticate })
   }
   return json({ activeCustomer });
 }
@@ -46,17 +51,17 @@ export default function AccountDashboard() {
   ];
 
   return (
-    <div className="max-w-6xl xl:mx-auto px-4">
-      <h2 className="text-3xl sm:text-5xl font-light text-gray-900 my-8">
+    <Container className='mt-4'>
+      <h1 className="">
         My Account
-      </h2>
-      <p className="text-gray-700 text-lg -mt-4">
-        Welcome back, {firstName} {lastName}
+      </h1>
+      <p className="mt-4">
+        Welcome, {firstName} {lastName}
       </p>
       <Form method="post" action="/api/logout">
         <button
           type="submit"
-          className="underline text-primary-600 hover:text-primary-800"
+          className="underline text-primary"
         >
           Sign out
         </button>
@@ -64,6 +69,7 @@ export default function AccountDashboard() {
       <TabsContainer tabs={tabs}>
         <Outlet></Outlet>
       </TabsContainer>
-    </div>
+
+    </Container>
   );
 }

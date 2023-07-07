@@ -1,9 +1,11 @@
 import { ChevronRightIcon } from '@heroicons/react/24/solid';
-import { Outlet, useLocation, useOutletContext } from '@remix-run/react';
+import { Link, Outlet, useLocation, useNavigate, useOutletContext } from '@remix-run/react';
 import { CartContents } from '~/components/cart/CartContents';
 import { OutletContext } from '~/types';
 import { classNames } from '~/utils/class-names';
 import { CartTotals } from '~/components/cart/CartTotals';
+import { useEffect } from 'react';
+import { useRootLoader } from '~/utils/use-root-loader';
 
 const steps = [
   { name: 'Shipping', state: 'shipping' },
@@ -12,6 +14,15 @@ const steps = [
 ];
 
 export default function Checkout() {
+  const data = useRootLoader();
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+  const isSignedIn = !!data.activeCustomer.activeCustomer?.id;
+    if(!isSignedIn){
+      navigate("/sign-in?redirectTo=/checkout",{replace: true})
+    }
+  },[])
   const outletContext = useOutletContext<OutletContext>();
   const { activeOrder, adjustOrderLine, removeItem } = outletContext;
   const location = useLocation();

@@ -735,6 +735,16 @@ export type Customer = Node & {
   user?: Maybe<User>;
 };
 
+export type ContactUs = Node & {
+  __typename?: 'ContactUs';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  message: Scalars['String'];
+  status:  Scalars['String'];
+  
+};
 
 export type CustomerOrdersArgs = {
   options?: InputMaybe<OrderListOptions>;
@@ -1576,6 +1586,7 @@ export type Mutation = {
   authenticate: AuthenticationResult;
   /** Create a new Customer Address */
   createCustomerAddress: Address;
+  createContactUsSubscription: ContactUsResult;
   createStripePaymentIntent?: Maybe<Scalars['String']>;
   /** Delete an existing Address */
   deleteCustomerAddress: Success;
@@ -1704,6 +1715,10 @@ export type MutationRefreshCustomerVerificationArgs = {
 
 export type MutationRegisterCustomerAccountArgs = {
   input: RegisterCustomerInput;
+};
+
+export type MutationContactUsArgs = {
+  input: CreateContactUsInput
 };
 
 
@@ -2722,6 +2737,7 @@ export type Query = {
   products: ProductList;
   /** Search Products based on the criteria set by the `SearchInput` */
   search: SearchResponse;
+  createContactUsSubscription: ContactUs;
 };
 
 
@@ -2804,9 +2820,9 @@ export type RegisterCustomerInput = {
   title?: InputMaybe<Scalars['String']>;
 };
 
-export type ContactUsInput = {
-  emailAddress: Scalars['String'];
-  message?: InputMaybe<Scalars['String']>;
+export type CreateContactUsInput = {
+  email: Scalars['String'];
+  message: Scalars['String'];
 };
 
 export type RelationCustomFieldConfig = CustomField & {
@@ -3203,8 +3219,13 @@ export type LoginMutationVariables = Exact<{
   rememberMe?: InputMaybe<Scalars['Boolean']>;
 }>;
 
+export type SocialLoginMutationVariables = Exact<{
+  token: Scalars['String'];
+}>;
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename: 'CurrentUser', id: string, identifier: string } | { __typename: 'InvalidCredentialsError', errorCode: ErrorCode, message: string } | { __typename: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } | { __typename: 'NotVerifiedError', errorCode: ErrorCode, message: string } };
+
+export type SocialLoginMutation = { __typename?: 'Mutation', authenticate: { __typename: 'CurrentUser', id: string, identifier: string } | { __typename: 'InvalidCredentialsError', errorCode: ErrorCode, message: string } | { __typename: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } | { __typename: 'NotVerifiedError', errorCode: ErrorCode, message: string } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -3216,12 +3237,12 @@ export type RegisterCustomerAccountMutationVariables = Exact<{
 }>;
 
 export type ContactUsMutationVariables = Exact<{
-  input: ContactUsInput;
+  input: CreateContactUsInput
 }>;
 
 export type RegisterCustomerAccountMutation = { __typename?: 'Mutation', registerCustomerAccount: { __typename: 'MissingPasswordError', errorCode: ErrorCode, message: string } | { __typename: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } | { __typename: 'PasswordValidationError', errorCode: ErrorCode, message: string } | { __typename: 'Success', success: boolean } };
 
-export type ContactUsMutation = { __typename?: 'Mutation', contactUs: { __typename: 'MissingMessageError', errorCode: ErrorCode, message: string } | { __typename: 'Success', success: boolean } };
+export type ContactUsMutation = { __typename?: 'Mutation', createContactUsSubscription: { __typename: 'MissingMessageError', errorCode: ErrorCode, message: string } | { __typename: 'ContactUs', success: boolean } };
 
 export type VerifyCustomerAccountMutationVariables = Exact<{
   token: Scalars['String'];
@@ -3527,6 +3548,11 @@ export const DetailedProductFragmentDoc = gql`
   id
   name
   description
+  customFields {
+    metaTitle
+    metaDescription
+    metaKeywords
+  }
   collections {
     id
     slug
@@ -3605,6 +3631,19 @@ export const LoginDocument = gql`
   }
 }
     `;
+
+    export const SocialLoginDocument = gql`
+    mutation Authenticate($token: String!) {
+      authenticate(input: {
+        google: { token: $token }
+      }) {
+      ...on CurrentUser {
+          id
+          identifier
+      }
+    }
+  }
+    `;
 export const LogoutDocument = gql`
     mutation logout {
   logout {
@@ -3627,16 +3666,9 @@ export const RegisterCustomerAccountDocument = gql`
 }
     `;
 export const ContactUsDocument = gql`
-    mutation contactUs($input: ContactUsInput!) {
-      contactUs(input: $input) {
+    mutation createContactUsSubscription($input: CreateContactUsInput!) {
+      createContactUsSubscription(input : $input) {
     __typename
-    ... on Success {
-      success
-    }
-    ... on ErrorResult {
-      errorCode
-      message
-    }
   }
 }
     `;
@@ -3827,6 +3859,11 @@ export const CollectionDocument = gql`
     id
     name
     slug
+    customFields {
+      metaTitle
+      metaDescription
+      metaKeywords
+    }
     breadcrumbs {
       id
       name
@@ -3966,7 +4003,7 @@ export const SetOrderShippingAddressDocument = gql`
 }
     ${OrderDetailFragmentDoc}`;
 export const SetOrderShippingMethodDocument = gql`
-    mutation setOrderShippingMethod($shippingMethodId: ID!) {
+    mutation setOrderShippingMethod($shippingMethodId: [ID!]!) {
   setOrderShippingMethod(shippingMethodId: $shippingMethodId) {
     ...OrderDetail
     ... on ErrorResult {
@@ -4075,13 +4112,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     login(variables: LoginMutationVariables, options?: C): Promise<LoginMutation> {
       return requester<LoginMutation, LoginMutationVariables>(LoginDocument, variables, options) as Promise<LoginMutation>;
     },
+    socaiallogin(variables: SocialLoginMutationVariables, options?: C): Promise<SocialLoginMutation> {
+      return requester<SocialLoginMutation, SocialLoginMutationVariables>(SocialLoginDocument, variables, options) as Promise<SocialLoginMutation>;
+    },
     logout(variables?: LogoutMutationVariables, options?: C): Promise<LogoutMutation> {
       return requester<LogoutMutation, LogoutMutationVariables>(LogoutDocument, variables, options) as Promise<LogoutMutation>;
     },
     registerCustomerAccount(variables: RegisterCustomerAccountMutationVariables, options?: C): Promise<RegisterCustomerAccountMutation> {
       return requester<RegisterCustomerAccountMutation, RegisterCustomerAccountMutationVariables>(RegisterCustomerAccountDocument, variables, options) as Promise<RegisterCustomerAccountMutation>;
     },
-    contactUs(variables: ContactUsMutationVariables, options?: C): Promise<ContactUsMutation> {
+    createContactUsSubscription(variables: ContactUsMutationVariables, options?: C): Promise<ContactUsMutation> {
       return requester<ContactUsMutation, ContactUsMutationVariables>(ContactUsDocument, variables, options) as Promise<ContactUsMutation>;
     },
     verifyCustomerAccount(variables: VerifyCustomerAccountMutationVariables, options?: C): Promise<VerifyCustomerAccountMutation> {

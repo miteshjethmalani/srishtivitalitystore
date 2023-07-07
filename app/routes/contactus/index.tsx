@@ -1,15 +1,16 @@
 import { Form, Link, useActionData, useSearchParams } from '@remix-run/react';
-import { DataFunctionArgs, json, redirect } from '@remix-run/server-runtime';
-import { registerCustomerAccount } from '~/providers/account/account';
+import { DataFunctionArgs, MetaFunction, json, redirect } from '@remix-run/server-runtime';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import {
   extractRegistrationFormValues,
   RegisterValidationErrors,
   validateRegistrationForm,
 } from '~/utils/registration-helper';
-import { Container } from 'react-bootstrap';
+import { Card, Container, FormGroup } from 'react-bootstrap';
 import { ContactUsValidationErrors, extractContactUsFormValues, validateContactUsForm } from '~/utils/contactus-helper';
-import { contactUsQC } from '~/providers/contactus/contactus';
+import { contactUs } from '~/providers/contactus/contactus';
+import CardHeader from 'react-bootstrap/esm/CardHeader';
+import { APP_META_TITLE } from '~/constants';
 
 export async function action({ params, request }: DataFunctionArgs) {
   const body = await request.formData();
@@ -18,9 +19,9 @@ export async function action({ params, request }: DataFunctionArgs) {
     return fieldErrors;
   }
   const variables = extractContactUsFormValues(body);
-  const result = await contactUsQC({ request }, variables);
-  if (result.__typename === 'Success') {
-    return redirect('/sign-up/success');
+  const result = await contactUs({ request }, variables);
+  if (result.__typename === 'ContactUs') {
+    return redirect('/contactus/success');
   } else {
     const formError: RegisterValidationErrors = {
       form: result.errorCode,
@@ -29,106 +30,109 @@ export async function action({ params, request }: DataFunctionArgs) {
   }
 }
 
+export const meta: MetaFunction = () => {
+  return {
+      title: `Contact Us - ${APP_META_TITLE}`
+  };
+};
+
+
 export default function ContactUs() {
   const formErrors = useActionData<ContactUsValidationErrors>();
 
   return (
-    <>
-      <div className="contact-from-section mt-5 mb-150">
-        <Container>
-          <div className="row">
-            <div className="col-lg-8 mb-5 mb-lg-0">
-              <div className="form-title">
-                <h2>Have you any question?</h2>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Pariatur, ratione! Laboriosam est, assumenda. Perferendis, quo
-                  alias quaerat aliquid. Corporis ipsum minus voluptate? Dolore,
-                  esse natus!
-                </p>
-                <Form method="post" action="/contactus">
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                      />
-                      {formErrors?.email && (
-                        <div className="text-xs text-red-700">
-                          {formErrors.email}
-                        </div>
-                      )}
-                    </div>
-                  </div>
 
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Message
-                    </label>
-                    <div className="mt-1">
-                      <textarea
-                        id="message"
-                        name="message"
-                        autoComplete="message"
-                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                        required
-                      />
-                      {formErrors?.message && (
-                        <div className="text-xs text-red-700">
-                          {formErrors.message}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {formErrors?.form && (
-                    <div className="rounded-md bg-red-50 p-4">
-                      <div className="flex">
-                        <div className="flex-shrink-0">
-                          <XCircleIcon
-                            className="h-5 w-5 text-red-400"
-                            aria-hidden="true"
-                          />
-                        </div>
-                        <div className="ml-3">
-                          <h3 className="text-sm font-medium text-red-800">
-                            We ran into a problem while creating your account!
-                          </h3>
-                          <p className="text-sm text-red-700 mt-2">
-                            {formErrors.form}
-                          </p>
-                        </div>
-                      </div>
+    <Container className='contact-form-section mt-5 mb-150'>
+      <Card style={{maxWidth:'600px'}} className='shadow-sm border-0 px-3 rounded-2 mb-3 py-4 mx-auto mt-5 bg-light'>
+        <Card.Header className='bg-transparent border-0 text-center text-uppercase'> <h2>Contact Us</h2></Card.Header>
+        <Card.Body>
+          <div className="form-title">
+            <p className='text-center'>
+              Let's get this conversation started. Tell us your Email and we'll get in touch as soon as possible.
+            </p>
+            <Form method="post" action="/contactus">
+              <FormGroup>
+                <label
+                  htmlFor="email"
+                  className=""
+                >
+                  Email
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="border shadow-sm w-full"
+                  />
+                  {formErrors?.email && (
+                    <div className="text-xs text-red-700">
+                      {formErrors.email}
                     </div>
                   )}
+                </div>
+              </FormGroup>
 
-                  <div>
-                    <button
-                      type="submit"
-                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                    >
-                      Submit
-                    </button>
+              <FormGroup className='mt-2'>
+                <label
+                  htmlFor="message"
+                  className=""
+                >
+                  Message
+                </label>
+                <div >
+                  <textarea
+                    id="message"
+                    name="message"
+                    autoComplete="message"
+                    className="border shadow-sm w-full"
+                    required
+                  />
+                  {formErrors?.message && (
+                    <div className="text-xs text-red-700">
+                      {formErrors.message}
+                    </div>
+                  )}
+                </div>
+              </FormGroup>
+
+              {formErrors?.form && (
+                <div className="rounded-md bg-red-50 p-4">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <XCircleIcon
+                        className="h-5 w-5 text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        We ran into a problem while creating your account!
+                      </h3>
+                      <p className="text-sm text-red-700 mt-2">
+                        {formErrors.form}
+                      </p>
+                    </div>
                   </div>
-                </Form>
+                </div>
+              )}
+
+              <div className='mt-4'>
+                <button
+                  type="submit"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                >
+                  Submit
+                </button>
               </div>
-            </div>
+            </Form>
           </div>
-        </Container>
-      </div>
-    </>
+        </Card.Body>
+
+      </Card>
+    </Container>
+
   );
 }

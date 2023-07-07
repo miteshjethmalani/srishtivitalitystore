@@ -11,7 +11,7 @@ import { OrderDetailFragment } from '~/generated/graphql';
 
 export async function loader({ params, request }: DataFunctionArgs) {
   try {
-    const order = await getOrderByCode(params.orderCode!, { request });
+    const order = await getOrderByCode(`${params.orderCode}`!, { request });
     return {
       order,
       error: false,

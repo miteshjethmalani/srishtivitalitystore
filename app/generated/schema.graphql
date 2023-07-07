@@ -1846,6 +1846,8 @@ type Mutation {
   """Create a new Customer Address"""
   createCustomerAddress(input: CreateAddressInput!): Address!
   createStripePaymentIntent: String
+  
+  createContactUsSubscription($input: CreateContactUsInput!):ContactUs!
 
   """Delete an existing Address"""
   deleteCustomerAddress(id: ID!): Success!
@@ -1921,7 +1923,7 @@ type Mutation {
   """
   Sets the shipping method by id, which can be obtained with the `eligibleShippingMethods` query
   """
-  setOrderShippingMethod(shippingMethodId: ID!): SetOrderShippingMethodResult!
+  setOrderShippingMethod(shippingMethodId: [ID!]!): SetOrderShippingMethodResult!
 
   """
   Transitions an Order to a new state. Valid next states can be found by querying `nextOrderStates`
@@ -3062,6 +3064,20 @@ input RegisterCustomerInput {
   password: String
   phoneNumber: String
   title: String
+}
+
+input CreateContactUsInput {
+  email: String
+  message: String
+}
+
+type ContactUs {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String
+  message: String
+  status: ContactUsStatus!
 }
 
 type RelationCustomFieldConfig implements CustomField {

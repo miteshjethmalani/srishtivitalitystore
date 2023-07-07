@@ -2,7 +2,7 @@ import { Link } from '@remix-run/react';
 import { SearchBar } from '~/components/header/SearchBar';
 import { useRootLoader } from '~/utils/use-root-loader';
 import { useScrollingUp } from '~/utils/use-scrolling-up';
-import { CartFill, Search, PersonCircle } from 'react-bootstrap-icons';
+import { CartFill, PersonFillGear, PersonCircle } from 'react-bootstrap-icons';
 import { LinksFunction } from '@remix-run/server-runtime';
 import {
   Container,
@@ -53,7 +53,7 @@ export function Header({
           type="button"
           className="btn position-relative me-3"
         >
-          <CartFill className=""></CartFill>
+          <CartFill size={20} className=""></CartFill>
           {cartQuantity ? (
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
               {cartQuantity}
@@ -72,7 +72,8 @@ export function Header({
         />
 
         <Link className="text-black" to={isSignedIn ? '/account' : '/sign-in'}>
-          <PersonCircle className="me-3"></PersonCircle>
+          {isSignedIn? (<PersonFillGear size={30} className="me-3"></PersonFillGear>):( <PersonCircle size={30} className="me-3"></PersonCircle>) }
+          
         </Link>
       </div>
     );
@@ -107,102 +108,32 @@ export function Header({
             id={`offcanvasNavbarDropdown-expand-${expand}`}
           >
             {data.collections?.map((collection) => (
-              <Link
-                className="dropdown-item"
-                to={'/collections/' + collection.slug}
-                key={collection.id}
-              >
+              <NavDropdown.Item
+                href={'/collections/' + collection.slug}
+                key={collection.id}>
                 {collection.name}
-              </Link>
+              </NavDropdown.Item>
             ))}
           </NavDropdown>
           <NavDropdown
             title="Book Consultation"
             id={`offcanvasNavbarDropdown-expand-${expand}`}
           >
-            <Link className="dropdown-item" to="/consultation/tarotreading">
+            <NavDropdown.Item  href="/consultation/tarotreading">
               Tarot Reading
-            </Link>
-            <Link className="dropdown-item" to="/consultation/crystalconsultation">
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/consultation/crystalconsultation">
               Crystal Consultation
-            </Link>
-            <Link className="dropdown-item" to="/consultation/crystalhealing">
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/consultation/crystalhealing">
               Crystal Healing
-            </Link>
+            </NavDropdown.Item>
           </NavDropdown>
           <Nav.Link href="/contactus">Contact Us</Nav.Link>
           <SearchBar />
         </Nav>
         {pageUtils(false)}
       </Navbar.Collapse>
-
-      {/* <Container fluid>
-        {pageUtils(true)}
-        <Navbar.Offcanvas
-          id={`offcanvasNavbar-expand-${expand}`}
-          aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-          placement="end"
-        >
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-              <img
-                src="/Srishtivitality Logo.png"
-                width={140}
-                height={31}
-                alt="Srishtivitality logo"
-              />
-            </Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Nav className="justify-content-center flex-grow-1 pe-3">
-              <Link className="nav-link" to="/about" key={'about'}>
-                About
-              </Link>
-              <NavDropdown
-                title="Categories"
-                id={`offcanvasNavbarDropdown-expand-${expand}`}
-              >
-                {data.collections?.map((collection) => (
-                  <Link
-                    className="dropdown-item"
-                    to={'/collections/' + collection.slug}
-                    key={collection.id}
-                  >
-                    {collection.name}
-                  </Link>
-                ))}
-              </NavDropdown>
-              <NavDropdown
-                title="Book Consultation"
-                id={`offcanvasNavbarDropdown-expand-${expand}`}
-              >
-                <Link className="dropdown-item" to="/tarotreading">
-                  Tarot Reading
-                </Link>
-                <Link className="dropdown-item" to="/crystalconsultation">
-                  Crystal Consultation
-                </Link>
-                <Link className="dropdown-item" to="/crystalhealing">
-                  Crystal Healing
-                </Link>
-              </NavDropdown>
-              <Nav.Link href="/contactus">Contact Us</Nav.Link>
-              <SearchBar />
-            </Nav>
-
-            {pageUtils(false)}
-            <Form className="d-flex">
-                <Form.Control
-                  type="search"
-                  placeholder="Search"
-                  className="me-2"
-                  aria-label="Search"
-                />
-                <Button variant="outline-success">Search</Button>
-              </Form>
-          </Offcanvas.Body>
-        </Navbar.Offcanvas>
-      </Container> */}
     </Navbar>
   );
 }

@@ -20,6 +20,7 @@ export function AddressForm({
         </label>
         <div className="mt-1">
           <input
+            required
             type="text"
             id="fullName"
             name="fullName"
@@ -30,7 +31,7 @@ export function AddressForm({
         </div>
       </div>
 
-      <div className="sm:col-span-2">
+      {/* <div className="sm:col-span-2">
         <label
           htmlFor="company"
           className="block text-sm font-medium text-gray-700"
@@ -46,7 +47,7 @@ export function AddressForm({
             className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="sm:col-span-2">
         <label
@@ -57,6 +58,7 @@ export function AddressForm({
         </label>
         <div className="mt-1">
           <input
+            required
             type="text"
             name="streetLine1"
             id="streetLine1"
@@ -67,7 +69,7 @@ export function AddressForm({
         </div>
       </div>
 
-      <div className="sm:col-span-2">
+      {/* <div className="sm:col-span-2">
         <label
           htmlFor="streetLine2"
           className="block text-sm font-medium text-gray-700"
@@ -84,7 +86,7 @@ export function AddressForm({
           />
         </div>
       </div>
-
+ */}
       <div>
         <label
           htmlFor="city"
@@ -94,6 +96,7 @@ export function AddressForm({
         </label>
         <div className="mt-1">
           <input
+            required
             type="text"
             name="city"
             id="city"
@@ -138,6 +141,7 @@ export function AddressForm({
         </label>
         <div className="mt-1">
           <input
+            required
             type="text"
             name="province"
             id="province"
@@ -157,6 +161,7 @@ export function AddressForm({
         </label>
         <div className="mt-1">
           <input
+            required
             type="text"
             name="postalCode"
             id="postalCode"
@@ -176,6 +181,7 @@ export function AddressForm({
         </label>
         <div className="mt-1">
           <input
+            required={true}
             type="text"
             name="phoneNumber"
             id="phoneNumber"

@@ -94,6 +94,22 @@ export async function updateCustomerAddress(
     .then((res) => res.updateCustomerAddress);
 }
 
+export const onSignIn = (googleUser: any) => {
+  return gql(
+    `mutation Authenticate($token: String!) {
+        authenticate(input: {
+          google: { token: $token }
+        }) {
+        ...on CurrentUser {
+            id
+            identifier
+        }
+      }
+    }`,
+    { token: googleUser.id }
+  )
+}
+
 export async function createCustomerAddress(
   input: CreateAddressInput,
   options: QueryOptions,

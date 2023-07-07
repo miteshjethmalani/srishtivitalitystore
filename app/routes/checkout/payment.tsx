@@ -133,7 +133,7 @@ export default function CheckoutPayment() {
 
   return (
     <div className="flex flex-col items-center divide-gray-200 divide-y">
-      {eligiblePaymentMethods.map((paymentMethod) =>
+      {eligiblePaymentMethods.map((paymentMethod: any) =>
         paymentMethod.code.includes('braintree') ? (
           <div className="py-3 w-full" key={paymentMethod.id}>
             {brainTreeError ? (
@@ -162,8 +162,8 @@ export default function CheckoutPayment() {
             ) : (
               <StripePayments
                 orderCode={activeOrder?.code ?? ''}
-                clientSecret={stripePaymentIntent!}
-                publishableKey={stripePublishableKey!}
+                clientSecret={`${stripePaymentIntent}`!}
+                publishableKey={`${stripePublishableKey}`!}
               ></StripePayments>
             )}
           </div>

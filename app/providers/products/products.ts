@@ -14,7 +14,6 @@ export function searchFacetValues(
 }
 
 export function getProductBySlug(slug: string, options: QueryOptions) {
-console.log("slug",slug);
   return sdk.product({ slug }, options);
 }
 
@@ -23,6 +22,11 @@ export const detailedProductFragment = gql`
     id
     name
     description
+    customFields {
+      metaTitle
+      metaDescription
+      metaKeywords
+    }
     collections {
       id
       slug

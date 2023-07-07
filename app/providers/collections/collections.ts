@@ -33,6 +33,11 @@ gql`
       id
       name
       slug
+      customFields {
+        metaTitle
+        metaDescription
+        metaKeywords
+      }
       breadcrumbs {
         id
         name

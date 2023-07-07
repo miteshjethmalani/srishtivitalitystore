@@ -10291,7 +10291,7 @@
             "deprecationReason": null
           },
           {
-            "name": "contactUs",
+            "name": "createContactUsSubscription",
             "description": "Add Contact Us Form data with the email adress to any customer query.",
             "args": [
               {
@@ -10302,7 +10302,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "ContactUsInput",
+                    "name": "CreateContactUsInput",
                     "ofType": null
                   }
                 },
@@ -18414,12 +18414,12 @@
         "possibleTypes": null
       },{
         "kind": "INPUT_OBJECT",
-        "name": "ContactUsInput",
+        "name": "CreateContactUsInput",
         "description": null,
         "fields": null,
         "inputFields": [
           {
-            "name": "emailAddress",
+            "name": "email",
             "description": null,
             "type": {
               "kind": "NON_NULL",

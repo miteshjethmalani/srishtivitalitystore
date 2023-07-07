@@ -15,6 +15,7 @@ import {
   updateCustomer,
 } from '~/providers/account/account';
 import { getActiveCustomerDetails } from '~/providers/customer/customer';
+import { authenticator } from '~/server/auth.server';
 import useToggleState from '~/utils/use-toggle-state';
 import { replaceEmptyString } from '~/utils/validation';
 
@@ -45,7 +46,11 @@ const changeEmailValidator = withZod(
 export async function loader({ request }: DataFunctionArgs) {
   const { activeCustomer } = await getActiveCustomerDetails({ request });
   if (!activeCustomer) {
-    return redirect('/sign-in');
+    const user: any = await authenticator.isAuthenticated(request, {
+      failureRedirect: "/sign-in",
+    });
+
+    return json({ activeCustomer: user.authenticate });
   }
   return json({ activeCustomer });
 }

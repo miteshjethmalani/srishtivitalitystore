@@ -30,7 +30,7 @@ export const validateRegistrationForm = (
     errors.repeatPassword = 'Passwords do not match!';
   }
 
-  console.log(errors);
+  // console.log(errors);
   return errors;
 };
 

@@ -22,14 +22,15 @@ import { sessionStorage } from '~/sessions';
 import { ErrorCode, ErrorResult } from '~/generated/graphql';
 import Alert from '~/components/Alert';
 import { StockLevelLabel } from '~/components/products/StockLevelLabel';
-import TopReviews from '~/components/products/TopReviews';
+// import TopReviews from '~/components/products/TopReviews';
 import { ScrollableContainer } from '~/components/products/ScrollableContainer';
 
 export const meta: MetaFunction = ({ data }) => {
+  const metaTitle = (data?.product?.customFields?.metaTitle || data?.product?.name);
   return {
-    title: data?.product?.name
-      ? `${data.product.name} - ${APP_META_TITLE}`
-      : APP_META_TITLE,
+    title:  metaTitle ? `${metaTitle} - ${APP_META_TITLE}` : APP_META_TITLE,
+    description: data?.product?.customFields?.metaDescription,
+    keywords: data?.product?.customFields?.keywords
   };
 };
 
@@ -230,17 +231,6 @@ export default function ProductSlug() {
                       `Add to cart`
                     )}
                   </button>
-
-                  <button
-                    type="button"
-                    className="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
-                  >
-                    <HeartIcon
-                      className="h-6 w-6 flex-shrink-0"
-                      aria-hidden="true"
-                    />
-                    <span className="sr-only">Add to favorites</span>
-                  </button>
                 </div>
               </div>
               <div className="mt-2 flex items-center space-x-2">
@@ -255,21 +245,15 @@ export default function ProductSlug() {
 
               <section className="mt-12 pt-12 border-t text-xs">
                 <h3 className="text-gray-600 font-bold mb-2">
-                  Shipping & Returns
+                  Shipping
                 </h3>
                 <div className="text-gray-500 space-y-1">
                   <p>
-                    Standard shipping: 3 - 5 working days. Express shipping: 1 -
-                    3 working days.
+                    Standard shipping: 3 - 5 working days.
                   </p>
                   <p>
                     Shipping costs depend on delivery address and will be
                     calculated during checkout.
-                  </p>
-                  <p>
-                    Returns are subject to terms. Please see the{' '}
-                    <span className="underline">returns page</span> for further
-                    information.
                   </p>
                 </div>
               </section>
@@ -277,9 +261,9 @@ export default function ProductSlug() {
           </div>
         </div>
       </div>
-      <div className="mt-24">
+      {/* <div className="mt-24">
         <TopReviews></TopReviews>
-      </div>
+      </div> */}
     </div>
   );
 }

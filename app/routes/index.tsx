@@ -20,13 +20,13 @@ export default function Index() {
       <div className="relative">
         {/* Decorative image and overlay */}
         <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-          {headerImage && (
+         {/*  {headerImage && (
             <img
               className="absolute inset-0 w-full"
               src={headerImage + '?w=800'}
               alt="header"
             />
-          )}
+          )} */}
           <div className="absolute inset-0 bg-gradient-to-br from-zinc-400 to-black mix-blend-darken" />
         </div>
         <div
@@ -47,7 +47,7 @@ export default function Index() {
         <Container fluid className="mt-12">
           <div className="row">
             {collections.map((collection) => (
-              <div key={collection.id} className="col-xs-12 col-lg-4 col-sm-12 col-md-6 p-3 position-relative">
+              <div key={collection.id} className="col-xs-12 col-lg-4 col-sm-12 col-md-6 position-relative">
                 <CollectionCard  collection={collection} />
               </div>
             ))}

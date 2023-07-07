@@ -16,16 +16,16 @@ import Pagination, {
 } from '~/components/pagination/Pagination';
 
 export const meta: MetaFunction = ({ data }) => {
+  const metaTitle = (data?.collection?.customFields?.metaTitle || data?.collection?.name);
   return {
-    title: data?.collection
-      ? `${data.collection?.name} - ${APP_META_TITLE}`
-      : APP_META_TITLE,
+    title:  metaTitle ? `${metaTitle} - ${APP_META_TITLE}` : APP_META_TITLE,
+    description: data?.collection?.customFields?.metaDescription,
+    keywords: data?.collection?.customFields?.keywords
   };
 };
 
+
 export async function loader({ params, request, context }: DataFunctionArgs) {
-  debugger;
-  console.log('params', params);
   const { result, resultWithoutFacetValueFilters, facetValueIds } =
     await filteredSearchLoader({
       params,

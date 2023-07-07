@@ -1,6 +1,13 @@
 import { Facebook, Instagram, Twitter, Youtube } from 'react-bootstrap-icons';
 import { APP_META_TITLE } from '~/constants';
-import { LinksFunction } from '@remix-run/server-runtime';
+import { LinksFunction, MetaFunction } from '@remix-run/server-runtime';
+
+export const meta: MetaFunction = ({ data }) => {
+  return {
+    title: `About Us - ${APP_META_TITLE}`
+      
+  };
+};
 
 export default function About() {
   return (
@@ -54,8 +61,7 @@ export default function About() {
                         <p>
                           We strive to offer you unbeatable deals and
                           competitive prices on a wide range of products. From
-                          electronics to fashion, home essentials to beauty
-                          products, find incredible value without compromising
+                          Crystals to services, find incredible value without compromising
                           on quality. Shop smart and save big with our best
                           price guarantee. Experience the joy of getting the
                           most bang for your buck with our platform.

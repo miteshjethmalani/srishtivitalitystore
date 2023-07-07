@@ -18,7 +18,7 @@ export function CartContents({
   const isEditable = editable !== false;
   return (
     <div className="flow-root">
-      <ul role="list" className="-my-6 divide-y divide-gray-200">
+      <ul role="list" className="-my-6 divide-y divide-gray-200 p-0">
         {(orderLines ?? []).map((line) => (
           <li key={line.id} className="py-6 flex">
             <div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
@@ -29,14 +29,14 @@ export function CartContents({
               />
             </div>
 
-            <div className="ml-4 flex-1 flex flex-col">
+            <div className="ml-2 flex-1 flex flex-col">
               <div>
                 <div className="flex justify-between text-base font-medium text-gray-900">
-                  <h3>
+                  <h5>
                     <Link to={`/products/${line.productVariant.product.slug}`}>
                       {line.productVariant.name}
                     </Link>
-                  </h3>
+                  </h5>
                   <p className="ml-4">
                     <Price
                       priceWithTax={line.linePriceWithTax}

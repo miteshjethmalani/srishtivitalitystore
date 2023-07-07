@@ -11,7 +11,7 @@ export default function CrystalConsultation() {
         </div>
 
         <Cal
-          calLink="mitesh-jethmalani/crystal-consultation-"
+          calLink="mitesh-jethmalani/crystal-consultation"
           config={{
             notes: 'Lets Connect with Srishtivitality.',
             theme: 'light',
