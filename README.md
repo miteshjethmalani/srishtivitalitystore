@@ -26,7 +26,7 @@ General things missing:
 ## Development
 
 1. Clone this repo
-2. `npm install`
+2. `yarn install`
 3. Create a `.env` file in the root dir with the following contents:
    ```.env
    VENDURE_API_URL=http://localhost:3001/shop-api
@@ -34,17 +34,18 @@ General things missing:
    # VENDURE_API_URL=https://readonlydemo.vendure.io/shop-api
    NODE_ENV=development
    ```
-4. `npm run dev` - run the storefront with a local Remix server
-5. `npm run dev:cf` - runs locally with the Cloudflare Pages configuration
+4. `yarn dev` - run the storefront with a local Remix server
+5. `yarn dev:cf` - runs locally with the Cloudflare Pages configuration
 
 ### Vendure Server
 
-This storefront requires a Vendure server. You can either run a local instance, or use our public demo server.
+This storefront requires a Vendure V2 server. You can either run a local instance, or use our public demo server.  
+If you're looking for V1 support, [75eb880](https://github.com/vendure-ecommerce/storefront-remix-starter/tree/75eb880052d7f76b2026fc917cf545996012e3ac) is the last supported commit.
 
 #### Code Generation
 
 Whenever the Graphql documents (the constants using the `gql` tag) in the [./app/providers](./app/providers) dir changes,
-you should run `npm run generate` to generate new sdk definitions.
+you should run `yarn generate` to generate new sdk definitions.
 
 For a more detailed guide on how to work with code generation, check the wiki about [querying custom fields](https://github.com/vendure-ecommerce/storefront-remix-starter/wiki/Querying-custom-fields).
 
@@ -100,9 +101,9 @@ There is a publicly-available demo instance at https://readonlydemo.vendure.io/s
 
 ## Deployment
 
-This repo is configured to deploy to either Netlify or Cloudflare Pages.
+This repo is configured to deploy to either Netlify or Cloudflare Pages or to build locally with specialised build targets (`build(:nf/:cf)`).
 
-No special setup should be needed, as the [remix.config.js](./remix.config.js) file contains a check for the `process.env.CF_PAGES` environment variable to determine whether to use the Cloudflare Pages or Netlify server configuration.
+No special setup should be needed, as the [remix.config.js](./remix.config.js) file contains a check for the `process.env.CF_PAGES` / `process.env.NETLIFY` environment variable to determine whether to use the Cloudflare Pages or Netlify server configuration.
 
 Follow the usual procedure for setting up a project in Netlify/CF Pages and point it to your clone of this repo on GitHub/Gitlab.
 

@@ -1,10 +1,11 @@
 {
   "private": true,
-  "name": "remix-app-template",
+  "name": "storefront-remix-starter",
   "description": "",
   "license": "",
   "scripts": {
     "build:cf": "cross-env CF_PAGES=1 remix build",
+    "build:nf": "cross-env NETLIFY=1 remix build",
     "build": "tailwindcss -m -i ./tailwind.css -o app/styles/app.css && remix build",
     "dev:wrangler": "wrangler pages dev ./public",
     "dev:css": "tailwindcss -w -i ./tailwind.css -o app/styles/app.css",
@@ -67,6 +68,7 @@
     "postcss": "^8.4.19",
     "prettier": "^2.6.2",
     "tailwindcss": "^3.2.4",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.3",
     "wrangler": "^2.4.2"
   },

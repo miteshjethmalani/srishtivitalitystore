@@ -111,11 +111,17 @@ export default function FacetFilterControls({
                                 >
                                   <input
                                     id={`filter-mobile-${facet.id}-${optionIdx}`}
-                                    name={`fvid`}
                                     defaultValue={value.id}
                                     type="checkbox"
                                     checked={value.selected}
-                                    onChange={() => {}}
+                                    onChange={(ev) => {
+                                      // FIXME: ugly workaround because the dialog is in a portal not within the intended form
+                                      (
+                                        document.getElementById(
+                                          `filter-${facet.id}-${optionIdx}`,
+                                        ) as HTMLInputElement
+                                      ).checked = ev.target.checked;
+                                    }}
                                     className="h-4 w-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500"
                                   />
                                   <label
@@ -139,7 +145,7 @@ export default function FacetFilterControls({
         </Dialog>
       </Transition.Root>
 
-      <Form method="get" className="hidden lg:block" onChange={handleChange}>
+      <div className="hidden lg:block">
         <input type="hidden" name="q" value={q} />
         <input type="hidden" name="p" value={p} />
         {facetFilterTracker.facetsWithValues.map((facet) => (
@@ -195,7 +201,7 @@ export default function FacetFilterControls({
             )}
           </Disclosure>
         ))}
-      </Form>
+      </div>
     </>
   );
 }

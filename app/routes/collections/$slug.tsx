@@ -1,19 +1,16 @@
 import { DataFunctionArgs, MetaFunction } from '@remix-run/server-runtime';
-import { useLoaderData, useParams } from '@remix-run/react';
+import { useLoaderData, useSubmit } from '@remix-run/react';
 import { sdk } from '../../graphqlWrapper';
 import { CollectionCard } from '~/components/collections/CollectionCard';
-import { ProductCard } from '~/components/products/ProductCard';
 import { Breadcrumbs } from '~/components/Breadcrumbs';
 import { APP_META_TITLE } from '~/constants';
-import { filteredSearchLoader } from '~/utils/filtered-search-loader';
+import { filteredSearchLoaderFromPagination } from '~/utils/filtered-search-loader';
 import { useRef, useState } from 'react';
 import { FacetFilterTracker } from '~/components/facet-filter/facet-filter-tracker';
-import FacetFilterControls from '~/components/facet-filter/FacetFilterControls';
 import { FiltersButton } from '~/components/FiltersButton';
-import { Container } from 'react-bootstrap';
-import Pagination, {
-  getCurrentSelectedPage,
-} from '~/components/pagination/Pagination';
+import { ValidatedForm } from 'remix-validated-form';
+import { withZod } from '@remix-validated-form/with-zod';
+import { FilterableProductGrid } from '~/components/products/FilterableProductGrid';
 
 export const meta: MetaFunction = ({ data }) => {
   const metaTitle = (data?.collection?.customFields?.metaTitle || data?.collection?.name);
@@ -24,14 +21,30 @@ export const meta: MetaFunction = ({ data }) => {
   };
 };
 
+const paginationLimitMinimumDefault = 25;
+const allowedPaginationLimits = new Set<number>([
+  paginationLimitMinimumDefault,
+  50,
+  100,
+]);
+const { validator, filteredSearchLoader } = filteredSearchLoaderFromPagination(
+  allowedPaginationLimits,
+  paginationLimitMinimumDefault,
+);
 
 export async function loader({ params, request, context }: DataFunctionArgs) {
-  const { result, resultWithoutFacetValueFilters, facetValueIds } =
-    await filteredSearchLoader({
-      params,
-      request,
-      context,
-    });
+  const {
+    result,
+    resultWithoutFacetValueFilters,
+    facetValueIds,
+    appliedPaginationLimit,
+    appliedPaginationPage,
+    term,
+  } = await filteredSearchLoader({
+    params,
+    request,
+    context,
+  });
   const collection = (await sdk.collection({ slug: params.slug })).collection;
   if (!collection?.id || !collection?.name) {
     throw new Response('Not Found', {
@@ -40,22 +53,20 @@ export async function loader({ params, request, context }: DataFunctionArgs) {
   }
 
   return {
+    term,
     collection,
     result,
     resultWithoutFacetValueFilters,
     facetValueIds,
-    pageNumber: getCurrentSelectedPage(request.url),
+    appliedPaginationLimit,
+    appliedPaginationPage,
   };
 }
 
 export default function CollectionSlug() {
-  const {
-    collection,
-    result,
-    resultWithoutFacetValueFilters,
-    facetValueIds,
-    pageNumber,
-  } = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData<typeof loader>();
+  const { collection, result, resultWithoutFacetValueFilters, facetValueIds } =
+    loaderData;
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const facetValuesTracker = useRef(new FacetFilterTracker());
   facetValuesTracker.current.update(
@@ -63,7 +74,7 @@ export default function CollectionSlug() {
     resultWithoutFacetValueFilters,
     facetValueIds,
   );
-
+  const submit = useSubmit();
   return (
     <div className=" m-5 mt-2">
       <div className="flex justify-between items-center">
@@ -79,32 +90,18 @@ export default function CollectionSlug() {
 
       <Breadcrumbs items={collection.breadcrumbs}></Breadcrumbs>
 
-      <div className="mt-2 row">
-        <div className="col-lg-3">
-          <FacetFilterControls
-            facetFilterTracker={facetValuesTracker.current}
-            mobileFiltersOpen={mobileFiltersOpen}
-            setMobileFiltersOpen={setMobileFiltersOpen}
-          />
-        </div>
-        <Container fluid className="mt-12 col-lg-9">
-          <div className="row">
-            {result.items.map((item) => (
-              <div
-                key={item.productId}
-                className="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xxl-2 p-3 position-relative"
-              >
-                <ProductCard {...item}></ProductCard>
-              </div>
-            ))}
-          </div>
-
-          <Pagination
-            pageNumber={parseInt(pageNumber || '1') || 1}
-            totalItems={result.totalItems}
-          />
-        </Container>
-      </div>
+      <ValidatedForm
+        validator={withZod(validator)}
+        method="get"
+        onChange={(e) => submit(e.currentTarget, { preventScrollReset: true })}
+      >
+        <FilterableProductGrid
+          allowedPaginationLimits={allowedPaginationLimits}
+          mobileFiltersOpen={mobileFiltersOpen}
+          setMobileFiltersOpen={setMobileFiltersOpen}
+          {...loaderData}
+        />
+      </ValidatedForm>
     </div>
   );
 }

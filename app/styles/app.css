@@ -776,8 +776,8 @@ button:disabled {
   grid-column: span 1 / span 1;
 }
 
-#app .m-10 {
-  margin: 2.5rem;
+#app .col-start-2 {
+  grid-column-start: 2;
 }
 
 #app .-m-2 {
@@ -987,12 +987,12 @@ button:disabled {
   height: 1rem;
 }
 
-#app .h-full {
-  height: 100%;
-}
-
 #app .h-6 {
   height: 1.5rem;
+}
+
+#app .h-full {
+  height: 100%;
 }
 
 #app .h-24 {
@@ -1314,6 +1314,28 @@ button:disabled {
   gap: 0.75rem;
 }
 
+#app .gap-y-8 {
+  row-gap: 2rem;
+}
+
+#app .gap-x-8 {
+  -moz-column-gap: 2rem;
+       column-gap: 2rem;
+}
+
+#app .gap-y-6 {
+  row-gap: 1.5rem;
+}
+
+#app .gap-y-2 {
+  row-gap: 0.5rem;
+}
+
+#app .gap-x-2 {
+  -moz-column-gap: 0.5rem;
+       column-gap: 0.5rem;
+}
+
 #app .gap-x-4 {
   -moz-column-gap: 1rem;
        column-gap: 1rem;
@@ -1328,17 +1350,8 @@ button:disabled {
        column-gap: 1.5rem;
 }
 
-#app .gap-y-6 {
-  row-gap: 1.5rem;
-}
-
-#app .gap-y-2 {
-  row-gap: 0.5rem;
-}
-
-#app .gap-x-2 {
-  -moz-column-gap: 0.5rem;
-       column-gap: 0.5rem;
+#app .gap-y-4 {
+  row-gap: 1rem;
 }
 
 #app .space-x-1 > :not([hidden]) ~ :not([hidden]) {
@@ -1483,16 +1496,12 @@ button:disabled {
   border-width: 2px;
 }
 
-#app .border-0 {
-  border-width: 0px;
+#app .border-r-0 {
+  border-right-width: 0px;
 }
 
 #app .border-b {
   border-bottom-width: 1px;
-}
-
-#app .border-r-0 {
-  border-right-width: 0px;
 }
 
 #app .border-t {
@@ -1942,6 +1951,11 @@ button:disabled {
   line-height: 1rem;
 }
 
+#app .\!text-sm {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+}
+
 #app .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
@@ -1960,11 +1974,6 @@ button:disabled {
 #app .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
-}
-
-#app .\!text-sm {
-  font-size: 0.875rem !important;
-  line-height: 1.25rem !important;
 }
 
 #app .font-semibold {
@@ -2321,6 +2330,10 @@ button:disabled {
   -webkit-line-clamp: 3;
 }
 
+#app .first\:mt-2:first-child {
+  margin-top: 0.5rem;
+}
+
 #app .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
@@ -2516,12 +2529,16 @@ button:disabled {
 }
 
 @media (min-width: 640px) {
+  #app .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
   #app .sm\:col-span-5 {
     grid-column: span 5 / span 5;
   }
 
-  #app .sm\:col-span-2 {
-    grid-column: span 2 / span 2;
+  #app .sm\:col-span-4 {
+    grid-column: span 4 / span 4;
   }
 
   #app .sm\:mx-auto {
@@ -2577,12 +2594,12 @@ button:disabled {
     flex-shrink: 0;
   }
 
-  #app .sm\:grid-cols-5 {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-
   #app .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #app .sm\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   #app .sm\:flex-row {
@@ -2604,6 +2621,10 @@ button:disabled {
 
   #app .sm\:rounded-lg {
     border-radius: 0.5rem;
+  }
+
+  #app .sm\:p-4 {
+    padding: 1rem;
   }
 
   #app .sm\:py-32 {
@@ -2644,6 +2665,16 @@ button:disabled {
   #app .sm\:text-sm {
     font-size: 0.875rem;
     line-height: 1.25rem;
+  }
+
+  #app .sm\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  #app .sm\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
 
   #app .sm\:duration-300 {
@@ -2816,12 +2847,12 @@ button:disabled {
     align-items: flex-start;
   }
 
-  #app .lg\:gap-16 {
-    gap: 4rem;
-  }
-
   #app .lg\:gap-6 {
     gap: 1.5rem;
+  }
+
+  #app .lg\:gap-16 {
+    gap: 4rem;
   }
 
   #app .lg\:gap-x-12 {
