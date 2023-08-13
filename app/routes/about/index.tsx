@@ -84,28 +84,12 @@ export default function About() {
               </div>
             </div>
           </div>
-          {/* <div className="row">
-            <figure className="figure">
-              <img
-                src="/Mitesh_Jethmalani.jpg"
-                width={340}
-                height={331}
-                alt="Srishtivitality logo"
-              />
-              <figcaption className="figure-caption text-end">
-              <h4>
-                  Mitesh <span>Jethmalani</span>
-                </h4>
-              </figcaption>
-            </figure>
-            
-          </div> */}
           <section className="team1 cid-rSW0omfh2R" id="team1-3f">
             <div className="container">
               <div className="row">
                 <div className="card col-12 img-col align-center col-md-12 col-lg-6 border-0">
                   <img
-                    src="/Mitesh_Jethmalani.jpg"
+                    src="/Srishti_Jethmalani.jpg"
                     alt="Srishti"
                     className="rounded-circle"
                   />

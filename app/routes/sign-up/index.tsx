@@ -168,6 +168,15 @@ export default function SignUpPage() {
                   )}
                 </div>
               </div>
+              <div>
+                <input
+                  type='checkbox'
+                  required={true}
+                ></input>
+                <span className='ms-2'>
+                  I have read and agree to the <Link to={'/termsofuse'}>terms and condtion</Link>
+                </span>
+              </div>
               {formErrors?.form && (
                 <div className="rounded-md bg-red-50 p-4">
                   <div className="flex">

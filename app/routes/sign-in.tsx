@@ -62,7 +62,7 @@ export default function SignInPage() {
           <div className='sm:mx-auto sm:w-full sm:max-w-md'>
             <h5 className="text-danger text-center">Please kindly log in before proceeding to checkout.</h5>
           </div>): null}
-          <SocialButton provider={SocialsProvider.GOOGLE} label="Login with Google" />
+          {/* <SocialButton provider={SocialsProvider.GOOGLE} label="Login with Google" /> */}
 
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -131,12 +131,11 @@ export default function SignInPage() {
                 </div>
 
                 <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-medium text-primary-600 hover:text-primary-500"
-                  >
+                  <Link to={'/forgot-password'}
+                   className="font-medium text-primary-600 hover:text-primary-500"
+                   >
                     Forgot your password?
-                  </a>
+                   </Link>
                 </div>
               </div>
 

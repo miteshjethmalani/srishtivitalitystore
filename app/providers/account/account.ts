@@ -76,6 +76,25 @@ export async function requestUpdateCustomerEmailAddress(
     .then((res) => res.requestUpdateCustomerEmailAddress);
 }
 
+export async function requestForgotPassword(
+  emailAddress: string,
+  options: QueryOptions,
+) {
+  return sdk
+    .requestPasswordReset({emailAddress}, options)
+    .then((res) => res.requestPasswordReset);
+}
+
+export async function resetPassword(
+  password: string,
+  token: string,
+  options: QueryOptions,
+) {
+  return sdk
+    .resetPassword({password,token}, options)
+    .then((res) => res.resetPassword);
+}
+
 export async function updateCustomerEmailAddress(
   token: string,
   options: QueryOptions,

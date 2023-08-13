@@ -19,7 +19,7 @@ export const validateContactUsForm = (
     errors.email = 'A valid e-mail address is required.';
   }
   if (!message || typeof message !== 'string' || message.length < 20) {
-    errors.message = 'Please provide atleast 20 characters in messahge';
+    errors.message = 'Please provide atleast 20 characters in message';
   }
 
   return errors;

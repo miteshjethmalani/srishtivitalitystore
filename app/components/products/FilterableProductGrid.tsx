@@ -64,7 +64,9 @@ export function FilterableProductGrid({
                 appliedPaginationPage,
                 appliedPaginationLimit,
                 result.items.length,
-              )}
+              )}{' '}
+              of{' '}
+              {result.totalItems}
             </span>
             <Pagination
               appliedPaginationLimit={appliedPaginationLimit}

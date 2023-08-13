@@ -96,7 +96,7 @@ export default function ProductSlug() {
 
   return (
     <div>
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="mx-auto px-4">
         <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
           {product.name}
         </h2>
@@ -270,7 +270,7 @@ export default function ProductSlug() {
 
 export function CatchBoundary() {
   return (
-    <div className="max-w-6xl mx-auto px-4">
+    <div className="mx-auto px-4">
       <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
         Product not found!
       </h2>
