@@ -1,8 +1,8 @@
-import { Fragment } from 'react';
+import { Fragment, SyntheticEvent } from 'react';
 import { Dialog, Disclosure, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/solid';
-import { useSearchParams } from '@remix-run/react';
+import { Form, useSearchParams, useSubmit } from '@remix-run/react';
 import { FacetFilterTracker } from '~/components/facet-filter/facet-filter-tracker';
 
 export default function FacetFilterControls({
@@ -14,8 +14,14 @@ export default function FacetFilterControls({
   mobileFiltersOpen: boolean;
   setMobileFiltersOpen: (value: boolean) => void;
 }) {
+  const submit = useSubmit();
   const [searchParams] = useSearchParams();
   const q = searchParams.getAll('q');
+  const p = searchParams.get('p') || '1';
+
+  function handleChange(event: SyntheticEvent<HTMLFormElement>) {
+    submit(event.currentTarget, { replace: false });
+  }
 
   return (
     <>
@@ -60,7 +66,12 @@ export default function FacetFilterControls({
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
-                <div className="mt-4 border-t border-gray-200">
+                <Form
+                  className="mt-4 border-t border-gray-200"
+                  method="get"
+                  onChange={handleChange}
+                >
+                  <input type="hidden" name="p" value={p} />
                   <input type="hidden" name="q" value={q} />
                   {facetFilterTracker.facetsWithValues.map((facet) => (
                     <Disclosure
@@ -127,7 +138,7 @@ export default function FacetFilterControls({
                       )}
                     </Disclosure>
                   ))}
-                </div>
+                </Form>
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -136,6 +147,7 @@ export default function FacetFilterControls({
 
       <div className="hidden lg:block">
         <input type="hidden" name="q" value={q} />
+        <input type="hidden" name="p" value={p} />
         {facetFilterTracker.facetsWithValues.map((facet) => (
           <Disclosure
             as="div"

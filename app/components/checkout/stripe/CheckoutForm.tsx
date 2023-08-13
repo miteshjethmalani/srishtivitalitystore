@@ -9,7 +9,7 @@ import { CreditCardIcon } from '@heroicons/react/24/solid';
 export const CheckoutForm = ({ orderCode }: { orderCode: string }) => {
   const stripe = useStripe();
   const elements = useElements();
-
+  
   const handleSubmit = async (event: FormEvent) => {
     // We don't want to let default form submission happen here,
     // which would refresh the page.

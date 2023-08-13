@@ -745,6 +745,16 @@ export type Customer = Node & {
   user?: Maybe<User>;
 };
 
+export type ContactUs = Node & {
+  __typename?: 'ContactUs';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  message: Scalars['String'];
+  status:  Scalars['String'];
+  
+};
 
 export type CustomerOrdersArgs = {
   options?: InputMaybe<OrderListOptions>;
@@ -880,6 +890,7 @@ export enum ErrorCode {
   CouponCodeInvalidError = 'COUPON_CODE_INVALID_ERROR',
   CouponCodeLimitError = 'COUPON_CODE_LIMIT_ERROR',
   EmailAddressConflictError = 'EMAIL_ADDRESS_CONFLICT_ERROR',
+  EmailAddressNotFoundError = 'EMAIL_ADDRESS_NOT_FOUND_ERROR',
   GuestCheckoutError = 'GUEST_CHECKOUT_ERROR',
   IdentifierChangeTokenExpiredError = 'IDENTIFIER_CHANGE_TOKEN_EXPIRED_ERROR',
   IdentifierChangeTokenInvalidError = 'IDENTIFIER_CHANGE_TOKEN_INVALID_ERROR',
@@ -888,6 +899,7 @@ export enum ErrorCode {
   InsufficientStockError = 'INSUFFICIENT_STOCK_ERROR',
   InvalidCredentialsError = 'INVALID_CREDENTIALS_ERROR',
   MissingPasswordError = 'MISSING_PASSWORD_ERROR',
+  MissingMessageError = 'MISSING_MESSAGE_ERROR',
   NativeAuthStrategyError = 'NATIVE_AUTH_STRATEGY_ERROR',
   NegativeQuantityError = 'NEGATIVE_QUANTITY_ERROR',
   NotVerifiedError = 'NOT_VERIFIED_ERROR',
@@ -1584,6 +1596,13 @@ export enum LogicalOperator {
 }
 
 /** Returned when attempting to register or verify a customer account without a password, when one is required. */
+export type MissingMessageError = ErrorResult & {
+  __typename?: 'MissingMessageError';
+  errorCode: ErrorCode;
+  message: Scalars['String'];
+};
+
+/** Returned when attempting to register or verify a customer account without a password, when one is required. */
 export type MissingPasswordError = ErrorResult & {
   __typename?: 'MissingPasswordError';
   errorCode: ErrorCode;
@@ -1604,6 +1623,7 @@ export type Mutation = {
   authenticate: AuthenticationResult;
   /** Create a new Customer Address */
   createCustomerAddress: Address;
+  createContactUsSubscription: ContactUsResult;
   createStripePaymentIntent?: Maybe<Scalars['String']>;
   /** Delete an existing Address */
   deleteCustomerAddress: Success;
@@ -1737,6 +1757,10 @@ export type MutationRefreshCustomerVerificationArgs = {
 
 export type MutationRegisterCustomerAccountArgs = {
   input: RegisterCustomerInput;
+};
+
+export type MutationContactUsArgs = {
+  input: CreateContactUsInput
 };
 
 
@@ -2788,6 +2812,7 @@ export type Query = {
   products: ProductList;
   /** Search Products based on the criteria set by the `SearchInput` */
   search: SearchResponse;
+  createContactUsSubscription: ContactUs;
 };
 
 
@@ -2891,6 +2916,8 @@ export type RegionTranslation = {
 
 export type RegisterCustomerAccountResult = MissingPasswordError | NativeAuthStrategyError | PasswordValidationError | Success;
 
+export type ContactUsResult = MissingMessageError | Success;
+
 export type RegisterCustomerInput = {
   emailAddress: Scalars['String'];
   firstName?: InputMaybe<Scalars['String']>;
@@ -2898,6 +2925,11 @@ export type RegisterCustomerInput = {
   password?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
+};
+
+export type CreateContactUsInput = {
+  email: Scalars['String'];
+  message: Scalars['String'];
 };
 
 export type RelationCustomFieldConfig = CustomField & {
@@ -3301,8 +3333,13 @@ export type LoginMutationVariables = Exact<{
   rememberMe?: InputMaybe<Scalars['Boolean']>;
 }>;
 
+export type SocialLoginMutationVariables = Exact<{
+  token: Scalars['String'];
+}>;
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename: 'CurrentUser', id: string, identifier: string } | { __typename: 'InvalidCredentialsError', errorCode: ErrorCode, message: string } | { __typename: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } | { __typename: 'NotVerifiedError', errorCode: ErrorCode, message: string } };
+
+export type SocialLoginMutation = { __typename?: 'Mutation', authenticate: { __typename: 'CurrentUser', id: string, identifier: string } | { __typename: 'InvalidCredentialsError', errorCode: ErrorCode, message: string } | { __typename: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } | { __typename: 'NotVerifiedError', errorCode: ErrorCode, message: string } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -3313,8 +3350,13 @@ export type RegisterCustomerAccountMutationVariables = Exact<{
   input: RegisterCustomerInput;
 }>;
 
+export type ContactUsMutationVariables = Exact<{
+  input: CreateContactUsInput
+}>;
 
 export type RegisterCustomerAccountMutation = { __typename?: 'Mutation', registerCustomerAccount: { __typename: 'MissingPasswordError', errorCode: ErrorCode, message: string } | { __typename: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } | { __typename: 'PasswordValidationError', errorCode: ErrorCode, message: string } | { __typename: 'Success', success: boolean } };
+
+export type ContactUsMutation = { __typename?: 'Mutation', createContactUsSubscription: { __typename: 'MissingMessageError', errorCode: ErrorCode, message: string } | { __typename: 'ContactUs', success: boolean } };
 
 export type VerifyCustomerAccountMutationVariables = Exact<{
   token: Scalars['String'];
@@ -3336,6 +3378,18 @@ export type RequestUpdateCustomerEmailAddressMutationVariables = Exact<{
   newEmailAddress: Scalars['String'];
 }>;
 
+export type RequestPasswordResetMutationVariables = Exact<{
+  emailAddress: Scalars['String'];
+}>;
+
+export type ResetPasswordMutationVariables = Exact<{
+  password: Scalars['String'];
+  token: Scalars['String'];
+}>;
+
+export type RequestPasswordResetMutation = { __typename?: 'Mutation', requestPasswordReset: { __typename: 'EmailAddressNotFoundError', errorCode: ErrorCode, message: string } | { __typename: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } | { __typename: 'Success' } };
+
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename: 'VerificationTokenExpiredError', errorCode: ErrorCode, message: string } | { __typename: 'VerificationTokenInvalidError', errorCode: ErrorCode, message: string } | { __typename: 'CurrentUser' } };
 
 export type RequestUpdateCustomerEmailAddressMutation = { __typename?: 'Mutation', requestUpdateCustomerEmailAddress: { __typename: 'EmailAddressConflictError', errorCode: ErrorCode, message: string } | { __typename: 'InvalidCredentialsError', errorCode: ErrorCode, message: string } | { __typename: 'NativeAuthStrategyError', errorCode: ErrorCode, message: string } | { __typename: 'Success' } };
 
@@ -3432,6 +3486,7 @@ export type CollectionsQuery = { __typename?: 'Query', collections: { __typename
 export type CollectionQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
+  pageNumber?: InputMaybe<Scalars['ID']>;
 }>;
 
 
@@ -3619,6 +3674,11 @@ export const DetailedProductFragmentDoc = gql`
   id
   name
   description
+  customFields {
+    metaTitle
+    metaDescription
+    metaKeywords
+  }
   collections {
     id
     slug
@@ -3697,6 +3757,19 @@ export const LoginDocument = gql`
   }
 }
     `;
+
+    export const SocialLoginDocument = gql`
+    mutation Authenticate($token: String!) {
+      authenticate(input: {
+        google: { token: $token }
+      }) {
+      ...on CurrentUser {
+          id
+          identifier
+      }
+    }
+  }
+    `;
 export const LogoutDocument = gql`
     mutation logout {
   logout {
@@ -3715,6 +3788,13 @@ export const RegisterCustomerAccountDocument = gql`
       errorCode
       message
     }
+  }
+}
+    `;
+export const ContactUsDocument = gql`
+    mutation createContactUsSubscription($input: CreateContactUsInput!) {
+      createContactUsSubscription(input : $input) {
+    __typename
   }
 }
     `;
@@ -3745,6 +3825,34 @@ export const RequestUpdateCustomerEmailAddressDocument = gql`
   requestUpdateCustomerEmailAddress(
     password: $password
     newEmailAddress: $newEmailAddress
+  ) {
+    __typename
+    ... on ErrorResult {
+      errorCode
+      message
+    }
+  }
+}
+    `;
+
+export const RequestPasswordResetDocument = gql`
+    mutation requestPasswordReset($emailAddress: String!) {
+  requestPasswordReset(
+    emailAddress: $emailAddress
+  ) {
+    __typename
+    ... on ErrorResult {
+      errorCode
+      message
+    }
+  }
+}
+    `;
+
+export const ResetPasswordDocument = gql`
+    mutation resetPassword($password: String!, $token: String!) {
+  resetPassword(
+    password: $password, token: $token
   ) {
     __typename
     ... on ErrorResult {
@@ -3905,6 +4013,11 @@ export const CollectionDocument = gql`
     id
     name
     slug
+    customFields {
+      metaTitle
+      metaDescription
+      metaKeywords
+    }
     breadcrumbs {
       id
       name
@@ -4159,11 +4272,17 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     login(variables: LoginMutationVariables, options?: C): Promise<LoginMutation> {
       return requester<LoginMutation, LoginMutationVariables>(LoginDocument, variables, options) as Promise<LoginMutation>;
     },
+    socaiallogin(variables: SocialLoginMutationVariables, options?: C): Promise<SocialLoginMutation> {
+      return requester<SocialLoginMutation, SocialLoginMutationVariables>(SocialLoginDocument, variables, options) as Promise<SocialLoginMutation>;
+    },
     logout(variables?: LogoutMutationVariables, options?: C): Promise<LogoutMutation> {
       return requester<LogoutMutation, LogoutMutationVariables>(LogoutDocument, variables, options) as Promise<LogoutMutation>;
     },
     registerCustomerAccount(variables: RegisterCustomerAccountMutationVariables, options?: C): Promise<RegisterCustomerAccountMutation> {
       return requester<RegisterCustomerAccountMutation, RegisterCustomerAccountMutationVariables>(RegisterCustomerAccountDocument, variables, options) as Promise<RegisterCustomerAccountMutation>;
+    },
+    createContactUsSubscription(variables: ContactUsMutationVariables, options?: C): Promise<ContactUsMutation> {
+      return requester<ContactUsMutation, ContactUsMutationVariables>(ContactUsDocument, variables, options) as Promise<ContactUsMutation>;
     },
     verifyCustomerAccount(variables: VerifyCustomerAccountMutationVariables, options?: C): Promise<VerifyCustomerAccountMutation> {
       return requester<VerifyCustomerAccountMutation, VerifyCustomerAccountMutationVariables>(VerifyCustomerAccountDocument, variables, options) as Promise<VerifyCustomerAccountMutation>;
@@ -4173,6 +4292,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     requestUpdateCustomerEmailAddress(variables: RequestUpdateCustomerEmailAddressMutationVariables, options?: C): Promise<RequestUpdateCustomerEmailAddressMutation> {
       return requester<RequestUpdateCustomerEmailAddressMutation, RequestUpdateCustomerEmailAddressMutationVariables>(RequestUpdateCustomerEmailAddressDocument, variables, options) as Promise<RequestUpdateCustomerEmailAddressMutation>;
+    },
+    requestPasswordReset(variables: MutationRequestPasswordResetArgs, options?: C){
+      return requester<RequestPasswordResetMutation, RequestPasswordResetMutationVariables>(RequestPasswordResetDocument, variables, options) as Promise<RequestPasswordResetMutation>;
+    },
+    resetPassword(variables: MutationResetPasswordArgs, options?: C){
+      return requester<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument, variables, options) as Promise<ResetPasswordMutation>;
     },
     updateCustomerEmailAddress(variables: UpdateCustomerEmailAddressMutationVariables, options?: C): Promise<UpdateCustomerEmailAddressMutation> {
       return requester<UpdateCustomerEmailAddressMutation, UpdateCustomerEmailAddressMutationVariables>(UpdateCustomerEmailAddressDocument, variables, options) as Promise<UpdateCustomerEmailAddressMutation>;

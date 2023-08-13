@@ -1,30 +1,38 @@
 import { Link } from '@remix-run/react';
+import { useState } from 'react';
 import { CollectionsQuery } from '~/generated/graphql';
+import { classNames } from '~/utils/class-names';
 
 export function CollectionCard({
   collection,
 }: {
   collection: CollectionsQuery['collections']['items'][number];
 }) {
+  const [isFocused, setFocused] = useState(false);
   return (
-    <Link
-      to={'/collections/' + collection.slug}
-      prefetch="intent"
-      key={collection.id}
-      className="max-w-[300px] relative rounded-lg overflow-hidden hover:opacity-75 xl:w-auto"
-    >
-      <span aria-hidden="true" className="">
-        <div className="w-full h-full object-center object-cover">
-          <img src={collection.featuredAsset?.preview + '?w=300&h=300'} />
-        </div>
-      </span>
-      <span
-        aria-hidden="true"
-        className="absolute w-full bottom-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-50"
-      />
-      <span className="absolute w-full bottom-2 mt-auto text-center text-xl font-bold text-white">
-        {collection.name}
-      </span>
-    </Link>
+
+    <div className="text-center">
+      <Link
+        to={'/collections/' + collection.slug}
+        prefetch="intent"
+        key={collection.id}
+        onMouseOver={() => setFocused(true)}
+        onMouseLeave={() => setFocused(false)}
+        className={classNames(
+          'max-w-[300px] position-relative rounded hover-shadow text-center',
+          isFocused ? 'opacity-75' : '',
+        )}
+      >
+        <img src={collection.featuredAsset?.preview + '?w=300&h=300'} className="rounded img-fluid border mx-auto"></img>
+      </Link>
+      <h5 className="text-center mt-3 mb-3">{collection.name}</h5>
+      <p className="text-center"> <Link
+      className='btn btn-success'
+        to={'/collections/' + collection.slug}
+      >
+        Go Shop
+      </Link>
+      </p>
+    </div>
   );
 }

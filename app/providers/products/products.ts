@@ -22,6 +22,11 @@ export const detailedProductFragment = gql`
     id
     name
     description
+    customFields {
+      metaTitle
+      metaDescription
+      metaKeywords
+    }
     collections {
       id
       slug

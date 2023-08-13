@@ -10,14 +10,15 @@ export function SearchBar() {
   }
 
   return (
-    <Form method="get" action="/search" key={initialQuery}>
+    <Form method="get" action="/search" key={initialQuery} className='d-flex'>
       <input
         type="search"
         name="q"
         defaultValue={initialQuery}
         placeholder="Search"
-        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
+        className="form-control me-2"
       />
+       <button className="btn btn-outline-primary" type="submit">Search</button>
     </Form>
   );
 }

@@ -69,10 +69,9 @@ export default function CheckoutShipping() {
   const canProceedToPayment =
     customer &&
     ((shippingAddress?.streetLine1 && shippingAddress?.postalCode) ||
-      selectedAddressIndex != null) &&
+      selectedAddressIndex) &&
     activeOrder?.shippingLines?.length &&
-    activeOrder?.lines?.length;
-
+    activeOrder?.lines?.length ? true: false;
   const submitCustomerForm = (event: FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const { emailAddress, firstName, lastName } = Object.fromEntries<any>(
@@ -272,7 +271,7 @@ export default function CheckoutShipping() {
 
       <button
         type="button"
-        disabled={!canProceedToPayment}
+        disabled={canProceedToPayment?  false: true}
         onClick={navigateToPayment}
         className={classNames(
           canProceedToPayment

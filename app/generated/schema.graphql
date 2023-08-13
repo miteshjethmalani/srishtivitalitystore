@@ -989,6 +989,7 @@ enum ErrorCode {
   COUPON_CODE_INVALID_ERROR
   COUPON_CODE_LIMIT_ERROR
   EMAIL_ADDRESS_CONFLICT_ERROR
+  EMAIL_ADDRESS_NOT_FOUND_ERROR
   GUEST_CHECKOUT_ERROR
   IDENTIFIER_CHANGE_TOKEN_EXPIRED_ERROR
   IDENTIFIER_CHANGE_TOKEN_INVALID_ERROR
@@ -1886,6 +1887,8 @@ type Mutation {
   """Create a new Customer Address"""
   createCustomerAddress(input: CreateAddressInput!): Address!
   createStripePaymentIntent: String
+  
+  createContactUsSubscription($input: CreateContactUsInput!):ContactUs!
 
   """Delete an existing Address"""
   deleteCustomerAddress(id: ID!): Success!
@@ -3168,6 +3171,20 @@ input RegisterCustomerInput {
   password: String
   phoneNumber: String
   title: String
+}
+
+input CreateContactUsInput {
+  email: String
+  message: String
+}
+
+type ContactUs {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String
+  message: String
+  status: ContactUsStatus!
 }
 
 type RelationCustomFieldConfig implements CustomField {

@@ -13,10 +13,11 @@ import { withZod } from '@remix-validated-form/with-zod';
 import { FilterableProductGrid } from '~/components/products/FilterableProductGrid';
 
 export const meta: MetaFunction = ({ data }) => {
+  const metaTitle = (data?.collection?.customFields?.metaTitle || data?.collection?.name);
   return {
-    title: data?.collection
-      ? `${data.collection?.name} - ${APP_META_TITLE}`
-      : APP_META_TITLE,
+    title:  metaTitle ? `${metaTitle} - ${APP_META_TITLE}` : APP_META_TITLE,
+    description: data?.collection?.customFields?.metaDescription,
+    keywords: data?.collection?.customFields?.keywords
   };
 };
 
@@ -75,7 +76,7 @@ export default function CollectionSlug() {
   );
   const submit = useSubmit();
   return (
-    <div className="max-w-6xl mx-auto px-4">
+    <div className=" m-5 mt-2">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
           {collection.name}
@@ -88,21 +89,6 @@ export default function CollectionSlug() {
       </div>
 
       <Breadcrumbs items={collection.breadcrumbs}></Breadcrumbs>
-      {collection.children?.length ? (
-        <div className="max-w-2xl mx-auto py-16 sm:py-16 lg:max-w-none border-b mb-16">
-          <h2 className="text-2xl font-light text-gray-900">Collections</h2>
-          <div className="mt-6 grid max-w-xs sm:max-w-none mx-auto sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
-            {collection.children.map((child) => (
-              <CollectionCard
-                key={child.id}
-                collection={child}
-              ></CollectionCard>
-            ))}
-          </div>
-        </div>
-      ) : (
-        ''
-      )}
 
       <ValidatedForm
         validator={withZod(validator)}
@@ -122,7 +108,7 @@ export default function CollectionSlug() {
 
 export function CatchBoundary() {
   return (
-    <div className="max-w-6xl mx-auto px-4">
+    <div className="m-5">
       <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
         Collection not found!
       </h2>

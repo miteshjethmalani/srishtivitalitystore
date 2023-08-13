@@ -76,6 +76,25 @@ export async function requestUpdateCustomerEmailAddress(
     .then((res) => res.requestUpdateCustomerEmailAddress);
 }
 
+export async function requestForgotPassword(
+  emailAddress: string,
+  options: QueryOptions,
+) {
+  return sdk
+    .requestPasswordReset({emailAddress}, options)
+    .then((res) => res.requestPasswordReset);
+}
+
+export async function resetPassword(
+  password: string,
+  token: string,
+  options: QueryOptions,
+) {
+  return sdk
+    .resetPassword({password,token}, options)
+    .then((res) => res.resetPassword);
+}
+
 export async function updateCustomerEmailAddress(
   token: string,
   options: QueryOptions,
@@ -92,6 +111,22 @@ export async function updateCustomerAddress(
   return sdk
     .updateCustomerAddress({ input }, options)
     .then((res) => res.updateCustomerAddress);
+}
+
+export const onSignIn = (googleUser: any) => {
+  return gql(
+    `mutation Authenticate($token: String!) {
+        authenticate(input: {
+          google: { token: $token }
+        }) {
+        ...on CurrentUser {
+            id
+            identifier
+        }
+      }
+    }`,
+    { token: googleUser.id }
+  )
 }
 
 export async function createCustomerAddress(

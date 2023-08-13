@@ -1,96 +1,139 @@
-import { Link, useLoaderData } from '@remix-run/react';
-import { ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { Link } from '@remix-run/react';
 import { SearchBar } from '~/components/header/SearchBar';
 import { useRootLoader } from '~/utils/use-root-loader';
-import { UserIcon } from '@heroicons/react/24/solid';
 import { useScrollingUp } from '~/utils/use-scrolling-up';
+import { CartFill, PersonFillGear, PersonCircle } from 'react-bootstrap-icons';
+import { LinksFunction } from '@remix-run/server-runtime';
+import {
+  Container,
+  Nav,
+  NavDropdown,
+  Navbar,
+  Offcanvas,
+} from 'react-bootstrap';
 import { classNames } from '~/utils/class-names';
+import { useState } from 'react';
+import { CartTray } from '../cart/CartTray';
+import { CartLoaderData } from '~/routes/api/active-order';
+
+export const links: LinksFunction = () => {
+  return [];
+};
 
 export function Header({
-  onCartIconClick,
-  cartQuantity,
+  activeOrder,
+  adjustOrderLine,
+  removeItem,
 }: {
-  onCartIconClick: () => void;
-  cartQuantity: number;
+  activeOrder: any;
+  adjustOrderLine?: (lineId: string, quantity: number) => void;
+  removeItem?: (lineId: string) => void;
 }) {
+  const [open, setOpen] = useState(false);
   const data = useRootLoader();
   const isSignedIn = !!data.activeCustomer.activeCustomer?.id;
   const isScrollingUp = useScrollingUp();
+  const expand = 'lg';
+  const cartQuantity = activeOrder?.totalQuantity ?? 0;
+
+  const pageUtils = (showForLg: boolean) => {
+    return (
+      <div
+        className={classNames(
+          'd-flex align-items-center',
+          showForLg
+            ? ' d-xs-flex d-sm-flex d-md-flex d-lg-none d-xl-none d-xxl-none'
+            : ' d-none d-xs-none d-sm-none d-md-none d-lg-flex d-xl-flex d-xxl-flex',
+        )}
+      >
+        <button
+          onClick={() => {
+            setOpen(!open);
+          }}
+          type="button"
+          className="btn position-relative me-3"
+        >
+          <CartFill size={20} className=""></CartFill>
+          {cartQuantity ? (
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+              {cartQuantity}
+            </span>
+          ) : (
+            ''
+          )}
+        </button>
+
+        <CartTray
+          open={open}
+          onClose={() => setOpen(false)}
+          activeOrder={activeOrder}
+          adjustOrderLine={adjustOrderLine}
+          removeItem={removeItem}
+        />
+
+        <Link className="text-black" to={isSignedIn ? '/account' : '/sign-in'}>
+          {isSignedIn? (<PersonFillGear size={30} className="me-3"></PersonFillGear>):( <PersonCircle size={30} className="me-3"></PersonCircle>) }
+          
+        </Link>
+      </div>
+    );
+  };
   return (
-    <header
-      className={classNames(
-        isScrollingUp ? 'sticky top-0 z-10 animate-dropIn' : '',
-        'bg-gradient-to-r from-zinc-700 to-gray-900 shadow-lg transform shadow-xl',
-      )}
+    <Navbar
+      sticky="top"
+      key={expand}
+      bg="light"
+      className="shadow p-2"
+      expand={expand}
     >
-      <div className="bg-zinc-100 text-gray-600 shadow-inner text-center text-sm py-2 px-2 xl:px-0">
-        <div className="max-w-6xl mx-2 md:mx-auto flex items-center justify-between">
-          <div>
-            <p className="hidden sm:block">
-              Exclusive: Get your own{' '}
-              <a
-                href="https://github.com/vendure-ecommerce/storefront-remix-starter"
-                target="_blank"
-                className="underline"
-              >
-                FREE storefront starter kit
-              </a>
-            </p>
-          </div>
-          <div>
-            <Link
-              to={isSignedIn ? '/account' : '/sign-in'}
-              className="flex space-x-1"
-            >
-              <UserIcon className="w-4 h-4"></UserIcon>
-              <span>{isSignedIn ? 'My Account' : 'Sign In'}</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className="max-w-6xl mx-auto p-4 flex items-center space-x-4">
-        <h1 className="text-white w-10">
-          <Link to="/">
-            <img
-              src="/cube-logo-small.webp"
-              width={40}
-              height={31}
-              alt="Vendure logo"
-            />
+      <Navbar.Brand>
+        <Link to="/" aria-label="Logo">
+          <img
+            src="/Srishtivitality Logo.png"
+            width={140}
+            height={50}
+            alt="Srishtivitality logo"
+          />
+        </Link>
+      </Navbar.Brand>
+      {pageUtils(true)}
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="justify-content-center flex-grow-1 pe-3">
+          <Link className="nav-link" to="/about" key={'about'}>
+            About
           </Link>
-        </h1>
-        <div className="flex space-x-4 hidden sm:block">
-          {data.collections.map((collection) => (
-            <Link
-              className="text-sm md:text-base text-gray-200 hover:text-white"
-              to={'/collections/' + collection.slug}
-              prefetch="intent"
-              key={collection.id}
-            >
-              {collection.name}
-            </Link>
-          ))}
-        </div>
-        <div className="flex-1 md:pr-8">
-          <SearchBar></SearchBar>
-        </div>
-        <div className="">
-          <button
-            className="relative w-9 h-9 bg-white bg-opacity-20 rounded text-white p-1"
-            onClick={onCartIconClick}
-            aria-label="Open cart tray"
+          <NavDropdown
+            title="Categories"
+            id={`offcanvasNavbarDropdown-expand-${expand}`}
           >
-            <ShoppingBagIcon></ShoppingBagIcon>
-            {cartQuantity ? (
-              <div className="absolute rounded-full -top-2 -right-2 bg-primary-600 w-6 h-6">
-                {cartQuantity}
-              </div>
-            ) : (
-              ''
-            )}
-          </button>
-        </div>
-      </div>
-    </header>
+            {data.collections?.map((collection) => (
+              <NavDropdown.Item
+                href={'/collections/' + collection.slug}
+                key={collection.id}>
+                {collection.name}
+              </NavDropdown.Item>
+            ))}
+          </NavDropdown>
+          <NavDropdown
+            title="Book Consultation"
+            id={`offcanvasNavbarDropdown-expand-${expand}`}
+          >
+            <NavDropdown.Item  href="/consultation/tarotreading">
+              Tarot Reading
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/consultation/crystalconsultation">
+              Crystal Consultation
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/consultation/crystalhealing">
+              Crystal Healing
+            </NavDropdown.Item>
+          </NavDropdown>
+          <Nav.Link href="/contactus">Contact Us</Nav.Link>
+          <SearchBar />
+        </Nav>
+        {pageUtils(false)}
+      </Navbar.Collapse>
+    </Navbar>
   );
 }

@@ -59,13 +59,6 @@ export default function SignUpPage() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <div className="bg-yellow-50 border border-yellow-400 text-yellow-800 rounded p-4 text-center text-sm">
-              <p>
-                Account registration is not supported by the demo Vendure
-                instance. In order to use it, please connect the Remix
-                storefront to your own local / production instance.
-              </p>
-            </div>
             <Form className="space-y-6" method="post">
               <input
                 type="hidden"
@@ -174,6 +167,15 @@ export default function SignUpPage() {
                     </div>
                   )}
                 </div>
+              </div>
+              <div>
+                <input
+                  type='checkbox'
+                  required={true}
+                ></input>
+                <span className='ms-2'>
+                  I have read and agree to the <Link to={'/termsofuse'}>terms and condtion</Link>
+                </span>
               </div>
               {formErrors?.form && (
                 <div className="rounded-md bg-red-50 p-4">

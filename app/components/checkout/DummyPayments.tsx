@@ -11,9 +11,7 @@ export function DummyPayments({
 }) {
   return (
     <div className="flex flex-col items-center">
-      <p className="text-gray-600 text-sm p-6">
-        This is a dummy payment for demonstration purposes only
-      </p>
+      
       {paymentError && (
         <div className="rounded-md bg-red-50 p-4 mb-8">
           <div className="flex">

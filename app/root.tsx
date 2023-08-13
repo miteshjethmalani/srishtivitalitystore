@@ -9,10 +9,12 @@ import {
   ScrollRestoration,
   ShouldReloadFunction,
   useLoaderData,
+  useLocation,
   useRouteError,
 } from '@remix-run/react';
 import styles from './styles/app.css';
-import { Header } from './components/header/Header';
+import bootstrapCSS from "bootstrap/dist/css/bootstrap.min.css";
+import { Header, links as headerLinks } from './components/header/Header';
 import {
   DataFunctionArgs,
   MetaFunction,
@@ -27,13 +29,18 @@ import { getActiveCustomer } from '~/providers/customer/customer';
 import Footer from '~/components/footer/Footer';
 import { useActiveOrder } from '~/utils/use-active-order';
 import { setApiUrl } from '~/graphqlWrapper';
+import { SSRProvider } from 'react-bootstrap';
+import * as gtag from "~/utils/gtags.client";
 
 export const meta: MetaFunction = () => {
   return { title: APP_META_TITLE, description: APP_META_DESCRIPTION };
 };
 
 export function links() {
-  return [{ rel: 'stylesheet', href: styles }];
+  return [
+    ...headerLinks()
+  ,  { rel: 'stylesheet', href: styles }
+  , { rel: 'stylesheet', href: bootstrapCSS }];
 }
 
 const devMode =
@@ -65,13 +72,16 @@ export type RootLoaderData = {
   activeCustomer: Awaited<ReturnType<typeof getActiveCustomer>>;
   activeChannel: Awaited<ReturnType<typeof activeChannel>>;
   collections: Awaited<ReturnType<typeof getCollections>>;
+  gaTrackingId: string | undefined; 
 };
+
 
 export async function loader({ request, params, context }: DataFunctionArgs) {
   if (typeof context.VENDURE_API_URL === 'string') {
     // Set the API URL for Cloudflare Pages
     setApiUrl(context.VENDURE_API_URL);
   }
+
   const collections = await getCollections(request);
   const topLevelCollections = collections.filter(
     (collection) => collection.parent?.name === '__root_collection__',
@@ -81,14 +91,22 @@ export async function loader({ request, params, context }: DataFunctionArgs) {
     activeCustomer,
     activeChannel: await activeChannel({ request }),
     collections: topLevelCollections,
+    gaTrackingId: process.env.GA_TRACKING_ID
   };
   return json(loaderData, { headers: activeCustomer._headers });
 }
 
 export default function App() {
-  const [open, setOpen] = useState(false);
+  const location = useLocation();
   const loaderData = useLoaderData<RootLoaderData>();
-  const { collections } = loaderData;
+  const { collections, gaTrackingId } = loaderData;
+  useEffect(() => {
+    if (gaTrackingId?.length) {
+      gtag.pageview(location.pathname, gaTrackingId);
+    }
+  }, [location, gaTrackingId]);
+
+
   const {
     activeOrderFetcher,
     activeOrder,
@@ -113,9 +131,33 @@ export default function App() {
         <Links />
       </head>
       <body>
+         {process.env.NODE_ENV === "development" || !gaTrackingId ? null : (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
+            />
+            <script
+              async
+              id="gtag-init"
+              dangerouslySetInnerHTML={{
+                __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaTrackingId}', {
+                  page_path: window.location.pathname,
+                });
+              `,
+              }}
+            />
+          </>
+        )}
+        <SSRProvider>
         <Header
-          onCartIconClick={() => setOpen(!open)}
-          cartQuantity={activeOrder?.totalQuantity ?? 0}
+          adjustOrderLine={adjustOrderLine}
+          removeItem={removeItem}
+          activeOrder={activeOrder}
         />
         <main className="">
           <Outlet
@@ -127,18 +169,12 @@ export default function App() {
             }}
           />
         </main>
-        <CartTray
-          open={open}
-          onClose={setOpen}
-          activeOrder={activeOrder}
-          adjustOrderLine={adjustOrderLine}
-          removeItem={removeItem}
-        />
         <ScrollRestoration />
         <Scripts />
         <Footer collections={collections}></Footer>
 
         {devMode && <LiveReload />}
+        </SSRProvider>
       </body>
     </html>
   );
