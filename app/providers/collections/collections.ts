@@ -15,6 +15,7 @@ gql`
         id
         name
         slug
+        description
         parent {
           name
         }

@@ -15,13 +15,11 @@ export const validateResetPasswordForm = (
   const password = formData.get('password');
   const token = formData.get('token') || '';
   const confirmPassword = formData.get('confirmPassword');
-  console.log(password)
   if (!password || typeof password !== 'string') {
     errors.password = 'A valid Password is required.';
   } else if (password && password.length < 4) {
     errors.password = 'Please provide atleast 4 characters in password';
   }
-  console.log(confirmPassword,  password)
   if (!confirmPassword || typeof confirmPassword !== 'string') {
     errors.confirmPassword = 'A valid Confirm Password is required.';
   } else if (confirmPassword !== password) {

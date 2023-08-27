@@ -2,6 +2,7 @@ import { Link } from '@remix-run/react';
 import { useState } from 'react';
 import { CollectionsQuery } from '~/generated/graphql';
 import { classNames } from '~/utils/class-names';
+import { Button, Card, CardHeader, CardBody, Typography, CardFooter } from '@material-tailwind/react';
 
 export function CollectionCard({
   collection,
@@ -19,20 +20,23 @@ export function CollectionCard({
         onMouseOver={() => setFocused(true)}
         onMouseLeave={() => setFocused(false)}
         className={classNames(
-          'max-w-[300px] position-relative rounded hover-shadow text-center',
+          'max-w-[300px] position-relative rounded hover-shadow text-center flex',
           isFocused ? 'opacity-75' : '',
         )}
       >
-        <img src={collection.featuredAsset?.preview + '?w=300&h=300'} className="rounded img-fluid border mx-auto"></img>
+        <Card className="mt-6 w-96">
+          <CardHeader color="blue-gray" className="relative ">
+            <img src={collection.featuredAsset?.preview + '?w=300&h=300'} className="rounded img-fluid border mx-auto"></img>
+          </CardHeader>
+          <CardBody>
+            <Typography variant="h5" color="blue-gray" className="mb-2">
+              {collection.name}
+            </Typography>
+          </CardBody>
+        </Card>
+
+
       </Link>
-      <h5 className="text-center mt-3 mb-3">{collection.name}</h5>
-      <p className="text-center"> <Link
-      className='btn btn-success'
-        to={'/collections/' + collection.slug}
-      >
-        Go Shop
-      </Link>
-      </p>
     </div>
   );
 }

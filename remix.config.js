@@ -5,6 +5,7 @@ const cloudflarePagesConfig = {
   serverBuildTarget: 'cloudflare-pages',
   server: './server-cloudflare-pages.js',
   ignoredRouteFiles: ['**/.*'],
+  tailwind: true,
 };
 /**
  * @type {import('@remix-run/dev/config').AppConfig}
@@ -24,6 +25,7 @@ const devConfig = {
   serverBuildDirectory: 'build',
   devServerPort: 8002,
   ignoredRouteFiles: ['.*'],
+  tailwind: true,
 };
 
 /**
@@ -35,6 +37,7 @@ const buildConfig = {
   publicPath: '/build/',
   serverBuildDirectory: 'build',
   ignoredRouteFiles: ['.*'],
+  tailwind: true,
 };
 
 function selectConfig() {

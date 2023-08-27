@@ -18,9 +18,7 @@ export async function action({ params, request }: DataFunctionArgs) {
   }
 
   const { password, token } = extractResetPasswordFormValues(body);
-  console.log(password,token)
   const result = await resetPassword(password, token, { request });
-  console.log(result)
   if (result.__typename === 'CurrentUser') {
     return redirect('/password-reset/success');
   } else {
@@ -35,7 +33,6 @@ export default function SignInPage() {
   const [searchParams] = useSearchParams();
   const login = useFetcher<ErrorResult>();
   const formErrors = useActionData<ResetPasswordValidationErrors>();
-  console.log(formErrors)
 
   return (
     <>

@@ -1,124 +1,65 @@
-import { Facebook, Instagram, Twitter, Youtube } from 'react-bootstrap-icons';
 import { APP_META_TITLE } from '~/constants';
 import { LinksFunction, MetaFunction } from '@remix-run/server-runtime';
+import { Typography, Card, CardHeader, CardBody } from '@material-tailwind/react';
 
 export const meta: MetaFunction = ({ data }) => {
   return {
     title: `About Us - ${APP_META_TITLE}`
-      
+
   };
 };
 
 export default function About() {
   return (
-    <div className="m-5">
-      <div className="breadcrumb-section breadcrumb-bg">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8 offset-lg-2 text-center">
-              <div className="breadcrumb-text">
-                <h1>About Us</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="feature-bg">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-7">
-              <div className="featured-text">
-                <h2 className="pb-3">
-                  Why <span className="orange-text">{APP_META_TITLE}</span>
-                </h2>
-                <div className="row">
-                  <div className="col-lg-6 col-md-6 mb-4 mb-md-5">
-                    <div className="list-box d-flex">
-                      <div className="list-icon">
-                        <i className="fas fa-shipping-fast"></i>
-                      </div>
-                      <div className="content">
-                        <h3>Home Delivery</h3>
-                        <p>
-                          Get the ultimate convenience of home delivery with our
-                          e-commerce platform. Shop from a wide range of
-                          products online and have them delivered straight to
-                          your doorstep. Enjoy a hassle-free shopping experience
-                          and save time. Browse, select, and order with ease,
-                          and let us take care of the rest. Experience the
-                          convenience of home delivery with just a few clicks.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-6 col-md-6 mb-5 mb-md-5">
-                    <div className="list-box d-flex">
-                      <div className="list-icon">
-                        <i className="fas fa-money-bill-alt"></i>
-                      </div>
-                      <div className="content">
-                        <h3>Best Price</h3>
-                        <p>
-                          We strive to offer you unbeatable deals and
-                          competitive prices on a wide range of products. From
-                          Crystals to services, find incredible value without compromising
-                          on quality. Shop smart and save big with our best
-                          price guarantee. Experience the joy of getting the
-                          most bang for your buck with our platform.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="mt-150">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8 offset-lg-2 text-center">
-              <div className="section-title">
-                <h3>About Me</h3>
-              </div>
-            </div>
-          </div>
-          <section className="team1 cid-rSW0omfh2R" id="team1-3f">
-            <div className="container">
-              <div className="row">
-                <div className="card col-12 img-col align-center col-md-12 col-lg-6 border-0">
-                  <img
-                    src="/Srishti_Jethmalani.jpg"
-                    alt="Srishti"
-                    className="rounded-circle"
-                  />
-                </div>
-
-                <div className="card col-12 m-auto col-md-12 col-lg-6 border-0">
-                  <div className="wrapper align-left">
-                    <h5 className="card-title mbr-semibold mbr-white mbr-fonts-style display-5">
-                      <strong>Er. Srishti Jethmalani</strong>
-                    </h5>
-
-                    <p className="mbr-text pb-2 mbr-white mbr-regular mbr-fonts-style display-7">
-                      At {APP_META_TITLE}, we are a dynamic and dedicated group
-                      of individuals working together to bring you the best
-                      products and services. Our team is driven by a shared
-                      passion for delivering exceptional customer experiences
-                      and exceeding expectations.
-                    </p>
-
-                    <h6 className="card-phone mbr-semibold mbr-white mbr-fonts-style display-5">
-                      <strong>+(91) 836 953 6738</strong>
-                    </h6>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="block w-full text-white mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900 mt-4">
+      <Card className="mt-6 w-full">
+        <CardBody>
+          <section className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">About Us</h2>
+            <p className="text-gray-600">Welcome to {APP_META_TITLE}! We are dedicated to providing you with top-quality products and exceptional service. Our journey began with a passion for delivering excellence to our customers.</p>
+            <p className="text-gray-600">At {APP_META_TITLE}, we curate a selection of products that align with your lifestyle and needs. Our commitment to innovation and customer satisfaction drives everything we do.</p>
           </section>
-        </div>
-      </div>
+
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold mb-2">Our Vision</h3>
+            <p className="text-gray-600">Our vision is to become a recognized leader in our industry, known for our integrity, product quality, and customer-centric approach. We aim to inspire positive change through our offerings.</p>
+          </section>
+
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold mb-2">Our Mission</h3>
+            <p className="text-gray-600">Our mission is to provide you with an unparalleled shopping experience. We are dedicated to sourcing products that enhance your well-being and cater to your unique preferences. Your satisfaction is our success.</p>
+          </section>
+          <section className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Why Choose Us?</h2>
+            <p className="text-gray-600">Discover the reasons why our e-commerce store stands out from the rest:</p>
+          </section>
+
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold mb-2">Wide Range of Products</h3>
+            <p className="text-gray-600">Explore a vast selection of products that cater to your various needs, from fashion and electronics to home essentials.</p>
+          </section>
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold mb-2">Quality and Authenticity</h3>
+            <p className="text-gray-600">We are committed to providing you with genuine, top-notch products sourced from trusted suppliers. Your satisfaction is our priority.</p>
+          </section>
+
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold mb-2">Best Price</h3>
+            <p className="text-gray-600">We strive to offer you unbeatable deals and
+              competitive prices on a wide range of products. From
+              Crystals to services, find incredible value without compromising
+              on quality. Shop smart and save big with our best
+              price guarantee. Experience the joy of getting the
+              most bang for your buck with our platform.</p>
+          </section>
+
+          <section className="mb-6">
+            <h3 className="text-lg font-semibold mb-2">Fast and Reliable Shipping</h3>
+            <p className="text-gray-600">Experience hassle-free and prompt delivery with our efficient shipping services, ensuring your orders reach your doorstep on time.</p>
+          </section>
+        </CardBody>
+      </Card>
+
     </div>
   );
 }

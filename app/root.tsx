@@ -13,7 +13,6 @@ import {
   useRouteError,
 } from '@remix-run/react';
 import styles from './styles/app.css';
-import bootstrapCSS from "bootstrap/dist/css/bootstrap.min.css";
 import { Header, links as headerLinks } from './components/header/Header';
 import {
   DataFunctionArgs,
@@ -29,8 +28,8 @@ import { getActiveCustomer } from '~/providers/customer/customer';
 import Footer from '~/components/footer/Footer';
 import { useActiveOrder } from '~/utils/use-active-order';
 import { setApiUrl } from '~/graphqlWrapper';
-import { SSRProvider } from 'react-bootstrap';
 import * as gtag from "~/utils/gtags.client";
+import stylesheet from "tailwind.css";
 
 export const meta: MetaFunction = () => {
   return { title: APP_META_TITLE, description: APP_META_DESCRIPTION };
@@ -40,7 +39,7 @@ export function links() {
   return [
     ...headerLinks()
   ,  { rel: 'stylesheet', href: styles }
-  , { rel: 'stylesheet', href: bootstrapCSS }];
+  , { rel: 'stylesheet', href: stylesheet }];
 }
 
 const devMode =
@@ -153,7 +152,7 @@ export default function App() {
             />
           </>
         )}
-        <SSRProvider>
+        
         <Header
           adjustOrderLine={adjustOrderLine}
           removeItem={removeItem}
@@ -174,7 +173,7 @@ export default function App() {
         <Footer collections={collections}></Footer>
 
         {devMode && <LiveReload />}
-        </SSRProvider>
+        
       </body>
     </html>
   );

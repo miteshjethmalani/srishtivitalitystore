@@ -13,9 +13,8 @@ export async function action({ params, request }: DataFunctionArgs) {
   const password = body.get('password');
   if (typeof email === 'string' && typeof password === 'string') {
     const rememberMe = !!body.get('rememberMe');
-    const redirectTo = (body.get('redirectTo') || '/account') as string;
+    const redirectTo = (body.get('redirectTo') || '/account/') as string;
     const result = await login(email, password, rememberMe, { request });
-    console.log("redirectTo",redirectTo)
     if (result.__typename === 'CurrentUser') {
       return redirect(redirectTo, { headers: result._headers });
     } else {

@@ -12,7 +12,7 @@ export async function action({ params, request }: DataFunctionArgs) {
   const email = body.get('email');
   if (typeof email === 'string') {
     const result = await requestForgotPassword(email, { request });
-    console.log("result", result)
+   
     if (result.__typename === 'Success') {
       return redirect('/forgot-password/success');
     } else {

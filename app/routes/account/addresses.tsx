@@ -64,7 +64,7 @@ export default function AccountAddresses() {
   return (
     <>
       <Outlet></Outlet>
-      <div className="w-full">
+      <div className="w-full text-gray-700">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 mt-4">
           <AddAddressCard />
           {activeCustomerAddresses?.addresses!.map((address) => {

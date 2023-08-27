@@ -1,4 +1,5 @@
 import { Form } from '@remix-run/react';
+import {Input, Button} from '@material-tailwind/react';
 
 export function SearchBar() {
   let initialQuery = '';
@@ -11,14 +12,19 @@ export function SearchBar() {
 
   return (
     <Form method="get" action="/search" key={initialQuery} className='d-flex'>
-      <input
-        type="search"
-        name="q"
-        defaultValue={initialQuery}
-        placeholder="Search"
-        className="form-control me-2"
-      />
-       <button className="btn btn-outline-primary" type="submit">Search</button>
+      <Input
+          type="search"
+          label="Type here..."
+          name="q"
+          defaultValue={initialQuery}
+          className="pr-20"
+          containerProps={{
+            className: "min-w-[288px]",
+          }}
+        />
+        <Button type="submit" size="sm" className="!absolute right-1 top-1 rounded">
+          Search
+        </Button>
     </Form>
   );
 }

@@ -126,7 +126,7 @@ export default function OrderHistoryItem({
                         {order?.fulfillments?.map((f, i) => (
                             <Button
                                 key={i}
-                                onClickCapture={() => alert(`Here you'd need to Link your delivery service. Tracking code for this package is "${f.trackingCode}"`)}
+                                onClickCapture={() => alert(`Here you'd need to delivery service. Tracking code for this package is "${f.trackingCode}"`)}
                                 className="text-xs"
                             >
                                 {/* Only show package number if there are more than one: Looks cleaner */}

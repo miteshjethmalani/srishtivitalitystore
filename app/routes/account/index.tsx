@@ -253,7 +253,7 @@ export default function AccountDetails() {
         </ValidatedForm>
       </Modal>
 
-      <div className="space-y-10 p-4 mt-5">
+      <div className="space-y-10 p-4 mt-5 text-gray-700">
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
             <h3 className="text-sm text-gray-500">E-Mail</h3>
@@ -297,7 +297,7 @@ export default function AccountDetails() {
               name="intent"
               value={FormIntent.UpdateDetails}
             />
-            <div className="gap-4 grid sm:grid-cols-2">
+            <div className="gap-4 grid sm:grid-cols-2 text-gray-700">
               {isEditing && (
                 <div className="col-span-2">
                   <Input label="Title" name="title" className="sm:w-1/4" />

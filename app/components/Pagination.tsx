@@ -29,7 +29,7 @@ export function Pagination({
         props.className,
       )}
     >
-      <span className="flex gap-4 items-center">
+      <span className="flex gap-4 items-center text-gray-700">
         {transition.state !== 'idle' && (
           <ArrowPathIcon className="animate-spin h-6 w-6 text-gray-500" />
         )}

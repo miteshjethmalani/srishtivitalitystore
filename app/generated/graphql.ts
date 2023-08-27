@@ -3481,7 +3481,7 @@ export type GenerateBraintreeClientTokenQuery = { __typename?: 'Query', generate
 export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CollectionsQuery = { __typename?: 'Query', collections: { __typename?: 'CollectionList', items: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, parent?: { __typename?: 'Collection', name: string } | null, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> } };
+export type CollectionsQuery = { __typename?: 'Query', collections: { __typename?: 'CollectionList', items: Array<{ __typename?: 'Collection', id: string, name: string, slug: string,description: string; parent?: { __typename?: 'Collection', name: string } | null, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> } };
 
 export type CollectionQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']>;
@@ -3996,6 +3996,7 @@ export const CollectionsDocument = gql`
       id
       name
       slug
+      description
       parent {
         name
       }

@@ -2,19 +2,24 @@ import { Link } from '@remix-run/react';
 import { SearchBar } from '~/components/header/SearchBar';
 import { useRootLoader } from '~/utils/use-root-loader';
 import { useScrollingUp } from '~/utils/use-scrolling-up';
-import { CartFill, PersonFillGear, PersonCircle } from 'react-bootstrap-icons';
 import { LinksFunction } from '@remix-run/server-runtime';
-import {
-  Container,
-  Nav,
-  NavDropdown,
-  Navbar,
-  Offcanvas,
-} from 'react-bootstrap';
+
 import { classNames } from '~/utils/class-names';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CartTray } from '../cart/CartTray';
 import { CartLoaderData } from '~/routes/api/active-order';
+import {
+  Navbar,
+  Typography,
+  Collapse,
+  Input,
+  Button,
+  Badge,
+  IconButton,
+} from "@material-tailwind/react";
+import { Bars2Icon, ShoppingCartIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { NavList } from './NavList';
+import { ProfileMenu } from './ProfileMenu';
 
 export const links: LinksFunction = () => {
   return [];
@@ -35,105 +40,84 @@ export function Header({
   const isScrollingUp = useScrollingUp();
   const expand = 'lg';
   const cartQuantity = activeOrder?.totalQuantity ?? 0;
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
-  const pageUtils = (showForLg: boolean) => {
-    return (
-      <div
-        className={classNames(
-          'd-flex align-items-center',
-          showForLg
-            ? ' d-xs-flex d-sm-flex d-md-flex d-lg-none d-xl-none d-xxl-none'
-            : ' d-none d-xs-none d-sm-none d-md-none d-lg-flex d-xl-flex d-xxl-flex',
-        )}
-      >
-        <button
-          onClick={() => {
-            setOpen(!open);
-          }}
-          type="button"
-          className="btn position-relative me-3"
-        >
-          <CartFill size={20} className=""></CartFill>
-          {cartQuantity ? (
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-              {cartQuantity}
-            </span>
-          ) : (
-            ''
-          )}
-        </button>
 
-        <CartTray
-          open={open}
-          onClose={() => setOpen(false)}
-          activeOrder={activeOrder}
-          adjustOrderLine={adjustOrderLine}
-          removeItem={removeItem}
-        />
+  const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
 
-        <Link className="text-black" to={isSignedIn ? '/account' : '/sign-in'}>
-          {isSignedIn? (<PersonFillGear size={30} className="me-3"></PersonFillGear>):( <PersonCircle size={30} className="me-3"></PersonCircle>) }
-          
-        </Link>
-      </div>
+  useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => window.innerWidth >= 960 && setIsNavOpen(false),
     );
-  };
+  }, []);
+
   return (
-    <Navbar
-      sticky="top"
-      key={expand}
-      bg="light"
-      className="shadow p-2"
-      expand={expand}
-    >
-      <Navbar.Brand>
-        <Link to="/" aria-label="Logo">
-          <img
-            src="/Srishtivitality Logo.png"
-            width={140}
-            height={50}
-            alt="Srishtivitality logo"
-          />
-        </Link>
-      </Navbar.Brand>
-      {pageUtils(true)}
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="justify-content-center flex-grow-1 pe-3">
-          <Link className="nav-link" to="/about" key={'about'}>
-            About
+    <>
+      <Navbar className="mx-auto max-w-screen-xl p-2 lg:rounded-full lg:pl-6">
+        <div className="relative mx-auto flex items-center text-blue-gray-900">
+          <Link to="/" aria-label="Logo">
+            <img
+              src="/Srishtivitality Logo.png"
+              width={140}
+              height={50}
+              alt="Srishtivitality logo"
+            />
           </Link>
-          <NavDropdown
-            title="Categories"
-            id={`offcanvasNavbarDropdown-expand-${expand}`}
-          >
-            {data.collections?.map((collection) => (
-              <NavDropdown.Item
-                href={'/collections/' + collection.slug}
-                key={collection.id}>
-                {collection.name}
-              </NavDropdown.Item>
-            ))}
-          </NavDropdown>
-          <NavDropdown
-            title="Book Consultation"
-            id={`offcanvasNavbarDropdown-expand-${expand}`}
-          >
-            <NavDropdown.Item  href="/consultation/tarotreading">
-              Tarot Reading
-            </NavDropdown.Item>
-            <NavDropdown.Item href="/consultation/crystalconsultation">
-              Crystal Consultation
-            </NavDropdown.Item>
-            <NavDropdown.Item href="/consultation/crystalhealing">
-              Crystal Healing
-            </NavDropdown.Item>
-          </NavDropdown>
-          <Nav.Link href="/contactus">Contact Us</Nav.Link>
-          <SearchBar />
-        </Nav>
-        {pageUtils(false)}
-      </Navbar.Collapse>
-    </Navbar>
+          <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
+            <NavList collection={data.collections} />
+          </div>
+          <div className="ml-auto mr-2">
+            <Badge overlap="circular" content={cartQuantity} >
+              <IconButton
+                size="sm"
+                color="blue-gray"
+                variant="text"
+                onClick={() => {
+                  setOpen(!open);
+                }}
+                className="ml-auto mr-2 "
+              >
+                <ShoppingCartIcon
+                  className="h-4 w-4" />
+              </IconButton>
+            </Badge>
+            <div className='ml-2 inline-flex'>
+
+              {isSignedIn ? (<ProfileMenu activeCustomer={data.activeCustomer.activeCustomer} />) :
+                (
+                  <Link to="/sign-in" aria-label="Sign In">
+                    <IconButton
+                      size="sm"
+                      color="blue-gray"
+                      variant="text"
+                    >
+                      <UserCircleIcon className="h-6 w-6" />
+                    </IconButton>
+                  </Link>)}
+            </div>
+            <IconButton
+              size="sm"
+              color="blue-gray"
+              variant="text"
+              onClick={toggleIsNavOpen}
+              className="ml-auto mr-2 lg:hidden"
+            >
+              <Bars2Icon className="h-6 w-6" />
+            </IconButton>
+          </div>
+        </div>
+        <Collapse open={isNavOpen} className="overflow-scroll">
+          <NavList collection={data.collections} />
+        </Collapse>
+      </Navbar>
+      <CartTray
+        open={open}
+        onClose={() => setOpen(false)}
+        activeOrder={activeOrder}
+        adjustOrderLine={adjustOrderLine}
+        removeItem={removeItem}
+      />
+    </>
   );
 }

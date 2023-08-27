@@ -1,10 +1,11 @@
 const colors = require('tailwindcss/colors');
+const withMT = require("@material-tailwind/react/utils/withMT");
 
-module.exports = {
-  // content: ["./app/**/*.{js,ts,jsx,tsx}"],
-  // theme: {
-  //   extend: {},
-  // },
+module.exports = withMT({
+  content: ["./app/**/*.{js,ts,jsx,tsx}"],
+   theme: {
+     extend: {},
+  },
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/line-clamp'),
@@ -15,6 +16,9 @@ module.exports = {
 
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Open Sans", "sans-serif"],
+      },  
       colors: {
         primary: colors.sky,
         secondary: colors.emerald,
@@ -30,4 +34,4 @@ module.exports = {
       },
     },
   },
-};
+});
