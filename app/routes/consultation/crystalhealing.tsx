@@ -11,7 +11,7 @@ export default function CrystalHealing() {
         </div>
 
         <Cal
-          calLink="mitesh-jethmalani/crystal-healing-"
+          calLink="srishtivitality/crystal-healing"
           config={{
             notes: 'Lets Connect with Srishtivitality.',
             theme: 'light',

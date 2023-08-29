@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
 
     return (
         <>
-            <div className="block w-full text-white mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900 mt-4">
+            <div className="block w-full mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900 mt-4">
                 <Typography variant="h3" className="text-center">PRIVACY POLICY FOR {APP_META_TITLE} ECOMMERCE WEBSITE</Typography>
                 <div className="mt-4">
                     We are committed to protecting the privacy of our users.
@@ -25,7 +25,7 @@ export default function PrivacyPolicy() {
                     By accessing or using the Website, you consent to the practices described in this Policy.
                 </div>
             </div>
-            <div className="mt-4 block w-full rounded-xl shadow-md backdrop-saturate-200 backdrop-blur-2xl bg-opacity-80 border border-white/80 bg-white text-white mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900">
+            <div className="mt-4 block w-full rounded-xl shadow-md backdrop-saturate-200 backdrop-blur-2xl bg-opacity-80 border border-white/80 bg-white mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900">
                 <Accordion open={open === 0}>
                     <AccordionHeader onClick={()=> handleOpen(0)}>Information We Collect</AccordionHeader>
                     <AccordionBody>

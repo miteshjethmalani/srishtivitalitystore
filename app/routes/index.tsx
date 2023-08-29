@@ -50,7 +50,7 @@ export default function Index() {
       <section aria-labelledby="category-heading" className="m-10 mx-3 text-center">
         <Typography variant="h1">Shop by Category</Typography>
         <div className="m-5">
-          <div className="row">
+          <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {collections.map((collection) => (
               <div key={collection.id}>
                 <CollectionCard collection={collection} />

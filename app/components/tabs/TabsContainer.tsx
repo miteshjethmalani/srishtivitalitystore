@@ -16,7 +16,7 @@ export function TabsContainer({
 
   return (
     <>
-      <Tabs value={isActive?.text} className="block w-full rounded-xl shadow-md backdrop-saturate-200 backdrop-blur-2xl bg-opacity-80 border border-white/80 bg-white text-white mx-auto max-w-screen-xl p-2 lg:pl-6">
+      <Tabs value={isActive?.text} className="block w-full rounded-xl shadow-md backdrop-saturate-200 backdrop-blur-2xl bg-opacity-80 border border-white/80 bg-white mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900">
 
         <TabsHeader className="list-inline">
           {tabs.map((props) => (

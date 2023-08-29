@@ -15,7 +15,7 @@ export default function TermsOfUse() {
 
     return (
         <>
-            <div className="block w-full text-white mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900 mt-4">
+            <div className="block w-full mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900 mt-4">
 
                 <Typography variant="h2" className="text-center">Terms And Conditions</Typography>
                 <div className="row justify-content-center mt-5">

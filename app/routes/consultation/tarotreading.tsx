@@ -11,7 +11,7 @@ export default function TarotReading() {
         </div>
 
         <Cal
-          calLink="mitesh-jethmalani/tarot-reading-"
+          calLink="srishtivitality/tarot-reading"
           config={{
             notes: 'Lets Connect with Srishtivitality.',
             theme: 'light',

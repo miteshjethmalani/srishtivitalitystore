@@ -70,6 +70,7 @@ export function Header({
           <div className="ml-auto mr-2">
             <Badge overlap="circular" content={cartQuantity} >
               <IconButton
+                aria-label="cart"
                 size="sm"
                 color="blue-gray"
                 variant="text"
@@ -88,6 +89,7 @@ export function Header({
                 (
                   <Link to="/sign-in" aria-label="Sign In">
                     <IconButton
+                      aria-label="profile menu"
                       size="sm"
                       color="blue-gray"
                       variant="text"
@@ -97,6 +99,7 @@ export function Header({
                   </Link>)}
             </div>
             <IconButton
+              aria-label="menu"
               size="sm"
               color="blue-gray"
               variant="text"
