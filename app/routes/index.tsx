@@ -2,8 +2,13 @@ import { useLoaderData } from '@remix-run/react';
 import { getCollections } from '~/providers/collections/collections';
 import { CollectionCard } from '~/components/collections/CollectionCard';
 import { BookOpenIcon } from '@heroicons/react/24/solid';
-import { LoaderArgs } from '@remix-run/server-runtime';
+import { LoaderArgs, MetaFunction } from '@remix-run/server-runtime';
 import { Typography, Carousel, Button } from '@material-tailwind/react';
+import { APP_META_DESCRIPTION, APP_META_TITLE } from '~/constants';
+
+export const meta: MetaFunction = () => {
+  return { title: `Home Page - ${APP_META_TITLE}` , description: APP_META_DESCRIPTION };
+};
 
 export async function loader({ request }: LoaderArgs) {
   const collections = await getCollections(request);

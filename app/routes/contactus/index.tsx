@@ -49,7 +49,7 @@ export default function ContactUs() {
       </Typography>
 
       <Typography color="gray" className="mt-1 font-normal">
-        Enter your details to contact us.
+        You may contact us by filling the form below or can directly mail us at support@srishtivitality.in
       </Typography>
       <form method='post' action="/contactus" className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
         <div className="mb-4 flex flex-col gap-6">

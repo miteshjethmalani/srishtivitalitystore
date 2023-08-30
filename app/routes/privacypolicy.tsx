@@ -19,19 +19,31 @@ export default function PrivacyPolicy() {
         <>
             <div className="block w-full mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900 mt-4">
                 <Typography variant="h3" className="text-center">PRIVACY POLICY FOR {APP_META_TITLE} ECOMMERCE WEBSITE</Typography>
-                <div className="mt-4">
+                <Typography variant="h6" className="text-gray-500 mt-4">
+                    Last updated on Aug 31st 2023
+                </Typography>
+                <Typography variant="paragraph" className="">
+                    This privacy policy sets out how Srishti Jethmalani uses and protects any information that you give Srishti Jethmalani when you use this website.
+                </Typography>
+                <Typography variant="paragraph" className="">
+                    Srishti Jethmalani is committed to ensuring that your privacy is protected. Should we ask you to provide certain information by which you can be identified when using this website, and then you can be assured that it will only be used in accordance with this privacy statement.
+                </Typography>
+                <Typography variant="paragraph" className="">
+                    Srishti Jethmalani may change this policy from time to time by updating this page. You should check this page from time to time to ensure that you are happy with any changes.
+                </Typography>
+                {/* <div className="mt-4">
                     We are committed to protecting the privacy of our users.
                     This Privacy Policy ("Policy") explains how we collect, use, disclose, and safeguard your personal information when you use our Website.
                     By accessing or using the Website, you consent to the practices described in this Policy.
-                </div>
+                </div> */}
             </div>
             <div className="mt-4 block w-full rounded-xl shadow-md backdrop-saturate-200 backdrop-blur-2xl bg-opacity-80 border border-white/80 bg-white mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900">
                 <Accordion open={open === 0}>
-                    <AccordionHeader onClick={()=> handleOpen(0)}>Information We Collect</AccordionHeader>
+                    <AccordionHeader onClick={() => handleOpen(0)}>Information We Collect</AccordionHeader>
                     <AccordionBody>
                         <List>
-                            <ListItem className="p-2">Personal Information: We may collect personal information, such as your name, email address, shipping address, and payment information when you place an order or create an account on our Website.</ListItem>
-                            <ListItem className="p-2"> Non-Personal Information: We may automatically collect non-personal information, such as your IP address, browser type, device information, and website usage data, through cookies and similar technologies.</ListItem>
+                            <ListItem className="p-2">Personal Information: We may collect personal information, such as your name, email address, job title, shipping address, and payment information when you place an order or create an account on our Website.</ListItem>
+                            <ListItem className="p-2"> Non-Personal Information: We may automatically collect non-personal information, such as your IP address, browser type, Demographic information such as postcode, preferences and interests, Other information relevant to customer surveys and/or offers, device information, and website usage data, through cookies and similar technologies.</ListItem>
                         </List>
                     </AccordionBody>
                 </Accordion>
@@ -125,6 +137,42 @@ export default function PrivacyPolicy() {
                     <AccordionBody>
                         <List >
                             <ListItem className="p-2">If you have any questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us at <Link to={'/contactus'}> Contact Us Page</Link>.</ListItem>
+                        </List>
+                    </AccordionBody>
+                </Accordion>
+                <Accordion open={open === 9}>
+                    <AccordionHeader onClick={() => handleOpen(9)}>How we use cookies</AccordionHeader>
+                    <AccordionBody>
+                        <List >
+
+                            <ListItem className="p-2">
+                                A cookie is a small file which asks permission to be placed on your computer's hard drive. Once you agree, the file is added and the cookie helps analyses web traffic or lets you know when you visit a particular site. Cookies allow web applications to respond to you as an individual. The web application can tailor its operations to your needs, likes and dislikes by gathering and remembering information about your preferences.
+                            </ListItem>
+                            <ListItem className="p-2">
+                                We use traffic log cookies to identify which pages are being used. This helps us analyses data about webpage traffic and improve our website in order to tailor it to customer needs. We only use this information for statistical analysis purposes and then the data is removed from the system.
+                            </ListItem>
+                            <ListItem className="p-2">
+                                Overall, cookies help us provide you with a better website, by enabling us to monitor which pages you find useful and which you do not. A cookie in no way gives us access to your computer or any information about you, other than the data you choose to share with us.
+                            </ListItem>
+                            <ListItem className="p-2">
+                                You can choose to accept or decline cookies. Most web browsers automatically accept cookies, but you can usually modify your browser setting to decline cookies if you prefer. This may prevent you from taking full advantage of the website.
+                            </ListItem>
+                        </List>
+                    </AccordionBody>
+                </Accordion>
+                <Accordion open={open === 10}>
+                    <AccordionHeader onClick={() => handleOpen(10)}>Controlling your personal information</AccordionHeader>
+                    <AccordionBody>
+                        <List >
+                            <ListItem>
+                                If you have issues in your mind regarding your personal information at any time, you can email us at support@srishtivitality.in
+                            </ListItem>
+                            <ListItem className="p-2">
+                                We will not sell, distribute or lease your personal information to third parties unless we have your permission or are required by law to do so. We may use your personal information to send you promotional information about third parties which we think you may find interesting if you tell us that you wish this to happen.
+                            </ListItem>
+                            <ListItem className="p-2">
+                                If you believe that any information we are holding on you is incorrect or incomplete, please write to or email us as soon as possible, at the above address. We will promptly correct any information found to be incorrect.
+                            </ListItem>
                         </List>
                     </AccordionBody>
                 </Accordion>
