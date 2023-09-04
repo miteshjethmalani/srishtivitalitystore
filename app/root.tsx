@@ -123,6 +123,7 @@ export default function App() {
   return (
     <html lang="en" id="app">
       <head>
+        <meta name="google-site-verification" content="j05BbO3ZfsS0xCCqywB0tboKFrHTrEYylNq32piR240" />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="icon" href="/favicon.ico" type="image/png"></link>
