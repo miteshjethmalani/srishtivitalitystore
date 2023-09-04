@@ -5,7 +5,8 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
-  Card,
+  Collapse,
+  ListItem,
 } from "@material-tailwind/react";
 import { Link } from "@remix-run/react";
 import { createElement, useState } from "react";
@@ -16,6 +17,7 @@ interface props {
 }
 export function NavListMenu(props: props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const renderItems = props.collection.map(({ id, name, url, asset }) => (
     <Link to={url} key={id}>
@@ -35,31 +37,44 @@ export function NavListMenu(props: props) {
 
   return (
     <>
-      <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
+      <Menu
+        open={isMenuOpen}
+        handler={setIsMenuOpen}
+        offset={{ mainAxis: 20 }}
+        placement="bottom"
+        allowHover={true}
+      >
         <MenuHandler>
-          <Typography className="font-normal">
-            <MenuItem className="hidden items-center gap-2 text-blue-gray-900 lg:flex lg:rounded-full">
-              <Square3Stack3DIcon className="h-[18px] w-[18px]" /> {props.title}{" "}
+          <Typography as="div" variant="small" className="font-normal">
+            <ListItem
+              className="flex items-center gap-2 py-2 pr-4"
+              selected={isMenuOpen || isMobileMenuOpen}
+              onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+            >
+              <Square3Stack3DIcon className="h-[18px] w-[18px]" />
+              {props.title}
               <ChevronDownIcon
-                strokeWidth={2}
-                className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
-                  }`}
+                strokeWidth={2.5}
+                className={`hidden h-3 w-3 transition-transform lg:block ${
+                  isMenuOpen ? "rotate-180" : ""
+                }`}
               />
-            </MenuItem>
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`block h-3 w-3 transition-transform lg:hidden ${
+                  isMobileMenuOpen ? "rotate-180" : ""
+                }`}
+              />
+            </ListItem>
           </Typography>
         </MenuHandler>
-        <MenuList className="hidden gap-3 overflow-visible lg:grid">
-          <ul className="col-span-4 flex w-full flex-col gap-1">
-            {renderItems}
-          </ul>
+        <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
+          <ul className="grid grid-cols-4 gap-y-2">{renderItems}</ul>
         </MenuList>
-        <MenuItem className="flex items-center gap-2 text-blue-gray-900 lg:hidden">
-          <Square3Stack3DIcon className="h-[18px] w-[18px]" /> {props.title}{" "}
-        </MenuItem>
-        <ul className="ml-6 flex w-full flex-col gap-1 lg:hidden">
-          {renderItems}
-        </ul>
       </Menu>
+      <div className="block lg:hidden">
+        <Collapse open={isMobileMenuOpen}>{renderItems}</Collapse>
+      </div>
     </>
   );
 }
