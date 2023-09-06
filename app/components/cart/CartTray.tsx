@@ -30,10 +30,10 @@ export function CartTray({
   return (
     <Drawer className='z-[99999]' open={open} onClose={() => onClose(true)}>
       <div className="mb-2 flex items-center justify-between p-4">
-        <Typography variant="h5" color="blue-gray">
+        <Typography variant="h5" color="deep-purple">
           Shopping cart
         </Typography>
-        <IconButton variant="text" color="blue-gray" onClick={() => onClose(true)}>
+        <IconButton variant="text" color="deep-purple" onClick={() => onClose(true)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -67,8 +67,8 @@ export function CartTray({
           )}
         </div>
         {activeOrder?.totalQuantity && editable && (
-          <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-            <div className="flex justify-between text-base font-medium text-gray-900">
+          <div className="border-t border-deep-purple-200 py-6 px-4 sm:px-6">
+            <div className="flex justify-between text-base font-medium text-deep-purple-900">
               <p>Subtotal</p>
               <p>
                 {currencyCode && (
@@ -79,7 +79,7 @@ export function CartTray({
                 )}
               </p>
             </div>
-            <p className="mt-0.5 text-sm text-gray-500">
+            <p className="mt-0.5 text-sm text-deep-purple-500">
               Shipping will be calculated at checkout.
             </p>
             <div className="mt-6">

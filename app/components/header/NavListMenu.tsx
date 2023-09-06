@@ -21,16 +21,21 @@ export function NavListMenu(props: props) {
 
   const renderItems = props.collection.map(({ id, name, url, asset }) => (
     <Link to={url} key={id}>
-      <MenuItem className="p-0">
-        <label
-          htmlFor="item-1"
-          className="flex cursor-pointer items-center gap-2 p-2"
-        >
-          <img
-            className="h-6 w-6"
+      <MenuItem className="flex items-center gap-3 rounded-lg">
+        <div className={`rounded-lg p-1`}>
+        <img
+            className="h-14 w-14"
             src={asset} />
-          {name}
-        </label>
+        </div>
+        <div>
+          <Typography
+            variant="h6"
+            color="deep-purple-900"
+            className="flex items-center text-md"
+          >
+            {name}
+          </Typography>
+        </div>
       </MenuItem>
     </Link>
   ));
@@ -55,15 +60,13 @@ export function NavListMenu(props: props) {
               {props.title}
               <ChevronDownIcon
                 strokeWidth={2.5}
-                className={`hidden h-3 w-3 transition-transform lg:block ${
-                  isMenuOpen ? "rotate-180" : ""
-                }`}
+                className={`hidden h-3 w-3 transition-transform lg:block ${isMenuOpen ? "rotate-180" : ""
+                  }`}
               />
               <ChevronDownIcon
                 strokeWidth={2.5}
-                className={`block h-3 w-3 transition-transform lg:hidden ${
-                  isMobileMenuOpen ? "rotate-180" : ""
-                }`}
+                className={`block h-3 w-3 transition-transform lg:hidden ${isMobileMenuOpen ? "rotate-180" : ""
+                  }`}
               />
             </ListItem>
           </Typography>

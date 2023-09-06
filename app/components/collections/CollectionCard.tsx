@@ -25,11 +25,11 @@ export function CollectionCard({
         )}
       >
         <Card className="mt-6 w-96">
-          <CardHeader color="blue-gray" className="relative ">
+          <CardHeader color="deep-purple" className="relative ">
             <img src={collection.featuredAsset?.preview + '?w=300&h=300'} className="rounded img-fluid border mx-auto"></img>
           </CardHeader>
           <CardBody>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
+            <Typography variant="h5" color="deep-purple" className="mb-2">
               {collection.name}
             </Typography>
           </CardBody>

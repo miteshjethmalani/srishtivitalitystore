@@ -55,7 +55,7 @@ export function NavList(props: props) {
       {navListItems.map(({ label, icon, url }, key) => (
         <Typography
           key={label}
-          color="blue-gray"
+          color="deep-purple-900"
           className="font-normal"
         >
           <Link to={url}>

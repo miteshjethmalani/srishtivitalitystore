@@ -22,7 +22,7 @@ export function SearchBar() {
             className: "min-w-[288px]",
           }}
         />
-        <Button type="submit" size="sm" className="!absolute right-1 top-1 rounded">
+        <Button type="submit" size="sm" className="!absolute right-1 top-1 rounded button-deep-purple">
           Search
         </Button>
     </Form>

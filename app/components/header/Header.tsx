@@ -54,8 +54,8 @@ export function Header({
 
   return (
     <>
-      <Navbar className="mx-auto max-w-screen-xl p-2 lg:rounded-full lg:pl-6 text-gray-900">
-        <div className="relative mx-auto flex items-center text-blue-gray-900">
+      <Navbar className="mx-auto max-w-screen-xl lg:pl-1 text-deep-purple-900">
+        <div className="relative mx-auto flex items-center">
           <Link to="/" aria-label="Logo">
             <img
               src="/Srishtivitality Logo.png"
