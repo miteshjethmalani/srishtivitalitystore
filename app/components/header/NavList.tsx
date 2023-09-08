@@ -5,9 +5,10 @@ import {
   MenuItem,
   Input,
   Button,
+  List,
 } from "@material-tailwind/react";
 import { createElement } from "react";
-import { Link } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 import { SearchBar } from "./SearchBar";
 import { map } from "lodash";
 
@@ -15,15 +16,17 @@ interface props {
   collection: Array<any>
 }
 export function NavList(props: props) {
+  const navigate = useNavigate();
+
   const navListItems = [
     {
       label: "About",
       icon: InformationCircleIcon,
       url: "/about"
-    },{
+    }, {
       label: "Contact",
       icon: AtSymbolIcon,
-      url:"contactUs"
+      url: "contactUs"
     }
   ];
   const categoriesCollection = map(props.collection, (coll) => {
@@ -39,36 +42,31 @@ export function NavList(props: props) {
     id: 'tarotReading',
     name: 'Tarot Reading',
     url: '/consultation/tarotreading',
-  },{
+    asset: '/tarot-reading.jpg'
+  }, {
     id: 'crystalConsultation',
     name: "Crystal Consultation",
     url: '/consultation/crystalconsultation',
-  },{
+    asset: '/crystals-consultation.png'
+  }, {
     id: 'crystalHealing',
     name: "Crystal Healing",
     url: '/consultation/crystalhealing',
+    asset: '/crystals-healing.png'
   }]
   return (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
+    <List className="mb-4 mt-2 flex flex-col text-deep-purple gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
       <NavListMenu title={"Categories"} collection={categoriesCollection} />
       <NavListMenu title={"Consultation"} collection={consultationCollection} />
       {navListItems.map(({ label, icon, url }, key) => (
-        <Typography
-          key={label}
-          color="deep-purple-900"
-          className="font-normal"
-        >
-          <Link to={url}>
-            <MenuItem className="flex items-center gap-2 lg:rounded-full">
-              {createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
-              {label}
-            </MenuItem>
-          </Link>
-        </Typography>
+        <MenuItem key={label} onClick={() => { navigate(url) }} className="flex items-center gap-2 lg:rounded-full">
+          {createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
+          {label}
+        </MenuItem>
       ))}
       <div className="relative flex w-full gap-2 md:w-max">
         <SearchBar />
       </div>
-    </ul>
+    </List>
   );
 }

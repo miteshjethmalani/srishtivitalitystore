@@ -7,8 +7,10 @@ import {
   MenuItem,
   Collapse,
   ListItem,
+  ListItemSuffix,
+  List,
 } from "@material-tailwind/react";
-import { Link } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import { createElement, useState } from "react";
 
 interface props {
@@ -18,26 +20,22 @@ interface props {
 export function NavListMenu(props: props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const renderItems = props.collection.map(({ id, name, url, asset }) => (
-    <Link to={url} key={id}>
-      <MenuItem className="flex items-center gap-3 rounded-lg">
-        <div className={`rounded-lg p-1`}>
-        <img
-            className="h-14 w-14"
-            src={asset} />
-        </div>
-        <div>
-          <Typography
-            variant="h6"
-            color="deep-purple-900"
-            className="flex items-center text-md"
-          >
-            {name}
-          </Typography>
-        </div>
-      </MenuItem>
-    </Link>
+    <MenuItem onClick={() => navigate(url)} key={id} className="flex items-center gap-3 rounded-lg">
+      <img
+        alt={name}
+        className="h-14 w-14"
+        src={asset} />
+
+      <span
+        className="flex text-deep-purple items-center text-lg"
+      >
+        {name}
+      </span>
+
+    </MenuItem>
   ));
 
   return (
@@ -50,9 +48,9 @@ export function NavListMenu(props: props) {
         allowHover={true}
       >
         <MenuHandler>
-          <Typography as="div" variant="small" className="font-normal">
+          <Typography as="div">
             <ListItem
-              className="flex items-center gap-2 py-2 pr-4"
+              className="flex items-center gap-1 py-1 pr-2"
               selected={isMenuOpen || isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen((cur) => !cur)}
             >
@@ -72,7 +70,7 @@ export function NavListMenu(props: props) {
           </Typography>
         </MenuHandler>
         <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
-          <ul className="grid grid-cols-4 gap-y-2">{renderItems}</ul>
+          <div className="grid grid-cols-4 gap-y-2">{renderItems}</div>
         </MenuList>
       </Menu>
       <div className="block lg:hidden">

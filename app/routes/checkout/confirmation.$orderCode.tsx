@@ -64,7 +64,7 @@ export default function CheckoutConfirmation() {
   if (orderNotFound) {
     return (
       <div>
-        <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
+        <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-brown-500 my-8">
           No matching order found!
         </h2>
       </div>

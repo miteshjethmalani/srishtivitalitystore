@@ -78,7 +78,7 @@ export default function CollectionSlug() {
   return (
     <div className=" m-5 mt-2">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
+        <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-brown-500 my-8">
           {collection.name}
         </h2>
 
@@ -109,7 +109,7 @@ export default function CollectionSlug() {
 export function CatchBoundary() {
   return (
     <div className="m-5">
-      <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
+      <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-brown-500 my-8">
         Collection not found!
       </h2>
       <div className="mt-6 grid sm:grid-cols-5 gap-x-4">

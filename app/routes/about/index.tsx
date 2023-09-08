@@ -11,7 +11,7 @@ export const meta: MetaFunction = ({ data }) => {
 
 export default function About() {
   return (
-    <div className="block w-full mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900 mt-4">
+    <div className="block w-full mx-auto max-w-screen-xl p-2  text-gray-900 mt-4">
       <Card className="mt-6 w-full">
         <CardBody>
           <section className="mb-8">

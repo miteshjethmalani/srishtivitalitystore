@@ -1,19 +1,11 @@
-import { Link } from '@remix-run/react';
-import { SearchBar } from '~/components/header/SearchBar';
+import { Link, useNavigate } from '@remix-run/react';
 import { useRootLoader } from '~/utils/use-root-loader';
-import { useScrollingUp } from '~/utils/use-scrolling-up';
 import { LinksFunction } from '@remix-run/server-runtime';
-
-import { classNames } from '~/utils/class-names';
 import { useEffect, useState } from 'react';
 import { CartTray } from '../cart/CartTray';
-import { CartLoaderData } from '~/routes/api/active-order';
 import {
   Navbar,
-  Typography,
   Collapse,
-  Input,
-  Button,
   Badge,
   IconButton,
 } from "@material-tailwind/react";
@@ -37,10 +29,9 @@ export function Header({
   const [open, setOpen] = useState(false);
   const data = useRootLoader();
   const isSignedIn = !!data.activeCustomer.activeCustomer?.id;
-  const isScrollingUp = useScrollingUp();
-  const expand = 'lg';
   const cartQuantity = activeOrder?.totalQuantity ?? 0;
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const navigate = useNavigate();
 
 
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -54,11 +45,11 @@ export function Header({
 
   return (
     <>
-      <Navbar className="mx-auto max-w-screen-xl lg:pl-1 text-deep-purple-900">
+      <Navbar className=" sticky top-0 z-10 h-max max-w-full mx-auto max-w-screen-xl lg:pl-1 text-deep-purple-900">
         <div className="relative mx-auto flex items-center">
           <Link to="/" aria-label="Logo">
             <img
-              src="/Srishtivitality Logo.png"
+              src="/Srishtivitality_Logo.png"
               width={140}
               height={50}
               alt="Srishtivitality logo"
@@ -68,11 +59,11 @@ export function Header({
             <NavList collection={data.collections} />
           </div>
           <div className="ml-auto mr-2">
-            <Badge overlap="circular" content={cartQuantity} >
+            <Badge content={cartQuantity} >
               <IconButton
                 aria-label="cart"
                 size="sm"
-                color="blue-gray"
+                color="deep-purple"
                 variant="text"
                 onClick={() => {
                   setOpen(!open);
@@ -87,21 +78,21 @@ export function Header({
 
               {isSignedIn ? (<ProfileMenu activeCustomer={data.activeCustomer.activeCustomer} />) :
                 (
-                  <Link to="/sign-in" aria-label="Sign In">
                     <IconButton
                       aria-label="profile menu"
                       size="sm"
-                      color="blue-gray"
+                      color="deep-purple"
                       variant="text"
+                      onClick={()=>{navigate("/sign-in")}}
                     >
                       <UserCircleIcon className="h-6 w-6" />
                     </IconButton>
-                  </Link>)}
+                  )}
             </div>
             <IconButton
               aria-label="menu"
               size="sm"
-              color="blue-gray"
+              color="deep-purple"
               variant="text"
               onClick={toggleIsNavOpen}
               className="ml-auto mr-2 lg:hidden"

@@ -15,7 +15,7 @@ export default function FAQ() {
 
     return (
         <>
-            <div className="block w-full mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900 mt-4">
+            <div className="block w-full mx-auto max-w-screen-xl p-2  text-gray-900 mt-4">
                 <Accordion open={open === 0}>
                     <AccordionHeader onClick={() => handleOpen(0)}>How do I make a purchase ?</AccordionHeader>
                     <AccordionBody>

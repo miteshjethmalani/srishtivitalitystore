@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData, useNavigate } from '@remix-run/react';
 import { getCollections } from '~/providers/collections/collections';
 import { CollectionCard } from '~/components/collections/CollectionCard';
 import { BookOpenIcon } from '@heroicons/react/24/solid';
@@ -21,6 +21,7 @@ export default function Index() {
   const { collections } = useLoaderData<typeof loader>();
   const latestCollection = collections[collections.length - 1] || {};
   const secondLatestCollection = collections[collections.length - 2] || {};
+  const navigate = useNavigate();
 
   return (
     <>
@@ -28,7 +29,7 @@ export default function Index() {
         <div className="relative h-96 h-96">
           <img
             src={latestCollection?.featuredAsset?.preview}
-            alt="image 1"
+            alt="Feature Product 1"
             className="h-96 w-full object-cover"
           />
           <div className="absolute inset-0 grid h-full w-full place-items-center bg-black/75">
@@ -54,7 +55,7 @@ export default function Index() {
         <div className="relative h-96 h-96">
           <img
             src={secondLatestCollection?.featuredAsset?.preview}
-            alt="image 1"
+            alt="Feature Product 2"
             className="h-96 w-full object-cover"
           />
           <div className="absolute inset-0 grid h-full w-full place-items-center bg-black/75">
@@ -71,13 +72,9 @@ export default function Index() {
                 color="white"
                 className="mb-12 opacity-80"
               >
-
-
-                <Link type='button' to={`/collections/${secondLatestCollection.slug}`}>
-                  <Button variant="gradient" color='deep-purple' className="rounded-full">
-                    Shop {secondLatestCollection.name}
-                  </Button>
-                </Link>
+                <Button onClick={()=> navigate(`/collections/${secondLatestCollection.slug}`)} variant="gradient" color='deep-purple' className="rounded-full">
+                  Shop {secondLatestCollection.name}
+                </Button>
               </Typography>
 
             </div>
@@ -85,9 +82,9 @@ export default function Index() {
         </div>
       </Carousel>
 
-      <section aria-labelledby="category-heading" className="m-10 mx-3 text-center">
+      <section className="m-10 mx-3 text-center">
         <Typography variant="h2" color="brown" className="divide-x-2 divide-gray-400">Shop by Category</Typography>
-        <div className="m-5">
+        <div className="m-5 mx-auto w-full max-w-7xl px-8">
           <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {collections.map((collection) => (
               <div key={collection.id}>

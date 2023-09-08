@@ -50,7 +50,6 @@ export function ProfileMenu(props:any) {
             </MenuHandler>
             <MenuList className="p-1">
                 {profileMenuItems.map(({ label, icon, url }, key) => {
-                    const isLastItem = key === profileMenuItems.length - 1;
                     return (
                         <Link to={url} key={key}>
                             <MenuItem

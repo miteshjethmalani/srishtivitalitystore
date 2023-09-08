@@ -97,7 +97,7 @@ export default function ProductSlug() {
   return (
     <div>
       <div className="mx-auto px-4">
-        <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
+        <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-brown-500 my-8">
           {product.name}
         </h2>
         <Breadcrumbs
@@ -271,7 +271,7 @@ export default function ProductSlug() {
 export function CatchBoundary() {
   return (
     <div className="mx-auto px-4">
-      <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
+      <h2 className="text-3xl sm:text-5xl font-light tracking-tight text-brown-500 my-8">
         Product not found!
       </h2>
       <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start mt-4 md:mt-12">

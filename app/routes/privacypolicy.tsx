@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
 
     return (
         <>
-            <div className="block w-full mx-auto max-w-screen-xl p-2 lg:pl-6 text-gray-900 mt-4">
+            <div className="block w-full mx-auto max-w-screen-xl p-2 text-gray-900 mt-4">
                 <Typography variant="h3" className="text-center">PRIVACY POLICY FOR {APP_META_TITLE} ECOMMERCE WEBSITE</Typography>
                 <Typography variant="h6" className="text-gray-500 mt-4">
                     Last updated on Aug 31st 2023
