@@ -21,7 +21,7 @@ export const meta: MetaFunction = ({ data }) => {
   };
 };
 
-const paginationLimitMinimumDefault = 25;
+const paginationLimitMinimumDefault = 20;
 const allowedPaginationLimits = new Set<number>([
   paginationLimitMinimumDefault,
   50,
