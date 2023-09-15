@@ -47,8 +47,8 @@ export default function Footer({
             <div key={key} className="w-full">
               <Typography
                 variant="small"
-                color="blue-gray"
-                className="mb-4 font-bold uppercase opacity-50"
+                color="brown"
+                className="mb-4 font-bold uppercase opacity-90"
               >
                 {title}
               </Typography>
@@ -76,7 +76,7 @@ export default function Footer({
             Rights Reserved.
           </Typography>
           <div className="flex gap-4 text-deep-purple-900 sm:justify-center">
-            <Typography as="a" href="https://www.facebook.com/profile.php?id=100075490405591" target="_blank" className="opacity-80 transition-opacity hover:opacity-100">
+            <Typography as="a" aria-label="facebookprofile" href="https://www.facebook.com/profile.php?id=100075490405591" target="_blank" className="opacity-80 transition-opacity hover:opacity-100">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fillRule="evenodd"
@@ -85,7 +85,7 @@ export default function Footer({
                 />
               </svg>
             </Typography>
-            <Typography as="a" href="https://www.instagram.com/srishtivitality/" target="_blank" className="opacity-80 transition-opacity hover:opacity-100">
+            <Typography as="a" aria-label="instagramprofile" href="https://www.instagram.com/srishtivitality/" target="_blank" className="opacity-80 transition-opacity hover:opacity-100">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fillRule="evenodd"
@@ -94,7 +94,7 @@ export default function Footer({
                 />
               </svg>
             </Typography>
-            <Typography as="a" href="https://www.youtube.com/@srishtivitality" target="_blank" className="opacity-80 transition-opacity hover:opacity-100">
+            <Typography as="a" aria-label="youtubechannel" href="https://www.youtube.com/@srishtivitality" target="_blank" className="opacity-80 transition-opacity hover:opacity-100">
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                 <path
                   fillRule="evenodd"

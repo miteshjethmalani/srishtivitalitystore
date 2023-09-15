@@ -26,10 +26,10 @@ export function CollectionCard({
       >
         <Card className="mt-6 w-96">
           <CardHeader color="deep-purple" className="relative ">
-            <img alt={collection.name} src={collection.featuredAsset?.preview + '?w=300&h=300'} className="rounded img-fluid border mx-auto"></img>
+            <img width={300} height={300} alt={`Category container ${collection.name}`} src={collection.featuredAsset?.preview + '?w=300&h=300'} className="rounded img-fluid border mx-auto"></img>
           </CardHeader>
           <CardBody>
-            <Typography variant="h5" color="deep-purple" className="mb-2">
+            <Typography variant="lead" color="deep-purple" className="mb-2">
               {collection.name}
             </Typography>
           </CardBody>

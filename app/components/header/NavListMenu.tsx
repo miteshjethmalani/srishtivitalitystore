@@ -25,7 +25,7 @@ export function NavListMenu(props: props) {
   const renderItems = props.collection.map(({ id, name, url, asset }) => (
     <MenuItem onClick={() => navigate(url)} key={id} className="flex items-center gap-3 rounded-lg">
       <img
-        alt={name}
+        alt={`Category ${name}`}
         className="h-14 w-14"
         src={asset} />
 
