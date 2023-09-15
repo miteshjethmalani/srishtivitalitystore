@@ -15,7 +15,7 @@ export function ProductCard({
       <img
         className="rounded-xl flex-grow object-cover aspect-[7/8]"
         alt=""
-        src={productAsset?.preview + '?w=300&h=400'}
+        src={productAsset?.preview + '?preset=medium'}
       />
       <div className="h-2" />
       <div className="text-sm text-deep-purple-500">{productName}</div>

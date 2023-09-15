@@ -110,11 +110,11 @@ export default function ProductSlug() {
           {/* Image gallery */}
           <div className="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
             <span className="rounded-md overflow-hidden">
-              <div className="w-full h-full object-center object-cover rounded-lg">
+              <div className="w-full object-center object-cover rounded-lg">
                 <img
                   src={
                     (featuredAsset?.preview || product.featuredAsset?.preview) +
-                    '?w=800'
+                    '?preset=large'
                   }
                   alt={product.name}
                   className="w-full h-full object-center object-cover rounded-lg"

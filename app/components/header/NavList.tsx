@@ -35,24 +35,24 @@ export function NavList(props: props) {
       id,
       name,
       url: '/collections/' + slug,
-      asset: featuredAsset.preview,
+      asset: featuredAsset.preview+'?preset=tiny',
     }
   });
   const consultationCollection = [{
     id: 'tarotReading',
     name: 'Tarot Reading',
     url: '/consultation/tarotreading',
-    asset: '/tarot-reading.jpg'
+    asset: '/tarot-reading.webp'
   }, {
     id: 'crystalConsultation',
     name: "Crystal Consultation",
     url: '/consultation/crystalconsultation',
-    asset: '/crystals-consultation.png'
+    asset: '/crystals-consultation.webp'
   }, {
     id: 'crystalHealing',
     name: "Crystal Healing",
     url: '/consultation/crystalhealing',
-    asset: '/crystals-healing.png'
+    asset: '/crystals-healing.webp'
   }]
   return (
     <List className="mb-4 mt-2 flex flex-col text-deep-purple gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">

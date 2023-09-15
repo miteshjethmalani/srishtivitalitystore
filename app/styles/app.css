@@ -3305,10 +3305,6 @@ button:disabled {
   padding-right: 0.5rem;
 }
 
-#app .pr-4 {
-  padding-right: 1rem;
-}
-
 #app .pr-20 {
   padding-right: 5rem;
 }
@@ -7499,10 +7495,6 @@ button:disabled {
 
   #app .lg\:p-3 {
     padding: 0.75rem;
-  }
-
-  #app .lg\:p-1 {
-    padding: 0.25rem;
   }
 
   #app .lg\:px-8 {

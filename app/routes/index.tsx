@@ -28,7 +28,7 @@ export default function Index() {
       <Carousel loop={true} autoplay={true} className="h-96">
         <div className="relative h-96 h-96">
           <img
-            src={latestCollection?.featuredAsset?.preview}
+            src={latestCollection?.featuredAsset?.preview + "?preset=large"}
             alt="Feature Product 1"
             className="h-96 w-full object-cover"
           />
