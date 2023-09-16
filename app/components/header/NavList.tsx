@@ -1,16 +1,14 @@
 import { AtSymbolIcon, CodeBracketSquareIcon, CubeTransparentIcon, InformationCircleIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { NavListMenu } from "./NavListMenu";
 import {
-  Typography,
   MenuItem,
-  Input,
-  Button,
   List,
 } from "@material-tailwind/react";
 import { createElement } from "react";
 import { Link, useNavigate } from "@remix-run/react";
 import { SearchBar } from "./SearchBar";
 import { map } from "lodash";
+import { ASSET_URL } from "~/constants";
 
 interface props {
   collection: Array<any>
@@ -35,24 +33,24 @@ export function NavList(props: props) {
       id,
       name,
       url: '/collections/' + slug,
-      asset: featuredAsset.preview+'?preset=tiny',
+      asset: featuredAsset.preview + '?preset=tiny',
     }
   });
   const consultationCollection = [{
     id: 'tarotReading',
     name: 'Tarot Reading',
     url: '/consultation/tarotreading',
-    asset: '/tarot-reading.webp'
+    asset: ASSET_URL + '/preview/0e/tarot-reading__preview.jpg?preset=thumb'
   }, {
     id: 'crystalConsultation',
     name: "Crystal Consultation",
     url: '/consultation/crystalconsultation',
-    asset: '/crystals-consultation.webp'
+    asset: ASSET_URL + '/preview/e9/crystals-consultation__preview.png?preset=thumb'
   }, {
     id: 'crystalHealing',
     name: "Crystal Healing",
     url: '/consultation/crystalhealing',
-    asset: '/crystals-healing.webp'
+    asset: ASSET_URL + '/preview/55/crystals-healing__preview.png?preset=thumb'
   }]
   return (
     <List className="mb-4 mt-2 flex flex-col text-deep-purple gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">

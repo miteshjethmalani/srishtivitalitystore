@@ -38,8 +38,8 @@ export const meta: MetaFunction = () => {
 export function links() {
   return [
     ...headerLinks()
-  ,  { rel: 'stylesheet', href: styles }
-  , { rel: 'stylesheet', href: stylesheet }];
+  ,  { rel: 'stylesheet', href: styles, async: true }
+  , { rel: 'stylesheet', href: stylesheet, async: true }];
 }
 
 const devMode =
