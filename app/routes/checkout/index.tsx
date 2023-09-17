@@ -69,7 +69,7 @@ export default function CheckoutShipping() {
   const canProceedToPayment =
     customer &&
     ((shippingAddress?.streetLine1 && shippingAddress?.postalCode) ||
-      selectedAddressIndex) &&
+      selectedAddressIndex>=0) &&
     activeOrder?.shippingLines?.length &&
     activeOrder?.lines?.length ? true: false;
   const submitCustomerForm = (event: FormEvent<HTMLFormElement>) => {
