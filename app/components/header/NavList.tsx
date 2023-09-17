@@ -33,7 +33,7 @@ export function NavList(props: props) {
       id,
       name,
       url: '/collections/' + slug,
-      asset: featuredAsset.preview + '?preset=thumbnail',
+      asset: featuredAsset.preview + '?preset=thumb',
     }
   });
   const consultationCollection = [{
