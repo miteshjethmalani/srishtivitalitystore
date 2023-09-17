@@ -28,7 +28,7 @@ export default function Index() {
       <Carousel
         prevArrow={({ handlePrev }) => (
           <IconButton
-            name='prevBtnCarousel'
+            aria-label='Previous'
             variant="text"
             color="white"
             size="lg"
@@ -53,7 +53,7 @@ export default function Index() {
         )}
         nextArrow={({ handleNext }) => (
           <IconButton
-            name='nextBtnCarousel'
+            aria-label='Next'
             variant="text"
             color="white"
             size="lg"
