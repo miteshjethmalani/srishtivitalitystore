@@ -879,6 +879,10 @@ button:disabled {
   top: -0.5rem;
 }
 
+#app .\!right-4 {
+  right: 1rem !important;
+}
+
 #app .top-1 {
   top: 0.25rem;
 }
@@ -3293,6 +3297,10 @@ button:disabled {
   padding-bottom: 2rem;
 }
 
+#app .pt-10 {
+  padding-top: 2.5rem;
+}
+
 #app .pt-6 {
   padding-top: 1.5rem;
 }
@@ -3319,10 +3327,6 @@ button:disabled {
 
 #app .pb-10 {
   padding-bottom: 2.5rem;
-}
-
-#app .pt-10 {
-  padding-top: 2.5rem;
 }
 
 #app .pl-4 {
@@ -3988,6 +3992,10 @@ button:disabled {
 
 #app .opacity-100 {
   opacity: 1;
+}
+
+#app .opacity-90 {
+  opacity: 0.9;
 }
 
 #app .shadow {

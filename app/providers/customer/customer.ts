@@ -78,6 +78,10 @@ gql`
           orderPlacedAt
           currencyCode
           subTotal
+          couponCodes
+          discounts{
+            adjustmentSource
+          }
           subTotalWithTax
           total
           totalWithTax

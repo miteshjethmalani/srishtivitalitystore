@@ -106,6 +106,10 @@ export default function CheckoutConfirmation() {
         Your order <span className="font-bold">{order!.code}</span> has been
         received!
       </p>
+      <p className="text-lg text-gray-700 mt-5">
+        Please make the payment through UPI on the below mentioned mobile number 
+        <a href={`https://wa.me/+918369536738?text=Please%20send%20me%20the%20order%20of%20${order!.code}!`}>Please connect on WhatsApp on +918369536738</a>
+      </p>
       {order!.active && (
         <div className="rounded-md bg-blue-50 p-4 my-8">
           <div className="flex">

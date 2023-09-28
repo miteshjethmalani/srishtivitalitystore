@@ -40,6 +40,20 @@ export function adjustOrderLine(
   return sdk.adjustOrderLine({ orderLineId: lineId, quantity }, options);
 }
 
+export function applyCouponCode(
+  couponCode: string,
+  options: QueryOptions,
+){
+  return sdk.applyCouponCode({ couponCode }, options);
+}
+
+export function removeCouponCode(
+  couponCode: string,
+  options: QueryOptions,
+){
+  return sdk.removeCouponCode({ couponCode }, options);
+}
+
 export function setCustomerForOrder(
   input: CreateCustomerInput,
   options: QueryOptions,
@@ -154,6 +168,7 @@ gql`
     state
     currencyCode
     totalQuantity
+    couponCodes
     subTotal
     subTotalWithTax
     taxSummary {

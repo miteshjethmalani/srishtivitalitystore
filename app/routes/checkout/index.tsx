@@ -20,6 +20,8 @@ import { AddressForm } from '~/components/account/AddressForm';
 import { ShippingMethodSelector } from '~/components/checkout/ShippingMethodSelector';
 import { ShippingAddressSelector } from '~/components/checkout/ShippingAddressSelector';
 import { getActiveOrder } from '~/providers/orders/order';
+import { Button, Input } from '@material-tailwind/react';
+import CouponCode from '~/components/account/CouponCode';
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await sessionStorage.getSession(
@@ -27,7 +29,7 @@ export async function loader({ request }: DataFunctionArgs) {
   );
 
   const activeOrder = await getActiveOrder({ request });
-  
+
   //check if there is an active order if not redirect to homepage
   if (
     !session ||
@@ -68,10 +70,10 @@ export default function CheckoutShipping() {
     (customer ? `${customer.firstName} ${customer.lastName}` : ``);
   const canProceedToPayment =
     customer &&
-    ((shippingAddress?.streetLine1 && shippingAddress?.postalCode) ||
-      selectedAddressIndex>=0) &&
-    activeOrder?.shippingLines?.length &&
-    activeOrder?.lines?.length ? true: false;
+      ((shippingAddress?.streetLine1 && shippingAddress?.postalCode) ||
+        selectedAddressIndex >= 0) &&
+      activeOrder?.shippingLines?.length &&
+      activeOrder?.lines?.length ? true : false;
   const submitCustomerForm = (event: FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const { emailAddress, firstName, lastName } = Object.fromEntries<any>(
@@ -259,6 +261,9 @@ export default function CheckoutShipping() {
           ></AddressForm>
         )}
       </Form>
+      <CouponCode activeOrder={activeOrder}
+        activeOrderFetcher={activeOrderFetcher} />
+
 
       <div className="mt-10 border-t border-gray-200 pt-10">
         <ShippingMethodSelector
@@ -271,7 +276,7 @@ export default function CheckoutShipping() {
 
       <button
         type="button"
-        disabled={canProceedToPayment?  false: true}
+        disabled={canProceedToPayment ? false : true}
         onClick={navigateToPayment}
         className={classNames(
           canProceedToPayment

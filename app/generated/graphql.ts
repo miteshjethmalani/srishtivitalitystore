@@ -752,8 +752,8 @@ export type ContactUs = Node & {
   updatedAt: Scalars['DateTime'];
   email: Scalars['String'];
   message: Scalars['String'];
-  status:  Scalars['String'];
-  
+  status: Scalars['String'];
+
 };
 
 export type CustomerOrdersArgs = {
@@ -3481,7 +3481,7 @@ export type GenerateBraintreeClientTokenQuery = { __typename?: 'Query', generate
 export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CollectionsQuery = { __typename?: 'Query', collections: { __typename?: 'CollectionList', items: Array<{ __typename?: 'Collection', id: string, name: string, slug: string,description: string; parent?: { __typename?: 'Collection', name: string } | null, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> } };
+export type CollectionsQuery = { __typename?: 'Query', collections: { __typename?: 'CollectionList', items: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, description: string; parent?: { __typename?: 'Collection', name: string } | null, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> } };
 
 export type CollectionQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']>;
@@ -3555,15 +3555,22 @@ export type AdjustOrderLineMutationVariables = Exact<{
   quantity: Scalars['Int'];
 }>;
 
+export type ApplyCouponCodeMutationVariables = Exact<{
+  couponCode: Scalars['String'];
+}>;
 
 export type AdjustOrderLineMutation = { __typename?: 'Mutation', adjustOrderLine: { __typename?: 'InsufficientStockError', errorCode: ErrorCode, message: string } | { __typename?: 'NegativeQuantityError', errorCode: ErrorCode, message: string } | { __typename: 'Order', id: string, code: string, active: boolean, createdAt: any, state: string, currencyCode: CurrencyCode, totalQuantity: number, subTotal: number, subTotalWithTax: number, shippingWithTax: number, totalWithTax: number, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxRate: number, taxTotal: number }>, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, streetLine1?: string | null, streetLine2?: string | null, company?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, shippingLines: Array<{ __typename?: 'ShippingLine', priceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, name: string } }>, lines: Array<{ __typename?: 'OrderLine', id: string, unitPriceWithTax: number, linePriceWithTax: number, quantity: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, price: number, product: { __typename?: 'Product', id: string, slug: string } } }>, payments?: Array<{ __typename?: 'Payment', id: string, state: string, method: string, amount: number, metadata?: any | null }> | null } | { __typename?: 'OrderLimitError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderModificationError', errorCode: ErrorCode, message: string } };
 
-export type OrderDetailFragment = { __typename: 'Order', id: string, code: string, active: boolean, createdAt: any, state: string, currencyCode: CurrencyCode, totalQuantity: number, subTotal: number, subTotalWithTax: number, shippingWithTax: number, totalWithTax: number, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxRate: number, taxTotal: number }>, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, streetLine1?: string | null, streetLine2?: string | null, company?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, shippingLines: Array<{ __typename?: 'ShippingLine', priceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, name: string } }>, lines: Array<{ __typename?: 'OrderLine', id: string, unitPriceWithTax: number, linePriceWithTax: number, quantity: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, price: number, product: { __typename?: 'Product', id: string, slug: string } } }>, payments?: Array<{ __typename?: 'Payment', id: string, state: string, method: string, amount: number, metadata?: any | null }> | null };
+export type ApplyCouponCodeMutation = { __typename?: 'Mutation', applyCouponCode: { __typename?: 'CouponCodeExpiredError', errorCode: ErrorCode, message: string } | { __typename?: 'CouponCodeLimitError', errorCode: ErrorCode, message: string } | { __typename?: 'CouponCodeInvalidError', errorCode: ErrorCode, message: string } | { __typename: 'Order', id: string, code: string, active: boolean, createdAt: any, state: string, currencyCode: CurrencyCode, discountedLinePrice: number, totalQuantity: number, subTotal: number, subTotalWithTax: number, shippingWithTax: number, totalWithTax: number, couponCodes: Array<String>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxRate: number, taxTotal: number }>, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, streetLine1?: string | null, streetLine2?: string | null, company?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, shippingLines: Array<{ __typename?: 'ShippingLine', priceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, name: string } }>, lines: Array<{ __typename?: 'OrderLine', id: string, unitPriceWithTax: number, linePriceWithTax: number, quantity: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, price: number, product: { __typename?: 'Product', id: string, slug: string } } }>, payments?: Array<{ __typename?: 'Payment', id: string, state: string, method: string, amount: number, metadata?: any | null }> | null } | { __typename?: 'OrderLimitError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderModificationError', errorCode: ErrorCode, message: string } };
+
+export type RemoveCouponCodeMutation = { __typename?: 'Mutation', removeCouponCode: { __typename: 'Order', id: string, code: string, active: boolean, createdAt: any, state: string, currencyCode: CurrencyCode, discountedLinePrice: number, totalQuantity: number, subTotal: number, subTotalWithTax: number, shippingWithTax: number, totalWithTax: number, couponCodes: Array<String>, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxRate: number, taxTotal: number }>, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, streetLine1?: string | null, streetLine2?: string | null, company?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, shippingLines: Array<{ __typename?: 'ShippingLine', priceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, name: string } }>, lines: Array<{ __typename?: 'OrderLine', id: string, unitPriceWithTax: number, linePriceWithTax: number, quantity: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, price: number, product: { __typename?: 'Product', id: string, slug: string } } }>, payments?: Array<{ __typename?: 'Payment', id: string, state: string, method: string, amount: number, metadata?: any | null }> | null } | { __typename?: 'OrderLimitError', errorCode: ErrorCode, message: string } | { __typename?: 'OrderModificationError', errorCode: ErrorCode, message: string } };
+
+export type OrderDetailFragment = { __typename: 'Order', id: string, code: string, active: boolean, createdAt: any, state: string, currencyCode: CurrencyCode, totalQuantity: number, subTotal: number, subTotalWithTax: number, shippingWithTax: number, totalWithTax: number, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxRate: number, taxTotal: number }>, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null,discounts: Array<Discount>| null , shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, streetLine1?: string | null, streetLine2?: string | null, company?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, shippingLines: Array<{ __typename?: 'ShippingLine', priceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, name: string } }>, lines: Array<{ __typename?: 'OrderLine', id: string, unitPriceWithTax: number, linePriceWithTax: number, quantity: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, price: number, product: { __typename?: 'Product', id: string, slug: string } } }>, payments?: Array<{ __typename?: 'Payment', id: string, state: string, method: string, amount: number, metadata?: any | null }> | null };
 
 export type ActiveOrderQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ActiveOrderQuery = { __typename?: 'Query', activeOrder?: { __typename: 'Order', id: string, code: string, active: boolean, createdAt: any, state: string, currencyCode: CurrencyCode, totalQuantity: number, subTotal: number, subTotalWithTax: number, shippingWithTax: number, totalWithTax: number, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxRate: number, taxTotal: number }>, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, streetLine1?: string | null, streetLine2?: string | null, company?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, shippingLines: Array<{ __typename?: 'ShippingLine', priceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, name: string } }>, lines: Array<{ __typename?: 'OrderLine', id: string, unitPriceWithTax: number, linePriceWithTax: number, quantity: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, price: number, product: { __typename?: 'Product', id: string, slug: string } } }>, payments?: Array<{ __typename?: 'Payment', id: string, state: string, method: string, amount: number, metadata?: any | null }> | null } | null };
+export type ActiveOrderQuery = { __typename?: 'Query', activeOrder?: { __typename: 'Order', id: string, code: string, active: boolean, createdAt: any, state: string, currencyCode: CurrencyCode, discountedLinePrice: number, totalQuantity: number, subTotal: number, couponCodes: Array<String>, discounts: Array<Discount>, subTotalWithTax: number, shippingWithTax: number, totalWithTax: number, taxSummary: Array<{ __typename?: 'OrderTaxSummary', description: string, taxRate: number, taxTotal: number }>, customer?: { __typename?: 'Customer', id: string, firstName: string, lastName: string, emailAddress: string } | null, shippingAddress?: { __typename?: 'OrderAddress', fullName?: string | null, streetLine1?: string | null, streetLine2?: string | null, company?: string | null, city?: string | null, province?: string | null, postalCode?: string | null, countryCode?: string | null, phoneNumber?: string | null } | null, shippingLines: Array<{ __typename?: 'ShippingLine', priceWithTax: number, shippingMethod: { __typename?: 'ShippingMethod', id: string, name: string } }>, lines: Array<{ __typename?: 'OrderLine', id: string, unitPriceWithTax: number, linePriceWithTax: number, quantity: number, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null, productVariant: { __typename?: 'ProductVariant', id: string, name: string, price: number, product: { __typename?: 'Product', id: string, slug: string } } }>, payments?: Array<{ __typename?: 'Payment', id: string, state: string, method: string, amount: number, metadata?: any | null }> | null } | null };
 
 export type OrderByCodeQueryVariables = Exact<{
   code: Scalars['String'];
@@ -3610,6 +3617,14 @@ export const OrderDetailFragmentDoc = gql`
   totalQuantity
   subTotal
   subTotalWithTax
+  couponCodes
+  discounts{
+    adjustmentSource
+    type
+    description
+    amount
+    amountWithTax
+  }
   taxSummary {
     description
     taxRate
@@ -3646,6 +3661,8 @@ export const OrderDetailFragmentDoc = gql`
     unitPriceWithTax
     linePriceWithTax
     quantity
+    discountedLinePrice
+    discountedLinePriceWithTax
     featuredAsset {
       id
       preview
@@ -3758,7 +3775,7 @@ export const LoginDocument = gql`
 }
     `;
 
-    export const SocialLoginDocument = gql`
+export const SocialLoginDocument = gql`
     mutation Authenticate($token: String!) {
       authenticate(input: {
         google: { token: $token }
@@ -4094,6 +4111,7 @@ export const ActiveCustomerOrderListDocument = gql`
         currencyCode
         subTotal
         subTotalWithTax
+        couponCodes
         total
         totalWithTax
         shippingWithTax
@@ -4207,6 +4225,25 @@ export const AdjustOrderLineDocument = gql`
   }
 }
     ${OrderDetailFragmentDoc}`;
+export const ApplyCouponCodeDocument = gql`
+    mutation applyCouponCode($couponCode: String!) {
+      applyCouponCode(couponCode: $couponCode) {
+    ...OrderDetail
+    ... on ErrorResult {
+      errorCode
+      message
+    }
+  }
+}
+    ${OrderDetailFragmentDoc}`;
+
+export const RemoveCouponCodeDocument = gql`
+    mutation removeCouponCode($couponCode: String!) {
+      removeCouponCode(couponCode: $couponCode) {
+    ...OrderDetail
+  }
+}
+    ${OrderDetailFragmentDoc}`;
 export const ActiveOrderDocument = gql`
     query activeOrder {
   activeOrder {
@@ -4294,10 +4331,10 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     requestUpdateCustomerEmailAddress(variables: RequestUpdateCustomerEmailAddressMutationVariables, options?: C): Promise<RequestUpdateCustomerEmailAddressMutation> {
       return requester<RequestUpdateCustomerEmailAddressMutation, RequestUpdateCustomerEmailAddressMutationVariables>(RequestUpdateCustomerEmailAddressDocument, variables, options) as Promise<RequestUpdateCustomerEmailAddressMutation>;
     },
-    requestPasswordReset(variables: MutationRequestPasswordResetArgs, options?: C){
+    requestPasswordReset(variables: MutationRequestPasswordResetArgs, options?: C) {
       return requester<RequestPasswordResetMutation, RequestPasswordResetMutationVariables>(RequestPasswordResetDocument, variables, options) as Promise<RequestPasswordResetMutation>;
     },
-    resetPassword(variables: MutationResetPasswordArgs, options?: C){
+    resetPassword(variables: MutationResetPasswordArgs, options?: C) {
       return requester<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument, variables, options) as Promise<ResetPasswordMutation>;
     },
     updateCustomerEmailAddress(variables: UpdateCustomerEmailAddressMutationVariables, options?: C): Promise<UpdateCustomerEmailAddressMutation> {
@@ -4377,6 +4414,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     adjustOrderLine(variables: AdjustOrderLineMutationVariables, options?: C): Promise<AdjustOrderLineMutation> {
       return requester<AdjustOrderLineMutation, AdjustOrderLineMutationVariables>(AdjustOrderLineDocument, variables, options) as Promise<AdjustOrderLineMutation>;
+    },
+    applyCouponCode(variables: ApplyCouponCodeMutationVariables, options?: C): Promise<ApplyCouponCodeMutation> {
+      return requester<ApplyCouponCodeMutation, ApplyCouponCodeMutationVariables>(ApplyCouponCodeDocument, variables, options) as Promise<ApplyCouponCodeMutation>;
+    },
+    removeCouponCode(variables: ApplyCouponCodeMutationVariables, options?: C): Promise<RemoveCouponCodeMutation> {
+      return requester<RemoveCouponCodeMutation, ApplyCouponCodeMutationVariables>(RemoveCouponCodeDocument, variables, options) as Promise<RemoveCouponCodeMutation>;
     },
     activeOrder(variables?: ActiveOrderQueryVariables, options?: C): Promise<ActiveOrderQuery> {
       return requester<ActiveOrderQuery, ActiveOrderQueryVariables>(ActiveOrderDocument, variables, options) as Promise<ActiveOrderQuery>;

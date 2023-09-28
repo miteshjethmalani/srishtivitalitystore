@@ -1,7 +1,9 @@
 import {
   addItemToOrder,
   adjustOrderLine,
+  applyCouponCode,
   getActiveOrder,
+  removeCouponCode,
   removeOrderLine,
   setCustomerForOrder,
   setOrderShippingAddress,
@@ -145,6 +147,36 @@ export async function action({ request, params }: DataFunctionArgs) {
       }
       break;
     }
+    case 'addCouponCode':{
+      const couponCode: any = body.get('couponCode') || '';
+      const result = await applyCouponCode(couponCode, {
+        request,
+      });      
+      
+      if (result.applyCouponCode.__typename === 'Order') {
+        activeOrder = result.applyCouponCode;
+        console.log("activeOrder",activeOrder)
+      } else {
+        error = result.applyCouponCode;
+      }
+      
+      break;
+    }
+    case 'removeCouponCode':{
+      const couponCode: any = body.get('couponCode') || '';
+      const result = await removeCouponCode(couponCode, {
+        request,
+      });      
+      
+      if (result.removeCouponCode.__typename === 'Order') {
+        activeOrder = result.removeCouponCode;
+      } else {
+        error = result.removeCouponCode;
+      }
+      
+      break;
+    }
+    
     case 'addPaymentToOrder': {
     }
     default:
