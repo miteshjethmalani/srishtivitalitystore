@@ -30,7 +30,9 @@ export const meta: MetaFunction = ({ data }) => {
   return {
     title:  metaTitle ? `${metaTitle} - ${APP_META_TITLE}` : APP_META_TITLE,
     description: data?.product?.customFields?.metaDescription,
-    keywords: data?.product?.customFields?.keywords
+    keywords: data?.product?.customFields?.keywords,
+    "og:image": data?.product?.assets[0]?.preview+
+    '?preset=small'
   };
 };
 
@@ -117,7 +119,7 @@ export default function ProductSlug() {
                     '?preset=large'
                   }
                   alt={product.name}
-                  className="w-full h-full object-center object-cover rounded-lg"
+                  className="hover:scale-105 transition-all duration-500 cursor-pointer"
                 />
               </div>
             </span>
