@@ -2,7 +2,7 @@ import { RootLoaderData, links } from '~/root';
 import { Typography } from '@material-tailwind/react';
 import { Link } from '@remix-run/react';
 import { APP_META_TITLE } from '~/constants';
-import { map } from 'lodash';
+import { chunk, isArray, map } from 'lodash';
 
 
 
@@ -15,12 +15,12 @@ export default function Footer({
   const SITEMAP = [
     {
       title: "Categories",
-      links: map(collections, (collection) => {
+      links: chunk(map(collections, (collection) => {
         return {
           name: collection.name,
           href: "/collections/" + collection.slug
         }
-      })
+      }), 2)
     },
 
     {
@@ -44,23 +44,30 @@ export default function Footer({
       <div className="mx-auto w-full max-w-7xl px-8">
         <div className="mx-auto grid w-full grid-cols-1 gap-8 py-12 grid-cols-2 md:grid-cols-3">
           {SITEMAP.map(({ title, links }, key) => (
-            <div key={key} className="w-full">
+            <div key={key} className="w-full border">
               <Typography
                 variant="small"
                 color="brown"
-                className="mb-4 font-bold uppercase opacity-90"
+                className="p-2 font-bold uppercase opacity-90 text-center border-b"
               >
                 {title}
               </Typography>
-              <ul className="space-y-1">
-                {links.map((link, key) => (
-                  <Typography key={key} as="li" color="blue-gray" className="font-normal text-deep-purple-900">
-                    <Link
+              <ul className="m-4">
+                {links.map((link: any, key) => (
+                  <Typography key={key} as="li" color="blue-gray" className="font-normal text-deep-purple-900 mx-auto grid grid-cols-1 md:grid-cols-2">
+                    {(isArray(link) ? link.map((obj: any) => (
+                      <Link
+                        to={obj.href}
+                        className="inline-block py-1 pr-2 transition-transform hover:scale-105"
+                      >
+                        {obj.name}
+                      </Link>)
+                    ) : (<Link
                       to={link.href}
                       className="inline-block py-1 pr-2 transition-transform hover:scale-105"
                     >
                       {link.name}
-                    </Link>
+                    </Link>))}
                   </Typography>
                 ))}
               </ul>

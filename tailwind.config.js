@@ -43,6 +43,10 @@ module.exports = withMT({
           '100%': { transform: 'translateY(0)' },
         },
       },
+      zIndex: {
+        '100': '100',
+      },
+
     },
   },
 });

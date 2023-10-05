@@ -45,7 +45,7 @@ export function Header({
 
   return (
     <>
-      <Navbar className=" sticky top-0 z-10 h-max max-w-full mx-auto max-w-screen-xl lg:pl-1 text-deep-purple-900">
+      <Navbar className=" sticky top-0 h-max max-w-full mx-auto max-w-screen-xl lg:pl-1 text-deep-purple-900 z-100">
         <div className="relative mx-auto flex items-center">
           <Link to="/" aria-label="Logo">
             <img
@@ -56,7 +56,7 @@ export function Header({
             />
           </Link>
           <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
-            <NavList collection={data.collections} />
+            <NavList toggleIsNavOpen={toggleIsNavOpen} collection={data.collections} />
           </div>
           <div className="ml-auto mr-2">
             <Badge content={cartQuantity} >
@@ -102,7 +102,7 @@ export function Header({
           </div>
         </div>
         <Collapse open={isNavOpen} className="overflow-scroll">
-          <NavList collection={data.collections} />
+          <NavList toggleIsNavOpen={toggleIsNavOpen} collection={data.collections} />
         </Collapse>
       </Navbar>
       <CartTray

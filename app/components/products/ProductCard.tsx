@@ -18,8 +18,8 @@ export function ProductCard({
         src={productAsset?.preview + '?preset=medium'}
       />
       <div className="h-2" />
-      <div className="text-sm text-deep-purple-500">{productName}</div>
-      <div className="text-md font-medium text-brown-500">
+      <div className="text-md text-deep-purple-500">{productName}</div>
+      <div className="text-lg font-medium text-brown-500">
         <Price priceWithTax={priceWithTax} currencyCode={currencyCode} />
       </div>
     </Link>

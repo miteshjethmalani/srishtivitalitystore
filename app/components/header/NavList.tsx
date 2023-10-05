@@ -12,6 +12,7 @@ import { ASSET_URL } from "~/constants";
 
 interface props {
   collection: Array<any>
+  toggleIsNavOpen: Function
 }
 export function NavList(props: props) {
   const navigate = useNavigate();
@@ -54,8 +55,8 @@ export function NavList(props: props) {
   }]
   return (
     <List className="mb-4 mt-2 flex flex-col text-deep-purple gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
-      <NavListMenu title={"Categories"} collection={categoriesCollection} />
-      <NavListMenu title={"Consultation"} collection={consultationCollection} />
+      <NavListMenu toggleIsNavOpen={props.toggleIsNavOpen} title={"Categories"} collection={categoriesCollection} />
+      <NavListMenu toggleIsNavOpen={props.toggleIsNavOpen} title={"Consultation"} collection={consultationCollection} />
       {navListItems.map(({ label, icon, url }, key) => (
         <MenuItem key={label} onClick={() => { navigate(url) }} className="flex items-center gap-2 lg:rounded-full">
           {createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}

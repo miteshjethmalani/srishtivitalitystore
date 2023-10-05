@@ -175,9 +175,9 @@ export default function FacetFilterControls({
                   </Disclosure.Button>
                 </h3>
                 <Disclosure.Panel className="pt-6">
-                  <div className="space-y-4">
+                  <div className="space-y-2 max-h-20 overflow-auto">
                     {facet.values.map((value, optionIdx) => (
-                      <div key={value.id} className="flex items-center">
+                      <div key={value.id} className="flex items-center ">
                         <input
                           id={`filter-${facet.id}-${optionIdx}`}
                           name={`fvid`}
