@@ -44,7 +44,7 @@ export default function Footer({
       <div className="mx-auto w-full max-w-7xl px-8">
         <div className="mx-auto grid w-full grid-cols-1 gap-8 py-12 grid-cols-2 md:grid-cols-3">
           {SITEMAP.map(({ title, links }, key) => (
-            <div key={key} className="w-full border">
+            <div key={title} className="w-full border">
               <Typography
                 variant="small"
                 color="brown"
@@ -57,6 +57,7 @@ export default function Footer({
                   <Typography key={key} as="li" color="blue-gray" className="font-normal text-deep-purple-900 mx-auto grid grid-cols-1 md:grid-cols-2">
                     {(isArray(link) ? link.map((obj: any) => (
                       <Link
+                        key={obj.name}
                         to={obj.href}
                         className="inline-block py-1 pr-2 transition-transform hover:scale-105"
                       >

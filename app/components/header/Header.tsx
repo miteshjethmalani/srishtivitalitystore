@@ -47,14 +47,14 @@ export function Header({
     <>
       <Navbar className=" sticky top-0 h-max max-w-full mx-auto max-w-screen-xl lg:pl-1 text-deep-purple-900 z-100">
         <div className="relative mx-auto flex items-center">
-          <Link to="/" aria-label="Logo">
+          <h1 className='cursor-pointer' onClick={() => { navigate("/") }} aria-label="Logo">
             <img
               src="/Srishtivitality_Logo.png"
               width={140}
               height={50}
               alt="Srishtivitality logo"
             />
-          </Link>
+          </h1>
           <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
             <NavList toggleIsNavOpen={toggleIsNavOpen} collection={data.collections} />
           </div>
@@ -78,16 +78,16 @@ export function Header({
 
               {isSignedIn ? (<ProfileMenu activeCustomer={data.activeCustomer.activeCustomer} />) :
                 (
-                    <IconButton
-                      aria-label="profile menu"
-                      size="sm"
-                      color="deep-purple"
-                      variant="text"
-                      onClick={()=>{navigate("/sign-in")}}
-                    >
-                      <UserCircleIcon className="h-6 w-6" />
-                    </IconButton>
-                  )}
+                  <IconButton
+                    aria-label="profile menu"
+                    size="sm"
+                    color="deep-purple"
+                    variant="text"
+                    onClick={() => { navigate("/sign-in") }}
+                  >
+                    <UserCircleIcon className="h-6 w-6" />
+                  </IconButton>
+                )}
             </div>
             <IconButton
               aria-label="menu"
