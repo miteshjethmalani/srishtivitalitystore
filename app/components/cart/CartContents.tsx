@@ -1,4 +1,4 @@
-import { Form, Link, useFetcher, useOutletContext } from '@remix-run/react';
+import { Form, Link, useFetcher, useNavigate, useOutletContext } from '@remix-run/react';
 import { Price } from '~/components/products/Price';
 import { ActiveOrderQuery, CurrencyCode } from '~/generated/graphql';
 
@@ -16,6 +16,8 @@ export function CartContents({
   removeItem?: (lineId: string) => void;
 }) {
   const isEditable = editable !== false;
+  const navigate = useNavigate();
+
   return (
     <div className="flow-root">
       <ul role="list" className="-my-6 divide-y divide-gray-200 p-0">
@@ -26,6 +28,7 @@ export function CartContents({
                 src={line.featuredAsset?.preview + '?preset=thumb'}
                 alt={line.productVariant.name}
                 className="w-full h-full object-center object-cover"
+                onClick={()=>navigate(`/products/${line.productVariant.product.slug}`)}
               />
             </div>
 

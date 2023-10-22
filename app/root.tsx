@@ -1,4 +1,5 @@
 import {
+  Await,
   isRouteErrorResponse,
   Link,
   Links,
@@ -22,14 +23,12 @@ import {
 import { getCollections } from '~/providers/collections/collections';
 import { activeChannel } from '~/providers/channel/channel';
 import { APP_META_DESCRIPTION, APP_META_TITLE } from '~/constants';
-import { useEffect, useState } from 'react';
-import { CartTray } from '~/components/cart/CartTray';
+import { useEffect} from 'react';
 import { getActiveCustomer } from '~/providers/customer/customer';
 import Footer from '~/components/footer/Footer';
 import { useActiveOrder } from '~/utils/use-active-order';
 import { setApiUrl } from '~/graphqlWrapper';
 import * as gtag from "~/utils/gtags.client";
-import stylesheet from "tailwind.css";
 
 export const meta: MetaFunction = () => {
   return { title: APP_META_TITLE, description: APP_META_DESCRIPTION };
@@ -38,8 +37,7 @@ export const meta: MetaFunction = () => {
 export function links() {
   return [
     ...headerLinks()
-  ,  { rel: 'stylesheet', href: styles, async: true }
-  , { rel: 'stylesheet', href: stylesheet, async: true }];
+    , { rel: 'stylesheet', href: styles, async: true }];
 }
 
 const devMode =
@@ -71,7 +69,7 @@ export type RootLoaderData = {
   activeCustomer: Awaited<ReturnType<typeof getActiveCustomer>>;
   activeChannel: Awaited<ReturnType<typeof activeChannel>>;
   collections: Awaited<ReturnType<typeof getCollections>>;
-  gaTrackingId: string | undefined; 
+  gaTrackingId: string | undefined;
 };
 
 
@@ -131,7 +129,7 @@ export default function App() {
         <link rel="icon" href="/favicon.ico" type="image/png"></link>
       </head>
       <body>
-         {process.env.NODE_ENV === "development" || !gaTrackingId ? null : (
+        {process.env.NODE_ENV === "development" || !gaTrackingId ? null : (
           <>
             <script
               async
@@ -153,7 +151,6 @@ export default function App() {
             />
           </>
         )}
-        
         <Header
           adjustOrderLine={adjustOrderLine}
           removeItem={removeItem}
@@ -169,12 +166,11 @@ export default function App() {
             }}
           />
         </main>
+        <Footer collections={collections}></Footer>
         <ScrollRestoration />
         <Scripts />
-        <Footer collections={collections}></Footer>
-
         {devMode && <LiveReload />}
-        
+
       </body>
     </html>
   );
@@ -232,7 +228,7 @@ export function ErrorBoundary() {
   let tagline = "Oopsy daisy";
   let headline = "Unexpected error";
   let description = "We couldn't handle your request. Please try again later.";
-  
+
   const error = useRouteError();
   if (isRouteErrorResponse(error)) {
     tagline = `${error.status} error`;

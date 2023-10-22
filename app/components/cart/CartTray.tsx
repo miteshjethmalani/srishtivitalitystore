@@ -51,7 +51,7 @@ export function CartTray({
         </IconButton>
       </div>
       <List>
-        <div className="mt-8">
+        <div className="mt-8 overflow-auto h-80">
           {activeOrder?.totalQuantity ? (
             <CartContents
               orderLines={activeOrder?.lines ?? []}
