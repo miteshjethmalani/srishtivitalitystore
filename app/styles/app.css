@@ -971,10 +971,6 @@ button:disabled {
   margin: auto;
 }
 
-#app .m-2 {
-  margin: 0.5rem;
-}
-
 #app .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -1324,6 +1320,10 @@ button:disabled {
 
 #app .h-24 {
   height: 6rem;
+}
+
+#app .h-80 {
+  height: 20rem;
 }
 
 #app .h-48 {
@@ -2000,16 +2000,16 @@ button:disabled {
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
 
-#app .space-y-1 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
-}
-
 #app .space-y-10 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
+}
+
+#app .space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
 }
 
 #app .space-y-3 > :not([hidden]) ~ :not([hidden]) {
@@ -2277,11 +2277,6 @@ button:disabled {
 
 #app .border-0 {
   border-width: 0px;
-}
-
-#app .border-y-2 {
-  border-top-width: 2px;
-  border-bottom-width: 2px;
 }
 
 #app .border-r-0 {
@@ -7136,10 +7131,6 @@ button:disabled {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
-  #app .sm\:grid-cols-1 {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-
   #app .sm\:flex-row {
     flex-direction: row;
   }
@@ -7297,10 +7288,6 @@ button:disabled {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  #app .md\:grid-cols-1 {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-
   #app .md\:flex-row {
     flex-direction: row;
   }
@@ -7339,11 +7326,6 @@ button:disabled {
   #app .md\:text-4xl {
     font-size: 2.25rem;
     line-height: 2.5rem;
-  }
-
-  #app .md\:text-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
   }
 
   #app .md\:line-clamp-2 {

@@ -9,17 +9,17 @@ import { DataFunctionArgs, json, redirect } from '@remix-run/server-runtime';
 import { TabProps } from '~/components/tabs/Tab';
 import { TabsContainer } from '~/components/tabs/TabsContainer';
 import { getActiveCustomerDetails } from '~/providers/customer/customer';
-import { authenticator } from '~/server/auth.server';
+// import { authenticator } from '~/server/auth.server';
 import {Typography, Button} from '@material-tailwind/react';
 
 export async function loader({ request }: DataFunctionArgs) {
   const { activeCustomer } = await getActiveCustomerDetails({ request });
-  if (!activeCustomer) {
+  /* if (!activeCustomer) {
     const user: any = await authenticator.isAuthenticated(request, {
       failureRedirect: "/sign-in",
     });
     return json({ activeCustomer: user.authenticate })
-  }
+  } */
   return json({ activeCustomer });
 }
 

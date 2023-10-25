@@ -81,7 +81,7 @@ export async function requestForgotPassword(
   options: QueryOptions,
 ) {
   return sdk
-    .requestPasswordReset({emailAddress}, options)
+    .requestPasswordReset({ emailAddress }, options)
     .then((res) => res.requestPasswordReset);
 }
 
@@ -91,7 +91,7 @@ export async function resetPassword(
   options: QueryOptions,
 ) {
   return sdk
-    .resetPassword({password,token}, options)
+    .resetPassword({ password, token }, options)
     .then((res) => res.resetPassword);
 }
 
@@ -113,7 +113,7 @@ export async function updateCustomerAddress(
     .then((res) => res.updateCustomerAddress);
 }
 
-export const onSignIn = (googleUser: any) => {
+/* export const onSignIn = (googleUser: any) => {
   return gql(
     `mutation Authenticate($token: String!) {
         authenticate(input: {
@@ -127,7 +127,7 @@ export const onSignIn = (googleUser: any) => {
     }`,
     { token: googleUser.id }
   )
-}
+} */
 
 export async function createCustomerAddress(
   input: CreateAddressInput,
@@ -290,3 +290,31 @@ gql`
     }
   }
 `;
+
+gql`
+    mutation requestPasswordReset($emailAddress: String!) {
+  requestPasswordReset(
+    emailAddress: $emailAddress
+  ) {
+    __typename
+    ... on ErrorResult {
+      errorCode
+      message
+    }
+  }
+}
+`;
+
+gql`
+    mutation resetPassword($password: String!, $token: String!) {
+  resetPassword(
+    password: $password, token: $token
+  ) {
+    __typename
+    ... on ErrorResult {
+      errorCode
+      message
+    }
+  }
+}
+    `;

@@ -43,14 +43,14 @@ export function adjustOrderLine(
 export function applyCouponCode(
   couponCode: string,
   options: QueryOptions,
-){
+) {
   return sdk.applyCouponCode({ couponCode }, options);
 }
 
 export function removeCouponCode(
   couponCode: string,
   options: QueryOptions,
-){
+) {
   return sdk.removeCouponCode({ couponCode }, options);
 }
 
@@ -169,6 +169,13 @@ gql`
     currencyCode
     totalQuantity
     couponCodes
+    discounts{
+      adjustmentSource
+      type
+      description
+      amount
+      amountWithTax
+    }
     subTotal
     subTotalWithTax
     taxSummary {
@@ -207,6 +214,8 @@ gql`
       unitPriceWithTax
       linePriceWithTax
       quantity
+      discountedLinePrice
+      discountedLinePriceWithTax
       featuredAsset {
         id
         preview
@@ -246,3 +255,35 @@ gql`
     }
   }
 `;
+
+gql`
+    mutation applyCouponCode($couponCode: String!) {
+      applyCouponCode(couponCode: $couponCode) {
+    ...OrderDetail
+    ... on ErrorResult {
+      errorCode
+      message
+    }
+  }
+}`;
+
+gql`
+    mutation removeCouponCode($couponCode: String!) {
+      removeCouponCode(couponCode: $couponCode) {
+    ...OrderDetail
+  }
+}`;
+
+gql`
+query activeOrder {
+activeOrder {
+...OrderDetail
+}
+}`;
+
+gql`
+    query orderByCode($code: String!) {
+  orderByCode(code: $code) {
+    ...OrderDetail
+  }
+}`;

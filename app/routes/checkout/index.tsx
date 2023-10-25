@@ -69,7 +69,7 @@ export default function CheckoutShipping() {
     shippingAddress?.fullName ??
     (customer ? `${customer.firstName} ${customer.lastName}` : ``);
   const canProceedToPayment =
-    customer &&
+    customer ||
       ((shippingAddress?.streetLine1 && shippingAddress?.postalCode) ||
         selectedAddressIndex >= 0) &&
       activeOrder?.shippingLines?.length &&

@@ -18,6 +18,10 @@ export function generateBraintreeClientToken(options: QueryOptions) {
   return sdk.generateBraintreeClientToken({}, options);
 }
 
+export function getPayAidApiToken(options: QueryOptions) {
+  return sdk.generatePayAidClientToken({}, options);
+}
+
 export function createStripePaymentIntent(options: QueryOptions) {
   return sdk.createStripePaymentIntent({}, options);
 }
@@ -109,5 +113,11 @@ gql`
 gql`
   query generateBraintreeClientToken {
     generateBraintreeClientToken
+  }
+`;
+
+gql`
+  query generatePayAidClientToken {
+    generatePayAidClientToken
   }
 `;

@@ -73,6 +73,7 @@ enum AssetType {
 }
 
 input AuthenticationInput {
+  google: GoogleAuthInput
   native: NativeAuthInput
 }
 
@@ -137,7 +138,7 @@ type Collection implements Node {
   breadcrumbs: [CollectionBreadcrumb!]!
   children: [Collection!]
   createdAt: DateTime!
-  customFields: JSON
+  customFields: CollectionCustomFields
   description: String!
   featuredAsset: Asset
   filters: [ConfigurableOperation!]!
@@ -159,11 +160,20 @@ type CollectionBreadcrumb {
   slug: String!
 }
 
+type CollectionCustomFields {
+  metaDescription: String
+  metaKeywords: String
+  metaTitle: String
+}
+
 input CollectionFilterParameter {
   createdAt: DateOperators
   description: StringOperators
   id: IDOperators
   languageCode: StringOperators
+  metaDescription: StringOperators
+  metaKeywords: StringOperators
+  metaTitle: StringOperators
   name: StringOperators
   parentId: IDOperators
   position: NumberOperators
@@ -193,6 +203,7 @@ input CollectionListOptions {
 
   """Takes n results, for use in pagination"""
   take: Int
+  topLevelOnly: Boolean
 }
 
 """
@@ -208,6 +219,9 @@ input CollectionSortParameter {
   createdAt: SortOrder
   description: SortOrder
   id: SortOrder
+  metaDescription: SortOrder
+  metaKeywords: SortOrder
+  metaTitle: SortOrder
   name: SortOrder
   parentId: SortOrder
   position: SortOrder
@@ -262,6 +276,27 @@ type ConfigurableOperationDefinition {
 input ConfigurableOperationInput {
   arguments: [ConfigArgInput!]!
   code: String!
+}
+
+type ContactUs implements Node {
+  channel: Channel!
+  createdAt: DateTime!
+  customer: Customer
+  email: String!
+  id: ID!
+  productVariant: ProductVariant!
+  status: ContactUsSubscriptionStatus!
+  updatedAt: DateTime!
+}
+
+type ContactUsList implements PaginatedList {
+  items: [ContactUs!]!
+  totalItems: Int!
+}
+
+enum ContactUsSubscriptionStatus {
+  Answered
+  NotAnswered
 }
 
 type Coordinate {
@@ -325,6 +360,13 @@ input CreateAddressInput {
   streetLine1: String!
   streetLine2: String
 }
+
+input CreateContactUsInput {
+  email: String!
+  message: String!
+}
+
+union CreateContactUsSubscriptionResult = ContactUs
 
 input CreateCustomerInput {
   customFields: JSON
@@ -989,7 +1031,6 @@ enum ErrorCode {
   COUPON_CODE_INVALID_ERROR
   COUPON_CODE_LIMIT_ERROR
   EMAIL_ADDRESS_CONFLICT_ERROR
-  EMAIL_ADDRESS_NOT_FOUND_ERROR
   GUEST_CHECKOUT_ERROR
   IDENTIFIER_CHANGE_TOKEN_EXPIRED_ERROR
   IDENTIFIER_CHANGE_TOKEN_INVALID_ERROR
@@ -1164,6 +1205,10 @@ enum GlobalFlag {
   FALSE
   INHERIT
   TRUE
+}
+
+input GoogleAuthInput {
+  token: String!
 }
 
 """
@@ -1883,15 +1928,16 @@ type Mutation {
 
   """Authenticates the user using a named authentication strategy"""
   authenticate(input: AuthenticationInput!, rememberMe: Boolean): AuthenticationResult!
+  createContactUsSubscription(input: CreateContactUsInput!): CreateContactUsSubscriptionResult!
 
   """Create a new Customer Address"""
   createCustomerAddress(input: CreateAddressInput!): Address!
-  createStripePaymentIntent: String
-  
-  createContactUsSubscription($input: CreateContactUsInput!):ContactUs!
+  createStripePaymentIntent: String!
 
   """Delete an existing Address"""
   deleteCustomerAddress(id: ID!): Success!
+  generatePayAidClientToken(orderId: ID!): String!
+  generatePayAidOrderId(orderId: ID!): generatePayAidOrderIdResult!
 
   """
   Authenticates the user using the native authentication strategy. This mutation is an alias for `authenticate({ native: { ... }})`
@@ -2076,7 +2122,7 @@ type Order implements Node {
   couponCodes: [String!]!
   createdAt: DateTime!
   currencyCode: CurrencyCode!
-  customFields: JSON
+  customFields: OrderCustomFields
   customer: Customer
   discounts: [Discount!]!
   fulfillments: [Fulfillment!]
@@ -2149,6 +2195,10 @@ type OrderAddress {
   streetLine2: String
 }
 
+type OrderCustomFields {
+  payaid_order_id: String
+}
+
 input OrderFilterParameter {
   active: BooleanOperators
   code: StringOperators
@@ -2156,6 +2206,7 @@ input OrderFilterParameter {
   currencyCode: StringOperators
   id: IDOperators
   orderPlacedAt: DateOperators
+  payaid_order_id: StringOperators
   shipping: NumberOperators
   shippingWithTax: NumberOperators
   state: StringOperators
@@ -2302,6 +2353,7 @@ input OrderSortParameter {
   createdAt: SortOrder
   id: SortOrder
   orderPlacedAt: SortOrder
+  payaid_order_id: SortOrder
   shipping: SortOrder
   shippingWithTax: SortOrder
   state: SortOrder
@@ -2384,6 +2436,15 @@ type PasswordValidationError implements ErrorResult {
   errorCode: ErrorCode!
   message: String!
   validationErrorMessage: String!
+}
+
+type PayAidOrderIdGenerationError {
+  errorCode: String
+  message: String
+}
+
+type PayAidOrderIdSuccess {
+  PayAidOrderId: String!
 }
 
 type Payment implements Node {
@@ -2792,7 +2853,7 @@ type Product implements Node {
   assets: [Asset!]!
   collections: [Collection!]!
   createdAt: DateTime!
-  customFields: JSON
+  customFields: ProductCustomFields
   description: String!
   facetValues: [FacetValue!]!
   featuredAsset: Asset
@@ -2811,11 +2872,20 @@ type Product implements Node {
   variants: [ProductVariant!]!
 }
 
+type ProductCustomFields {
+  metaDescription: String
+  metaKeywords: String
+  metaTitle: String
+}
+
 input ProductFilterParameter {
   createdAt: DateOperators
   description: StringOperators
   id: IDOperators
   languageCode: StringOperators
+  metaDescription: StringOperators
+  metaKeywords: StringOperators
+  metaTitle: StringOperators
   name: StringOperators
   slug: StringOperators
   updatedAt: DateOperators
@@ -2890,6 +2960,9 @@ input ProductSortParameter {
   createdAt: SortOrder
   description: SortOrder
   id: SortOrder
+  metaDescription: SortOrder
+  metaKeywords: SortOrder
+  metaTitle: SortOrder
   name: SortOrder
   slug: SortOrder
   updatedAt: SortOrder
@@ -2909,7 +2982,7 @@ type ProductVariant implements Node {
   assets: [Asset!]!
   createdAt: DateTime!
   currencyCode: CurrencyCode!
-  customFields: JSON
+  customFields: ProductVariantCustomFields
   facetValues: [FacetValue!]!
   featuredAsset: Asset
   id: ID!
@@ -2928,6 +3001,11 @@ type ProductVariant implements Node {
   updatedAt: DateTime!
 }
 
+type ProductVariantCustomFields {
+  weight: Float
+  weightUoM: String
+}
+
 input ProductVariantFilterParameter {
   createdAt: DateOperators
   currencyCode: StringOperators
@@ -2940,6 +3018,8 @@ input ProductVariantFilterParameter {
   sku: StringOperators
   stockLevel: StringOperators
   updatedAt: DateOperators
+  weight: NumberOperators
+  weightUoM: StringOperators
 }
 
 type ProductVariantList implements PaginatedList {
@@ -2976,6 +3056,8 @@ input ProductVariantSortParameter {
   sku: SortOrder
   stockLevel: SortOrder
   updatedAt: SortOrder
+  weight: SortOrder
+  weightUoM: SortOrder
 }
 
 type ProductVariantTranslation {
@@ -3078,6 +3160,7 @@ type Query {
   """A list of Facets available to the shop"""
   facets(options: FacetListOptions): FacetList!
   generateBraintreeClientToken: String
+  generatePayAidClientToken: String
 
   """Returns information about the current authenticated User"""
   me: CurrentUser
@@ -3173,20 +3256,6 @@ input RegisterCustomerInput {
   title: String
 }
 
-input CreateContactUsInput {
-  email: String
-  message: String
-}
-
-type ContactUs {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  email: String
-  message: String
-  status: ContactUsStatus!
-}
-
 type RelationCustomFieldConfig implements CustomField {
   description: [LocalizedString!]
   entity: String!
@@ -3229,6 +3298,7 @@ input SearchInput {
   collectionSlug: String
   facetValueFilters: [FacetValueFilterInput!]
   groupByProduct: Boolean
+  inStock: Boolean
   skip: Int
   sort: SearchResultSortParameter
   take: Int
@@ -3240,21 +3310,10 @@ type SearchReindexResponse {
 }
 
 type SearchResponse {
-  cacheIdentifier: SearchResponseCacheIdentifier
   collections: [CollectionResult!]!
   facetValues: [FacetValueResult!]!
   items: [SearchResult!]!
   totalItems: Int!
-}
-
-"""
-This type is here to allow us to easily purge the Stellate cache
-of any search results where the collectionSlug is used. We cannot rely on
-simply purging the SearchResult type, because in the case of an empty 'items'
-array, Stellate cannot know that that particular query now needs to be purged.
-"""
-type SearchResponseCacheIdentifier {
-  collectionSlug: String
 }
 
 type SearchResult {
@@ -3264,6 +3323,7 @@ type SearchResult {
   description: String!
   facetIds: [ID!]!
   facetValueIds: [ID!]!
+  inStock: Boolean!
   price: SearchResultPrice!
   priceWithTax: SearchResultPrice!
   productAsset: SearchResultAsset
@@ -3503,6 +3563,11 @@ input UpdateAddressInput {
   streetLine2: String
 }
 
+input UpdateContactUsInput {
+  id: ID!
+  status: ContactUsSubscriptionStatus!
+}
+
 union UpdateCustomerEmailAddressResult = IdentifierChangeTokenExpiredError | IdentifierChangeTokenInvalidError | NativeAuthStrategyError | Success
 
 input UpdateCustomerInput {
@@ -3515,8 +3580,12 @@ input UpdateCustomerInput {
 
 union UpdateCustomerPasswordResult = InvalidCredentialsError | NativeAuthStrategyError | PasswordValidationError | Success
 
+input UpdateOrderCustomFieldsInput {
+  payaid_order_id: String
+}
+
 input UpdateOrderInput {
-  customFields: JSON
+  customFields: UpdateOrderCustomFieldsInput
 }
 
 union UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderLimitError | OrderModificationError
@@ -3564,3 +3633,5 @@ type Zone implements Node {
   name: String!
   updatedAt: DateTime!
 }
+
+union generatePayAidOrderIdResult = PayAidOrderIdGenerationError | PayAidOrderIdSuccess

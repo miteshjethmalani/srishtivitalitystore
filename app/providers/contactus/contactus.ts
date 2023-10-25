@@ -1,15 +1,15 @@
 import gql from 'graphql-tag';
 import {
-    ContactUsMutation,
-    ContactUsMutationVariables,
+    CreateContactUsSubscriptionMutation,
+    CreateContactUsSubscriptionMutationVariables,
 } from '~/generated/graphql';
 import { QueryOptions, sdk, WithHeaders } from '~/graphqlWrapper';
 
 export const contactUs = async (
   options: QueryOptions,
-  variables: ContactUsMutationVariables,
+  variables: CreateContactUsSubscriptionMutationVariables,
 ): Promise<
-  WithHeaders<ContactUsMutation['createContactUsSubscription']>
+  WithHeaders<CreateContactUsSubscriptionMutation['createContactUsSubscription']>
 > => {
   return sdk.createContactUsSubscription(variables, options).then((res) => {
     return ({
@@ -19,16 +19,9 @@ export const contactUs = async (
 };
 
 gql`
-  mutation createContactUsSubscription($email: String, $message: String!) {
-    createContactUsSubscription(email: $email, message: $message) {
-      __typename
-      ... on Success {
-        success
-      }
-      ... on ErrorResult {
-        errorCode
-        message
-      }
-    }
+    mutation createContactUsSubscription($input: CreateContactUsInput!) {
+      createContactUsSubscription(input : $input) {
+    __typename
   }
-`;
+}`
+    

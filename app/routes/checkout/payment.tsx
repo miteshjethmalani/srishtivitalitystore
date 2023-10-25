@@ -6,6 +6,7 @@ import {
   getEligiblePaymentMethods,
   getNextOrderStates,
   transitionOrderToState,
+  getPayAidApiToken,
 } from '~/providers/checkout/checkout';
 import { Form, useLoaderData, useOutletContext } from '@remix-run/react';
 import { CreditCardIcon, XCircleIcon } from '@heroicons/react/24/solid';
@@ -16,6 +17,7 @@ import { StripePayments } from '~/components/checkout/stripe/StripePayments';
 import { DummyPayments } from '~/components/checkout/DummyPayments';
 import { BraintreeDropIn } from '~/components/checkout/braintree/BraintreePayments';
 import { getActiveOrder } from '~/providers/orders/order';
+import { PayAidPayments } from '~/components/checkout/payaid/PayAidPayments';
 
 export async function loader({ params, request }: DataFunctionArgs) {
   const session = await sessionStorage.getSession(
@@ -68,6 +70,22 @@ export async function loader({ params, request }: DataFunctionArgs) {
       brainTreeError = e.message;
     }
   }
+
+  let payAidKey: string | undefined;
+  let payAidError: string | undefined;
+  if (
+    eligiblePaymentMethods.find((method) => method.code.includes('payaid'))
+  ) {
+    try {
+      const generatePayAidTokenResult = await getPayAidApiToken({
+        request,
+      });
+      payAidKey =
+      generatePayAidTokenResult.generatePayAidClientToken ?? '';
+    } catch (e: any) {
+      payAidError = e.message;
+    }
+  }
   return {
     eligiblePaymentMethods,
     stripePaymentIntent,
@@ -75,6 +93,8 @@ export async function loader({ params, request }: DataFunctionArgs) {
     stripeError,
     brainTreeKey,
     brainTreeError,
+    payAidKey,
+    payAidError,
     error,
   };
 }
@@ -84,6 +104,7 @@ export async function action({ params, request }: DataFunctionArgs) {
   const paymentMethodCode = body.get('paymentMethodCode');
   const paymentNonce = body.get('paymentNonce');
   if (typeof paymentMethodCode === 'string') {
+    console.log(paymentMethodCode)
     const { nextOrderStates } = await getNextOrderStates({
       request,
     });
@@ -92,6 +113,7 @@ export async function action({ params, request }: DataFunctionArgs) {
         'ArrangingPayment',
         { request },
       );
+      console.log(transitionResult)
       if (transitionResult.transitionOrderToState?.__typename !== 'Order') {
         throw new Response('Not Found', {
           status: 400,
@@ -104,6 +126,7 @@ export async function action({ params, request }: DataFunctionArgs) {
       { method: paymentMethodCode, metadata: { nonce: paymentNonce } },
       { request },
     );
+    console.log(result)
     if (result.addPaymentToOrder.__typename === 'Order') {
       return redirect(
         `/checkout/confirmation/${result.addPaymentToOrder.code}`,
@@ -125,12 +148,14 @@ export default function CheckoutPayment() {
     stripeError,
     brainTreeKey,
     brainTreeError,
+    payAidKey,
+    payAidError,
     error,
   } = useLoaderData<typeof loader>();
   const { activeOrderFetcher, activeOrder } = useOutletContext<OutletContext>();
 
   const paymentError = getPaymentError(error);
-
+  console.log(activeOrder, error);
   return (
     <div className="flex flex-col items-center divide-gray-200 divide-y">
       {eligiblePaymentMethods.map((paymentMethod: any) =>
@@ -165,6 +190,25 @@ export default function CheckoutPayment() {
                 clientSecret={`${stripePaymentIntent}`!}
                 publishableKey={`${stripePublishableKey}`!}
               ></StripePayments>
+            )}
+          </div>
+        ) : paymentMethod.code.includes('payaidasd') ? (
+          <div className="py-3 w-full" key={paymentMethod.id}>
+            {payAidError ? (
+              <div>
+                <p className="text-red-700 font-bold">PayAid error:</p>
+                <p className="text-sm">{payAidError}</p>
+              </div>
+            ) : (
+              <PayAidPayments
+                fullAmount={activeOrder?.totalWithTax ?? 0}
+                currencyCode={
+                  activeOrder?.currencyCode ?? ('USD' as CurrencyCode)
+                }
+                show={true}
+                shippingAddress={activeOrder?.shippingAddress}
+                authorization={payAidKey!}
+              />
             )}
           </div>
         ) : (
