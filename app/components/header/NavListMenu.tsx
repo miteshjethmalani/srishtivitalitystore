@@ -17,6 +17,7 @@ interface props {
   collection: Array<any>;
   title: string;
   toggleIsNavOpen: Function;
+  isNavOpen: boolean;
 }
 export function NavListMenu(props: props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +25,7 @@ export function NavListMenu(props: props) {
   const navigate = useNavigate();
 
   const renderItems = props.collection.map(({ id, name, url, asset }) => (
-    <MenuItem onClick={() => {navigate(url);} } key={id} className="flex items-center gap-3 rounded-lg">
+    <MenuItem onClick={() => { navigate(url); props.isNavOpen ? props.toggleIsNavOpen() : "" }} key={id} className="flex items-center gap-3 rounded-lg">
       <img
         alt={`Category ${name}`}
         className="h-14 w-14"

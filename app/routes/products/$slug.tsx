@@ -128,6 +128,7 @@ export default function ProductSlug() {
               <ScrollableContainer>
                 {product.assets.map((asset) => (
                   <div
+                    key={asset.id}
                     className={`basis-1/3 md:basis-1/4 flex-shrink-0 select-none touch-pan-x rounded-lg ${
                       featuredAsset?.id == asset.id
                         ? 'outline outline-2 outline-primary outline-offset-[-2px]'

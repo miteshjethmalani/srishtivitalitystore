@@ -17,12 +17,12 @@ export default function Checkout() {
   const data = useRootLoader();
   const navigate = useNavigate();
 
-  /* useEffect(()=>{
+  useEffect(()=>{
   const isSignedIn = !!data.activeCustomer.activeCustomer?.id;
     if(!isSignedIn){
       navigate("/sign-in?redirectTo=/checkout",{replace: true})
     }
-  },[]) */
+  },[])
   const outletContext = useOutletContext<OutletContext>();
   const { activeOrder, adjustOrderLine, removeItem } = outletContext;
   const location = useLocation();
