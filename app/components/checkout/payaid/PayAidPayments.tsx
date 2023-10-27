@@ -26,12 +26,13 @@ export function PayAidPayments(props: {
 
       const formData = new FormData();
       formData.set('paymentMethodCode', 'payaid');
-      
+      formData.set('paymentNonce', '');
+
       let request: Request;
       request = new Request('');
       console.log(request);
       await addPaymentToOrder(
-        { method: 'payaid', metadata: '' },
+        { method: 'payaid', metadata: {} },
         { request },
       );
 

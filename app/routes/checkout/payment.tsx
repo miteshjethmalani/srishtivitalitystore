@@ -108,6 +108,7 @@ export async function action({ params, request }: DataFunctionArgs) {
     const { nextOrderStates } = await getNextOrderStates({
       request,
     });
+    console.log(nextOrderStates)
     if (nextOrderStates.includes('ArrangingPayment')) {
       const transitionResult = await transitionOrderToState(
         'ArrangingPayment',
@@ -192,7 +193,7 @@ export default function CheckoutPayment() {
               ></StripePayments>
             )}
           </div>
-        ) : paymentMethod.code.includes('payaidasd') ? (
+        ) : paymentMethod.code.includes('payaid') ? (
           <div className="py-3 w-full" key={paymentMethod.id}>
             {payAidError ? (
               <div>

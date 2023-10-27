@@ -18,8 +18,8 @@ export const validateContactUsForm = (
   if (!email || typeof email !== 'string' || !email.match(EMAIL_REGEX)) {
     errors.email = 'A valid e-mail address is required.';
   }
-  if (!message || typeof message !== 'string' || message.length < 20) {
-    errors.message = 'Please provide atleast 20 characters in message';
+  if (!message || typeof message !== 'string' || message.length < 10) {
+    errors.message = 'Please provide atleast 10 characters in message';
   }
 
   return errors;

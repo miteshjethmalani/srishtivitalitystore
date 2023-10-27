@@ -967,7 +967,14 @@ export type Facet = Node & {
   name: Scalars['String'];
   translations: Array<FacetTranslation>;
   updatedAt: Scalars['DateTime'];
+  /** Returns a paginated, sortable, filterable list of the Facet's values. Added in v2.1.0. */
+  valueList: FacetValueList;
   values: Array<FacetValue>;
+};
+
+
+export type FacetValueListArgs = {
+  options?: InputMaybe<FacetValueListOptions>;
 };
 
 export type FacetFilterParameter = {
@@ -1021,6 +1028,7 @@ export type FacetValue = Node & {
   createdAt: Scalars['DateTime'];
   customFields?: Maybe<Scalars['JSON']>;
   facet: Facet;
+  facetId: Scalars['ID'];
   id: Scalars['ID'];
   languageCode: LanguageCode;
   name: Scalars['String'];
@@ -1041,6 +1049,35 @@ export type FacetValueFilterInput = {
   or?: InputMaybe<Array<Scalars['ID']>>;
 };
 
+export type FacetValueFilterParameter = {
+  code?: InputMaybe<StringOperators>;
+  createdAt?: InputMaybe<DateOperators>;
+  facetId?: InputMaybe<IdOperators>;
+  id?: InputMaybe<IdOperators>;
+  languageCode?: InputMaybe<StringOperators>;
+  name?: InputMaybe<StringOperators>;
+  updatedAt?: InputMaybe<DateOperators>;
+};
+
+export type FacetValueList = PaginatedList & {
+  __typename?: 'FacetValueList';
+  items: Array<FacetValue>;
+  totalItems: Scalars['Int'];
+};
+
+export type FacetValueListOptions = {
+  /** Allows the results to be filtered */
+  filter?: InputMaybe<FacetValueFilterParameter>;
+  /** Specifies whether multiple "filter" arguments should be combines with a logical AND or OR operation. Defaults to AND. */
+  filterOperator?: InputMaybe<LogicalOperator>;
+  /** Skips the first n results, for use in pagination */
+  skip?: InputMaybe<Scalars['Int']>;
+  /** Specifies which properties to sort the results by */
+  sort?: InputMaybe<FacetValueSortParameter>;
+  /** Takes n results, for use in pagination */
+  take?: InputMaybe<Scalars['Int']>;
+};
+
 /**
  * Which FacetValues are present in the products returned
  * by the search, and in what quantity.
@@ -1049,6 +1086,15 @@ export type FacetValueResult = {
   __typename?: 'FacetValueResult';
   count: Scalars['Int'];
   facetValue: FacetValue;
+};
+
+export type FacetValueSortParameter = {
+  code?: InputMaybe<SortOrder>;
+  createdAt?: InputMaybe<SortOrder>;
+  facetId?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  name?: InputMaybe<SortOrder>;
+  updatedAt?: InputMaybe<SortOrder>;
 };
 
 export type FacetValueTranslation = {
@@ -1657,7 +1703,6 @@ export type Mutation = {
   createStripePaymentIntent: Scalars['String'];
   /** Delete an existing Address */
   deleteCustomerAddress: Success;
-  generatePayAidClientToken: Scalars['String'];
   generatePayAidOrderId: GeneratePayAidOrderIdResult;
   /** Authenticates the user using the native authentication strategy. This mutation is an alias for `authenticate({ native: { ... }})` */
   login: NativeAuthenticationResult;
@@ -1777,11 +1822,6 @@ export type MutationCreateCustomerAddressArgs = {
 
 export type MutationDeleteCustomerAddressArgs = {
   id: Scalars['ID'];
-};
-
-
-export type MutationGeneratePayAidClientTokenArgs = {
-  orderId: Scalars['ID'];
 };
 
 
@@ -2116,6 +2156,7 @@ export type OrderLine = Node & {
   proratedUnitPrice: Scalars['Money'];
   /** The proratedUnitPrice including tax */
   proratedUnitPriceWithTax: Scalars['Money'];
+  /** The quantity of items purchased */
   quantity: Scalars['Int'];
   taxLines: Array<TaxLine>;
   taxRate: Scalars['Float'];
@@ -2807,6 +2848,7 @@ export type Promotion = Node & {
   startsAt?: Maybe<Scalars['DateTime']>;
   translations: Array<PromotionTranslation>;
   updatedAt: Scalars['DateTime'];
+  usageLimit?: Maybe<Scalars['Int']>;
 };
 
 export type PromotionList = PaginatedList & {
@@ -2874,7 +2916,7 @@ export type Query = {
   /** A list of Facets available to the shop */
   facets: FacetList;
   generateBraintreeClientToken?: Maybe<Scalars['String']>;
-  generatePayAidClientToken?: Maybe<Scalars['String']>;
+  generatePayAidClientToken: Scalars['String'];
   /** Returns information about the current authenticated User */
   me?: Maybe<CurrentUser>;
   /** Returns the possible next states that the activeOrder can transition to */
@@ -2918,6 +2960,12 @@ export type QueryFacetArgs = {
 
 export type QueryFacetsArgs = {
   options?: InputMaybe<FacetListOptions>;
+};
+
+
+export type QueryGeneratePayAidClientTokenArgs = {
+  includeCustomerId?: InputMaybe<Scalars['Boolean']>;
+  orderId?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -3552,7 +3600,7 @@ export type GenerateBraintreeClientTokenQuery = { __typename?: 'Query', generate
 export type GeneratePayAidClientTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GeneratePayAidClientTokenQuery = { __typename?: 'Query', generatePayAidClientToken?: string | null };
+export type GeneratePayAidClientTokenQuery = { __typename?: 'Query', generatePayAidClientToken: string };
 
 export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4071,8 +4119,8 @@ export const GenerateBraintreeClientTokenDocument = gql`
     `;
 export const GeneratePayAidClientTokenDocument = gql`
     query generatePayAidClientToken {
-      generatePayAidClientToken
-    }
+  generatePayAidClientToken
+}
     `;
 export const CollectionsDocument = gql`
     query collections {
