@@ -56,7 +56,7 @@ export function Header({
             />
           </h1>
           <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
-            <NavList toggleIsNavOpen={toggleIsNavOpen} collection={data.collections} />
+            <NavList isNavOpen={isNavOpen} toggleIsNavOpen={toggleIsNavOpen} collection={data.collections} />
           </div>
           <div className="ml-auto mr-2">
             <Badge content={cartQuantity} >
@@ -101,8 +101,8 @@ export function Header({
             </IconButton>
           </div>
         </div>
-        <Collapse open={isNavOpen} className="overflow-scroll">
-          <NavList toggleIsNavOpen={toggleIsNavOpen} collection={data.collections} />
+        <Collapse open={isNavOpen} className="overflow-auto">
+          <NavList isNavOpen={isNavOpen} toggleIsNavOpen={toggleIsNavOpen} collection={data.collections} />
         </Collapse>
       </Navbar>
       <CartTray

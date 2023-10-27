@@ -1,6 +1,6 @@
 import { Form, Link, useActionData, useSearchParams } from '@remix-run/react';
 import { DataFunctionArgs, MetaFunction, json, redirect } from '@remix-run/server-runtime';
-import { XCircleIcon } from '@heroicons/react/24/solid';
+import { XCircleIcon, MapPinIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
 import {
   extractRegistrationFormValues,
   RegisterValidationErrors,
@@ -49,17 +49,17 @@ export default function ContactUs() {
       </Typography>
 
       <Typography color="gray" className="mt-1 font-normal">
-        You may contact us by filling the form below or can directly mail us at support@srishtivitality.in
+        You may contact us by filling the form below
       </Typography>
       <form method='post' action="/contactus" className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
         <div className="mb-4 flex flex-col gap-6">
-          <Input type='email' required size="lg" name='email' label="Email" />
+          <Input variant="static" placeholder='Your email' type='email' required size="lg" name='email' label="Email" />
           {formErrors?.email && (
             <div className="text-xs text-red-700">
               {formErrors.email}
             </div>
           )}
-          <Textarea required name='message' size="lg" label="Message" />
+          <Textarea required name='message' variant="static" size="lg" label="Message" placeholder='Kindly start your message as QUERY/RESELLING/WHOLESALE ORDER, whatever suits you best... This will help us serve you better...' />
           {formErrors?.message && (
             <div className="text-xs text-red-700">
               {formErrors.message}
@@ -88,13 +88,26 @@ export default function ContactUs() {
         )}
 
         <Button type='submit' className="mt-6" fullWidth>
-          Register
+          Submit
         </Button>
 
       </form>
 
-
-
+      <Typography className='mt-6' variant="h4" color="blue-gray">
+        More Information
+      </Typography>
+      <Typography color="gray" className="mt-1 font-normal">
+        <MapPinIcon
+          className="h-5 w-5 text-red-400 inline-block"
+          aria-hidden="true"
+        /> Kandivali, Mumbai, Maharashtra, India.
+      </Typography>
+      <Typography color="gray" className="mt-1 font-normal">
+      <EnvelopeIcon 
+          className="h-5 w-5 text-red-400 inline-block"
+          aria-hidden="true"
+        /> support@srishtivitality.in
+      </Typography>
     </Card>
 
 
