@@ -256,7 +256,7 @@ export default function ProductSlug() {
 		C23.307,19.268,23.307,18.533,23.214,18.38z"/>
                     </g>
                   </svg>
-                  <span>Order on Whatsapp !</span>
+                  <span>Order on Whatsapp</span>
                 </a>
               </div>
               <div className="mt-2 flex items-center space-x-2">
