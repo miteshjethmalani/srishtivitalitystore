@@ -97,7 +97,6 @@ export default function ProductSlug() {
   const [featuredAsset, setFeaturedAsset] = useState(
     selectedVariant?.featuredAsset,
   );
-  console.log(product?.variants)
   return (
     <div>
       <div className="mx-auto px-4">
@@ -239,7 +238,7 @@ export default function ProductSlug() {
               </div>
               <div className="mt-5">
                 <a className='inline-flex items-center justify-center p-3 text-base font-medium text-white rounded-lg bg-green-900 '
-                  href={`https://wa.me/+918369536738?text=Hi,%0A%20I%20want%20to%20order%20this%20product:${encodeURI(product.name)}${product?.variants?.length?encodeURI(selectedVariant?.name || ""):""}%0Ahttps://srishtivitality.in/products/${slug}`}>
+                  href={`https://wa.me/+918369536738?text=Hi,%0A%20I%20want%20to%20order%20this%20product:${encodeURI(product.name)}${product?.variants?.length>1?encodeURI(selectedVariant?.name || ""):""}%0Ahttps://srishtivitality.in/products/${slug}`}>
                   <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                     className="fill-current w-8 h-8 mr-2"  viewBox="0 0 30 31"
                     >
