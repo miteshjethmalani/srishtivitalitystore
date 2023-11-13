@@ -238,7 +238,7 @@ export default function ProductSlug() {
               </div>
               <div className="mt-5">
                 <a className='inline-flex items-center justify-center p-3 text-base font-medium text-white rounded-lg bg-green-900 '
-                  href={`https://wa.me/+918369536738?text=Hi,%0A%20I%20want%20to%20order%20this%20product:${encodeURI(product.name)}${encodeURI(selectedVariant?.name || "")}%0Ahttp://localhost:3001/products/${slug}`}>
+                  href={`https://wa.me/+918369536738?text=Hi,%0A%20I%20want%20to%20order%20this%20product:${encodeURI(product.name)}${encodeURI(selectedVariant?.name || "")}%0Ahttps://srishtivitality.in/products/${slug}`}>
                   <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns: xlink="http://www.w3.org/1999/xlink"
                     className="fill-current w-8 h-8 mr-2"  viewBox="0 0 30 31"
                     xml: space="preserve">
