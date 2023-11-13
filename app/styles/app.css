@@ -1330,6 +1330,10 @@ button:disabled {
   height: 12rem;
 }
 
+#app .h-52 {
+  height: 13rem;
+}
+
 #app .h-\[18px\] {
   height: 18px;
 }
@@ -1344,18 +1348,6 @@ button:disabled {
 
 #app .h-20 {
   height: 5rem;
-}
-
-#app .h-36 {
-  height: 9rem;
-}
-
-#app .h-40 {
-  height: 10rem;
-}
-
-#app .h-52 {
-  height: 13rem;
 }
 
 #app .max-h-\[48px\] {
@@ -2186,10 +2178,6 @@ button:disabled {
   overflow: visible !important;
 }
 
-#app .overflow-scroll {
-  overflow: scroll;
-}
-
 #app .overflow-x-auto {
   overflow-x: auto;
 }
@@ -2870,6 +2858,11 @@ button:disabled {
   background-color: rgb(67 160 71 / var(--tw-bg-opacity));
 }
 
+#app .bg-green-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(27 94 32 / var(--tw-bg-opacity));
+}
+
 #app .bg-opacity-60 {
   --tw-bg-opacity: 0.6;
 }
@@ -3097,6 +3090,10 @@ button:disabled {
 #app .bg-clip-text {
   -webkit-background-clip: text;
           background-clip: text;
+}
+
+#app .fill-current {
+  fill: currentColor;
 }
 
 #app .fill-white {
