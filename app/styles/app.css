@@ -1330,6 +1330,10 @@ button:disabled {
   height: 12rem;
 }
 
+#app .h-52 {
+  height: 13rem;
+}
+
 #app .h-\[18px\] {
   height: 18px;
 }
@@ -1344,18 +1348,6 @@ button:disabled {
 
 #app .h-20 {
   height: 5rem;
-}
-
-#app .h-36 {
-  height: 9rem;
-}
-
-#app .h-40 {
-  height: 10rem;
-}
-
-#app .h-52 {
-  height: 13rem;
 }
 
 #app .max-h-\[48px\] {
@@ -2184,10 +2176,6 @@ button:disabled {
 
 #app .\!overflow-visible {
   overflow: visible !important;
-}
-
-#app .overflow-scroll {
-  overflow: scroll;
 }
 
 #app .overflow-x-auto {

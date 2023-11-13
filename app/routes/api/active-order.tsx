@@ -168,7 +168,7 @@ export async function action({ request, params }: DataFunctionArgs) {
         request,
       });      
       
-      if (result.removeCouponCode.__typename === 'Order') {
+      if (result.removeCouponCode?.__typename === 'Order') {
         activeOrder = result.removeCouponCode;
       } else {
         error = result.removeCouponCode;

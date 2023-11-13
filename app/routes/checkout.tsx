@@ -16,20 +16,21 @@ const steps = [
 export default function Checkout() {
   const data = useRootLoader();
   const navigate = useNavigate();
-
-  useEffect(()=>{
+  console.log(data);
+  /* useEffect(()=>{
   const isSignedIn = !!data.activeCustomer.activeCustomer?.id;
     if(!isSignedIn){
       navigate("/sign-in?redirectTo=/checkout",{replace: true})
     }
-  },[])
+  },[]) */
   const outletContext = useOutletContext<OutletContext>();
   const { activeOrder, adjustOrderLine, removeItem } = outletContext;
   const location = useLocation();
   let state = 'shipping';
-  if (location.pathname === '/checkout/payment') {
+  console.log(location.pathname)
+  if (location.pathname === '/checkout/payment' || location.pathname === '/checkout/payaidpaymentfoward') {
     state = 'payment';
-  } else if (location.pathname.startsWith('/checkout/confirmation')) {
+  } else if (location.pathname.startsWith('/checkout/confirmation') || location.pathname.startsWith('/checkout/paymentresponse')) {
     state = 'confirmation';
   }
   let isConfirmationPage = state === 'confirmation';

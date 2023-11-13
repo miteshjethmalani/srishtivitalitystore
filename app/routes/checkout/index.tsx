@@ -22,12 +22,13 @@ import { ShippingAddressSelector } from '~/components/checkout/ShippingAddressSe
 import { getActiveOrder } from '~/providers/orders/order';
 import { Button, Input } from '@material-tailwind/react';
 import CouponCode from '~/components/account/CouponCode';
+import { isEmpty } from 'lodash';
 
 export async function loader({ request }: DataFunctionArgs) {
   const session = await sessionStorage.getSession(
     request?.headers.get('Cookie'),
   );
-
+    
   const activeOrder = await getActiveOrder({ request });
 
   //check if there is an active order if not redirect to homepage
@@ -59,7 +60,7 @@ export default function CheckoutShipping() {
   const { activeOrderFetcher, activeOrder } = useOutletContext<OutletContext>();
   const [customerFormChanged, setCustomerFormChanged] = useState(false);
   const [addressFormChanged, setAddressFormChanged] = useState(false);
-  const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
   let navigate = useNavigate();
 
   const { customer, shippingAddress } = activeOrder ?? {};
@@ -69,11 +70,11 @@ export default function CheckoutShipping() {
     shippingAddress?.fullName ??
     (customer ? `${customer.firstName} ${customer.lastName}` : ``);
   const canProceedToPayment =
-    customer &&
-      ((shippingAddress?.streetLine1 && shippingAddress?.postalCode) ||
+    !isEmpty(customer) &&
+      ((!!shippingAddress?.streetLine1?.length && !!shippingAddress?.postalCode?.length) ||
         selectedAddressIndex >= 0) &&
-      activeOrder?.shippingLines?.length &&
-      activeOrder?.lines?.length ? true : false;
+      (activeOrder?.shippingLines?.length) &&
+      (activeOrder?.lines?.length ? true : false);
   const submitCustomerForm = (event: FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const { emailAddress, firstName, lastName } = Object.fromEntries<any>(
@@ -102,7 +103,8 @@ export default function CheckoutShipping() {
     }
   };
   const submitSelectedAddress = (index: number) => {
-    const selectedAddress = activeCustomer?.addresses?.[index];
+    const selectedAddress = activeCustomer?.addresses?.[index]
+    console.log(selectedAddress);
     if (selectedAddress) {
       setSelectedAddressIndex(index);
       const formData = new FormData();

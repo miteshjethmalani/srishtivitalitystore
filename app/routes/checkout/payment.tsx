@@ -12,12 +12,13 @@ import { Form, useLoaderData, useOutletContext } from '@remix-run/react';
 import { CreditCardIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { OutletContext } from '~/types';
 import { sessionStorage } from '~/sessions';
-import { CurrencyCode, ErrorCode, ErrorResult } from '~/generated/graphql';
+import { CurrencyCode, ErrorCode, ErrorResult, PayAidOrderRequest } from '~/generated/graphql';
 import { StripePayments } from '~/components/checkout/stripe/StripePayments';
 import { DummyPayments } from '~/components/checkout/DummyPayments';
 import { BraintreeDropIn } from '~/components/checkout/braintree/BraintreePayments';
 import { getActiveOrder } from '~/providers/orders/order';
 import { PayAidPayments } from '~/components/checkout/payaid/PayAidPayments';
+import { useRef } from 'react';
 
 export async function loader({ params, request }: DataFunctionArgs) {
   const session = await sessionStorage.getSession(
@@ -71,16 +72,18 @@ export async function loader({ params, request }: DataFunctionArgs) {
     }
   }
 
-  let payAidKey: string | undefined;
+  let payAidData: PayAidOrderRequest | undefined;
   let payAidError: string | undefined;
   if (
-    eligiblePaymentMethods.find((method) => method.code.includes('payaid'))
+    eligiblePaymentMethods.find((method: any) => method.code.includes('payaid'))
   ) {
     try {
-      const generatePayAidTokenResult = await getPayAidApiToken({
+      const generatePayAidTokenResult = await getPayAidApiToken(
+        {metadata: request?.headers.get('Cookie'), method:"payaid"},
+        {
         request,
       });
-      payAidKey =
+      payAidData =
       generatePayAidTokenResult.generatePayAidClientToken ?? '';
     } catch (e: any) {
       payAidError = e.message;
@@ -93,7 +96,7 @@ export async function loader({ params, request }: DataFunctionArgs) {
     stripeError,
     brainTreeKey,
     brainTreeError,
-    payAidKey,
+    payAidData,
     payAidError,
     error,
   };
@@ -104,7 +107,7 @@ export async function action({ params, request }: DataFunctionArgs) {
   const paymentMethodCode = body.get('paymentMethodCode');
   const paymentNonce = body.get('paymentNonce');
   if (typeof paymentMethodCode === 'string') {
-    console.log(paymentMethodCode)
+    console.log(request);
     const { nextOrderStates } = await getNextOrderStates({
       request,
     });
@@ -123,20 +126,26 @@ export async function action({ params, request }: DataFunctionArgs) {
       }
     }
 
-    const result = await addPaymentToOrder(
-      { method: paymentMethodCode, metadata: { nonce: paymentNonce } },
-      { request },
-    );
-    console.log(result)
-    if (result.addPaymentToOrder.__typename === 'Order') {
-      return redirect(
-        `/checkout/confirmation/${result.addPaymentToOrder.code}`,
+    if(paymentMethodCode !== "payaid"){
+      const result = await addPaymentToOrder(
+        { method: paymentMethodCode, metadata: { nonce: paymentNonce } },
+        { request },
       );
-    } else {
-      throw new Response('Not Found', {
-        status: 400,
-        statusText: result.addPaymentToOrder?.message,
-      });
+      console.log(result)
+      if (result.addPaymentToOrder.__typename === 'Order') {
+        return redirect(
+          `/checkout/confirmation/${result.addPaymentToOrder.code}`,
+        );
+      } else {
+        throw new Response('Not Found', {
+          status: 400,
+          statusText: result.addPaymentToOrder?.message,
+        });
+      }
+    }else{
+      return redirect(
+        `/checkout/payaidpaymentfoward`,
+      );;
     }
   }
 }
@@ -149,12 +158,13 @@ export default function CheckoutPayment() {
     stripeError,
     brainTreeKey,
     brainTreeError,
-    payAidKey,
+    payAidData,
     payAidError,
     error,
   } = useLoaderData<typeof loader>();
   const { activeOrderFetcher, activeOrder } = useOutletContext<OutletContext>();
-
+  const payAIdRef = useRef(null);
+  
   const paymentError = getPaymentError(error);
   console.log(activeOrder, error);
   return (
@@ -202,13 +212,14 @@ export default function CheckoutPayment() {
               </div>
             ) : (
               <PayAidPayments
+                payAIdRef={payAIdRef}
                 fullAmount={activeOrder?.totalWithTax ?? 0}
                 currencyCode={
                   activeOrder?.currencyCode ?? ('USD' as CurrencyCode)
                 }
                 show={true}
                 shippingAddress={activeOrder?.shippingAddress}
-                authorization={payAidKey!}
+                authorization={payAidData}
               />
             )}
           </div>

@@ -86,6 +86,10 @@ function requester<R, V>(
     variables: vars,
     ...options,
   }).then(async (response) => {
+    const formData = await options?.request?.formData();
+    if(formData){
+      console.log("udf1: "+formData.getAll("udf1"))
+    }
     const token = response.headers.get('vendure-auth-token');
     const headers: Record<string, string> = {};
     if (token) {
