@@ -11,7 +11,6 @@ export function TabsContainer({
   children: ReactNode | string;
 }) {
   let location = useLocation();
-  console.log(location.pathname);
   const isActive:any = tabs?.find((m) => m.pathName === location.pathname );
 
   return (

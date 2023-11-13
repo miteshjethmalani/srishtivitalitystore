@@ -104,7 +104,6 @@ export default function CheckoutShipping() {
   };
   const submitSelectedAddress = (index: number) => {
     const selectedAddress = activeCustomer?.addresses?.[index]
-    console.log(selectedAddress);
     if (selectedAddress) {
       setSelectedAddressIndex(index);
       const formData = new FormData();

@@ -155,7 +155,7 @@ export async function action({ request, params }: DataFunctionArgs) {
       
       if (result.applyCouponCode.__typename === 'Order') {
         activeOrder = result.applyCouponCode;
-        console.log("activeOrder",activeOrder)
+        // console.log("activeOrder",activeOrder)
       } else {
         error = result.applyCouponCode;
       }

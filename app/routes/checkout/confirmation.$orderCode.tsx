@@ -1,5 +1,5 @@
 import { DataFunctionArgs } from '@remix-run/server-runtime';
-import { getOrderByCode } from '~/providers/orders/order';
+import { getActiveOrder, getOrderByCode } from '~/providers/orders/order';
 import { useLoaderData } from '@remix-run/react';
 import { CartContents } from '~/components/cart/CartContents';
 import { CartTotals } from '~/components/cart/CartTotals';
@@ -11,7 +11,8 @@ import { OrderDetailFragment } from '~/generated/graphql';
 
 export async function loader({ params, request }: DataFunctionArgs) {
   try {
-    const order = await getOrderByCode(`${params.orderCode}`!, { request });
+    
+    const order = await getActiveOrder({request});
     return {
       order,
       error: false,
@@ -28,7 +29,7 @@ export default function CheckoutConfirmation() {
   const { order, error } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
   const [retries, setRetries] = useState(1);
-
+  console.log(order, error);
   const orderNotFound = !order && !error;
   const orderErrored = !order && error;
   const maxRetries = 5;

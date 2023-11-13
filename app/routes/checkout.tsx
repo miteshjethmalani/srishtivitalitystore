@@ -16,7 +16,7 @@ const steps = [
 export default function Checkout() {
   const data = useRootLoader();
   const navigate = useNavigate();
-  console.log(data);
+  // console.log(data);
   /* useEffect(()=>{
   const isSignedIn = !!data.activeCustomer.activeCustomer?.id;
     if(!isSignedIn){
@@ -27,7 +27,7 @@ export default function Checkout() {
   const { activeOrder, adjustOrderLine, removeItem } = outletContext;
   const location = useLocation();
   let state = 'shipping';
-  console.log(location.pathname)
+  // console.log(location.pathname)
   if (location.pathname === '/checkout/payment' || location.pathname === '/checkout/payaidpaymentfoward') {
     state = 'payment';
   } else if (location.pathname.startsWith('/checkout/confirmation') || location.pathname.startsWith('/checkout/paymentresponse')) {

@@ -13,12 +13,12 @@ import { CreditCardIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { OutletContext } from '~/types';
 import { sessionStorage } from '~/sessions';
 import { CurrencyCode, ErrorCode, ErrorResult, PayAidOrderRequest } from '~/generated/graphql';
-import { StripePayments } from '~/components/checkout/stripe/StripePayments';
 import { DummyPayments } from '~/components/checkout/DummyPayments';
 import { BraintreeDropIn } from '~/components/checkout/braintree/BraintreePayments';
 import { getActiveOrder } from '~/providers/orders/order';
 import { PayAidPayments } from '~/components/checkout/payaid/PayAidPayments';
 import { useRef } from 'react';
+import { getCookie } from '~/utils/cookie';
 
 export async function loader({ params, request }: DataFunctionArgs) {
   const session = await sessionStorage.getSession(
@@ -77,14 +77,15 @@ export async function loader({ params, request }: DataFunctionArgs) {
   if (
     eligiblePaymentMethods.find((method: any) => method.code.includes('payaid'))
   ) {
+    const vendureRemix = getCookie(request?.headers.get('Cookie'), "vendure_remix_session")
     try {
       const generatePayAidTokenResult = await getPayAidApiToken(
-        {metadata: request?.headers.get('Cookie'), method:"payaid"},
+        { metadata: `vendure_remix_session=${vendureRemix}`, method: "payaid" },
         {
-        request,
-      });
+          request,
+        });
       payAidData =
-      generatePayAidTokenResult.generatePayAidClientToken ?? '';
+        generatePayAidTokenResult.generatePayAidClientToken ?? '';
     } catch (e: any) {
       payAidError = e.message;
     }
@@ -107,17 +108,16 @@ export async function action({ params, request }: DataFunctionArgs) {
   const paymentMethodCode = body.get('paymentMethodCode');
   const paymentNonce = body.get('paymentNonce');
   if (typeof paymentMethodCode === 'string') {
-    console.log(request);
     const { nextOrderStates } = await getNextOrderStates({
       request,
     });
-    console.log(nextOrderStates)
+
     if (nextOrderStates.includes('ArrangingPayment')) {
       const transitionResult = await transitionOrderToState(
         'ArrangingPayment',
         { request },
       );
-      console.log(transitionResult)
+
       if (transitionResult.transitionOrderToState?.__typename !== 'Order') {
         throw new Response('Not Found', {
           status: 400,
@@ -126,12 +126,12 @@ export async function action({ params, request }: DataFunctionArgs) {
       }
     }
 
-    if(paymentMethodCode !== "payaid"){
+    if (paymentMethodCode !== "payaid") {
       const result = await addPaymentToOrder(
         { method: paymentMethodCode, metadata: { nonce: paymentNonce } },
         { request },
       );
-      console.log(result)
+
       if (result.addPaymentToOrder.__typename === 'Order') {
         return redirect(
           `/checkout/confirmation/${result.addPaymentToOrder.code}`,
@@ -142,7 +142,7 @@ export async function action({ params, request }: DataFunctionArgs) {
           statusText: result.addPaymentToOrder?.message,
         });
       }
-    }else{
+    } else {
       return redirect(
         `/checkout/payaidpaymentfoward`,
       );;
@@ -160,13 +160,12 @@ export default function CheckoutPayment() {
     brainTreeError,
     payAidData,
     payAidError,
-    error,
+    error
   } = useLoaderData<typeof loader>();
   const { activeOrderFetcher, activeOrder } = useOutletContext<OutletContext>();
   const payAIdRef = useRef(null);
-  
+
   const paymentError = getPaymentError(error);
-  console.log(activeOrder, error);
   return (
     <div className="flex flex-col items-center divide-gray-200 divide-y">
       {eligiblePaymentMethods.map((paymentMethod: any) =>
@@ -196,11 +195,7 @@ export default function CheckoutPayment() {
                 <p className="text-sm">{stripeError}</p>
               </div>
             ) : (
-              <StripePayments
-                orderCode={activeOrder?.code ?? ''}
-                clientSecret={`${stripePaymentIntent}`!}
-                publishableKey={`${stripePublishableKey}`!}
-              ></StripePayments>
+              <></>
             )}
           </div>
         ) : paymentMethod.code.includes('payaid') ? (

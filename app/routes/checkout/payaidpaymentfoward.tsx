@@ -1,23 +1,13 @@
 import { DataFunctionArgs, redirect } from '@remix-run/server-runtime';
 import {
-    addPaymentToOrder,
-    generateBraintreeClientToken,
-    createStripePaymentIntent,
     getEligiblePaymentMethods,
-    getNextOrderStates,
-    transitionOrderToState,
     getPayAidApiToken,
 } from '~/providers/checkout/checkout';
 import { Form, useLoaderData, useOutletContext } from '@remix-run/react';
-import { CreditCardIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { OutletContext } from '~/types';
 import { sessionStorage } from '~/sessions';
 import { CurrencyCode, ErrorCode, ErrorResult, PayAidOrderRequest } from '~/generated/graphql';
-import { StripePayments } from '~/components/checkout/stripe/StripePayments';
-import { DummyPayments } from '~/components/checkout/DummyPayments';
-import { BraintreeDropIn } from '~/components/checkout/braintree/BraintreePayments';
 import { getActiveOrder } from '~/providers/orders/order';
-import { PayAidPayments } from '~/components/checkout/payaid/PayAidPayments';
 import { useEffect, useRef } from 'react';
 
 export async function loader({ params, request }: DataFunctionArgs) {

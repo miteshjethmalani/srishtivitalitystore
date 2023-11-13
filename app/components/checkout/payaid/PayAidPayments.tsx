@@ -14,7 +14,6 @@ export function PayAidPayments(props: {
   shippingAddress: OrderAddress | null | undefined;
 }) {
   const { show, authorization, fullAmount, currencyCode, shippingAddress, payAIdRef } = props;
-  console.log(authorization);
   const [enablePaymentButton, setEnablePaymentButton] = useState<boolean>();
   const [processing, setProcessing] = useState<boolean>(false);
   const submit = useSubmit();
