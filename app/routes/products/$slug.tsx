@@ -211,7 +211,7 @@ export default function ProductSlug() {
                   ></Price>
                 </p>
                 <div className="flex sm:flex-col1 align-baseline">
-                  <button
+                  {/* <button
                     type="submit"
                     className={`max-w-xs flex-1 ${
                       activeOrderFetcher.state !== 'idle'
@@ -233,7 +233,7 @@ export default function ProductSlug() {
                     ) : (
                       `Add to cart`
                     )}
-                  </button>
+                  </button> */}
                 </div>
               </div>
               <div className="mt-5">
