@@ -18,7 +18,7 @@ import { BraintreeDropIn } from '~/components/checkout/braintree/BraintreePaymen
 import { getActiveOrder } from '~/providers/orders/order';
 import { PayAidPayments } from '~/components/checkout/payaid/PayAidPayments';
 import { useRef } from 'react';
-import { getCookie } from '~/utils/cookie';
+import { getCookie, getSessionCookieString } from '~/utils/cookie';
 
 export async function loader({ params, request }: DataFunctionArgs) {
   const session = await sessionStorage.getSession(
@@ -77,10 +77,9 @@ export async function loader({ params, request }: DataFunctionArgs) {
   if (
     eligiblePaymentMethods.find((method: any) => method.code.includes('payaid'))
   ) {
-    const vendureRemix = getCookie(request?.headers.get('Cookie'), "vendure_remix_session")
     try {
       const generatePayAidTokenResult = await getPayAidApiToken(
-        { metadata: `vendure_remix_session=${vendureRemix}`, method: "payaid" },
+        { metadata: getSessionCookieString(request), method: "payaid" },
         {
           request,
         });
@@ -230,6 +229,7 @@ export default function CheckoutPayment() {
     </div>
   );
 }
+
 
 function getPaymentError(error?: ErrorResult): string | undefined {
   if (!error || !error.errorCode) {

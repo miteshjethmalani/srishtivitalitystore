@@ -1,38 +1,32 @@
 import { DataFunctionArgs, json, redirect } from '@remix-run/server-runtime';
 import {
   addPaymentToOrder,
-  generateBraintreeClientToken,
-  createStripePaymentIntent,
-  getEligiblePaymentMethods,
   getNextOrderStates,
-  transitionOrderToState,
-  getPayAidApiToken,
 } from '~/providers/checkout/checkout';
+import { getSessionCookieString } from '~/utils/cookie';
 
 export async function loader({ params, request }: DataFunctionArgs) {
   // const formData = await request.formData();
-  // console.log("metadata: "+formData.get("udf1"))
+  console.log(params)
+  const { orderCode, transaction, payment_hash } = params;
   const { nextOrderStates } = await getNextOrderStates({
     request,
   });
-  const transitionResult = await transitionOrderToState(
-    'PaymentAuthorized',
+  
+  const result = await addPaymentToOrder(
+    { method: "payaid", metadata: { cookie: getSessionCookieString(request), transaction, payment_hash } },
     { request },
   );
-  /* if (transitionResult.transitionOrderToState?.__typename !== 'Order') {
+  if (result.addPaymentToOrder.__typename === 'Order') {
+    return redirect(
+      `/checkout/confirmation/${result.addPaymentToOrder.code}`,
+    );
+  } else {
     throw new Response('Not Found', {
       status: 400,
-      statusText: transitionResult.transitionOrderToState?.message,
+      statusText: result.addPaymentToOrder?.message,
     });
-  } */
-  const result = await addPaymentToOrder(
-    { method: "payaid", metadata: { nonce: "" } },
-    { request },
-  );
-  console.log(result);
-  // console.log("activeOrder",await getActiveOrder({ request }))
-  // const order = await getOrderByCode(`${params.orderCode}`, { request });
-  return json({ abc: true });
+  }
 }
 
 export async function action({ request }: DataFunctionArgs) {

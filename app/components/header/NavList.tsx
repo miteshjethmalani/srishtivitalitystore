@@ -55,7 +55,7 @@ export function NavList(props: props) {
     asset: ASSET_URL + '/preview/55/crystals-healing__preview.png?preset=thumb'
   }]
   return (
-    <List className="mb-4 mt-2 flex flex-col text-deep-purple gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center h-52">
+    <List className="mb-4 mt-2 flex flex-col text-deep-purple gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
       <NavListMenu isNavOpen={props.isNavOpen} toggleIsNavOpen={props.toggleIsNavOpen} title={"Categories"} collection={categoriesCollection} />
       <NavListMenu isNavOpen={props.isNavOpen} toggleIsNavOpen={props.toggleIsNavOpen} title={"Consultation"} collection={consultationCollection} />
       {navListItems.map(({ label, icon, url }, key) => (

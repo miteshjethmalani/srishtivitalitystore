@@ -9,6 +9,7 @@ import { sessionStorage } from '~/sessions';
 import { CurrencyCode, ErrorCode, ErrorResult, PayAidOrderRequest } from '~/generated/graphql';
 import { getActiveOrder } from '~/providers/orders/order';
 import { useEffect, useRef } from 'react';
+import { getSessionCookieString } from '~/utils/cookie';
 
 export async function loader({ params, request }: DataFunctionArgs) {
     const session = await sessionStorage.getSession(
@@ -38,7 +39,7 @@ export async function loader({ params, request }: DataFunctionArgs) {
     ) {
         try {
             const generatePayAidTokenResult = await getPayAidApiToken(
-                { metadata: request?.headers.get('Cookie'), method: "payaid" },
+                { metadata: getSessionCookieString(request), method: "payaidforward" },
                 {
                     request,
                 });

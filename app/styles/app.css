@@ -3092,12 +3092,12 @@ button:disabled {
           background-clip: text;
 }
 
-#app .fill-white {
-  fill: #ffffff;
-}
-
 #app .fill-current {
   fill: currentColor;
+}
+
+#app .fill-white {
+  fill: #ffffff;
 }
 
 #app .object-cover {
@@ -5504,16 +5504,6 @@ button:disabled {
   background-color: rgb(56 142 60 / var(--tw-bg-opacity));
 }
 
-#app .hover\:bg-gray-400:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(189 189 189 / var(--tw-bg-opacity));
-}
-
-#app .hover\:bg-gray-100:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(245 245 245 / var(--tw-bg-opacity));
-}
-
 #app .hover\:bg-opacity-80:hover {
   --tw-bg-opacity: 0.8;
 }
@@ -5560,11 +5550,6 @@ button:disabled {
 
 #app .hover\:text-black\/50:hover {
   color: rgb(0 0 0 / 0.5);
-}
-
-#app .hover\:text-gray-900:hover {
-  --tw-text-opacity: 1;
-  color: rgb(33 33 33 / var(--tw-text-opacity));
 }
 
 #app .hover\:opacity-75:hover {
@@ -7079,11 +7064,6 @@ button:disabled {
   background-color: rgb(13 71 161 / var(--tw-bg-opacity));
 }
 
-#app .dark .dark\:bg-gray-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(66 66 66 / var(--tw-bg-opacity));
-}
-
 #app .dark .dark\:text-blue-300 {
   --tw-text-opacity: 1;
   color: rgb(100 181 246 / var(--tw-text-opacity));
@@ -7092,21 +7072,6 @@ button:disabled {
 #app .dark .dark\:text-gray-100 {
   --tw-text-opacity: 1;
   color: rgb(245 245 245 / var(--tw-text-opacity));
-}
-
-#app .dark .dark\:text-gray-400 {
-  --tw-text-opacity: 1;
-  color: rgb(189 189 189 / var(--tw-text-opacity));
-}
-
-#app .dark .dark\:hover\:bg-gray-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(97 97 97 / var(--tw-bg-opacity));
-}
-
-#app .dark .dark\:hover\:text-white:hover {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 @media (min-width: 540px) {

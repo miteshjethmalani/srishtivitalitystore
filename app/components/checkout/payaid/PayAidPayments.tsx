@@ -45,7 +45,7 @@ export function PayAidPayments(props: {
       setEnablePaymentButton(true);
     }
   }, [show]);
-
+  console.log(authorization)
   return (
     <div
       style={{ display: `${show ? 'block' : 'none'}` }}

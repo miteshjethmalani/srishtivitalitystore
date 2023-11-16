@@ -1,4 +1,4 @@
-export function getCookie(cookieString: string|null, cname: string) {
+export function getCookie(cookieString: string | null, cname: string) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(cookieString || document.cookie);
     let ca = decodedCookie.split(';');
@@ -12,4 +12,9 @@ export function getCookie(cookieString: string|null, cname: string) {
         }
     }
     return "";
+}
+
+export function getSessionCookieString(request: Request) {
+    const vendureRemix = getCookie(request?.headers.get('Cookie'), "vendure_remix_session");
+    return `vendure_remix_session=${vendureRemix}`
 }
