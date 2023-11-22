@@ -12,7 +12,7 @@
     "dev": "PORT=3001 concurrently \"yarn run dev:css\" \"remix dev\"",
     "dev:cf": "npm run build:cf && concurrently \"remix watch\" \"npm run dev:wrangler\"",
     "start:cf": "cross-env NODE_ENV=production yarn run dev:wrangler",
-    "start": "PORT=3001 remix-serve build",
+    "start": "PORT=3001 NODE_ENV=production GA_TRACKING_ID=G-WXDXT03MK9 remix-serve build",
     "generate": "graphql-codegen --config codegen.yml",
     "prepare": "husky install"
   },
