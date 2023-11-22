@@ -1335,6 +1335,10 @@ button:disabled {
   height: 12rem;
 }
 
+#app .h-52 {
+  height: 13rem;
+}
+
 #app .h-\[18px\] {
   height: 18px;
 }
