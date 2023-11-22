@@ -6,10 +6,12 @@ import { CartContents } from '~/components/cart/CartContents';
 import { CartTotals } from '~/components/cart/CartTotals';
 import { APP_META_TITLE } from '~/constants';
 import { OrderDetailFragment } from '~/generated/graphql';
+import { getNextOrderStates, transitionOrderToState } from '~/providers/checkout/checkout';
 import { getActiveOrder } from '~/providers/orders/order';
 import { sessionStorage } from '~/sessions';
 
 export async function loader({ params, request }: DataFunctionArgs) {
+    const {failReason} = params;
     const session = await sessionStorage.getSession(
         request?.headers.get('Cookie'),
     );
@@ -24,15 +26,33 @@ export async function loader({ params, request }: DataFunctionArgs) {
     ) {
         return redirect('/');
     }
+    const { nextOrderStates } = await getNextOrderStates({
+        request,
+      });
+      if (nextOrderStates.includes('AddingItems')) {
+        const transitionResult = await transitionOrderToState(
+          'AddingItems',
+          { request },
+        );
+  
+        if (transitionResult.transitionOrderToState?.__typename !== 'Order') {
+          throw new Response('Not Found', {
+            status: 400,
+            statusText: transitionResult.transitionOrderToState?.message,
+          });
+        }
+      }
 
-    return {
-        activeOrder
-    };
+    return json({
+        activeOrder,
+        failReason
+    });
 }
 
 export default function CheckoutPaymentResponse() {
     const {
-        activeOrder
+        activeOrder,
+        failReason
     } = useLoaderData<typeof loader>();
     const navigate = useNavigate();
 
@@ -47,7 +67,10 @@ export default function CheckoutPaymentResponse() {
         <p className="text-lg text-gray-700 ml-4">
             We hope this message finds you well. We wanted to inform you that the payment for your recent order <span className='font-bold'>{activeOrder.code} could not be processed successfully</span> .
         </p>
-        <Button type='button' className="mt-5 w-full" onClick={()=>navigate('/checkout')}> Retry</Button>
+        <p className="text-lg text-gray-700 ml-4 mt-4 font-bold">
+            {failReason? `Reason: ${failReason}`:""}
+        </p>
+        <Button type='button' className="mt-5 w-full" onClick={()=>navigate('/checkout/payment')}> Retry</Button>
     </div>
     );
 }

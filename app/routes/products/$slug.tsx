@@ -25,6 +25,11 @@ import Alert from '~/components/Alert';
 import { StockLevelLabel } from '~/components/products/StockLevelLabel';
 // import TopReviews from '~/components/products/TopReviews';
 import { ScrollableContainer } from '~/components/products/ScrollableContainer';
+import { Button, Input } from '@material-tailwind/react';
+import { adjustOrderLine } from '~/providers/orders/order';
+import { useActiveOrder } from '~/utils/use-active-order';
+import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
+import { QuantityChange } from '~/components/cart/QuantityChange';
 
 export const meta: MetaFunction = ({ data }) => {
   const metaTitle = (data?.product?.customFields?.metaTitle || data?.product?.name);
@@ -69,6 +74,9 @@ export default function ProductSlug() {
   const { activeOrder } = activeOrderFetcher.data ?? {};
   const addItemToOrderError = getAddItemToOrderError(error);
   const navigate = useNavigate();
+  const {
+    adjustOrderLine,
+  } = useActiveOrder();
 
   if (!product) {
     return <div>Product not found!</div>;
@@ -85,18 +93,38 @@ export default function ProductSlug() {
     setSelectedVariantId(product.variants[0].id);
   }
 
-  const qtyInCart =
-    activeOrder?.lines.find((l) => l.productVariant.id === selectedVariantId)
-      ?.quantity ?? 0;
-
-  const asset = product.assets[0];
-  const brandName = product.facetValues.find(
-    (fv) => fv.facet.code === 'brand',
-  )?.name;
+  const qtyLine = activeOrder?.lines.find((l) => l.productVariant.id === selectedVariantId)
+  const qtyInCart = qtyLine?.quantity ?? 0;
 
   const [featuredAsset, setFeaturedAsset] = useState(
     selectedVariant?.featuredAsset,
   );
+
+  const addToCartButton = !qtyInCart ? (
+    <button
+      type="submit"
+      className={`max-w-xs flex-1 ${activeOrderFetcher.state !== 'idle'
+        ? 'bg-gray-400'
+        : qtyInCart === 0
+          ? 'bg-primary-600 hover:bg-primary-700'
+          : 'bg-green-600 active:bg-green-700 hover:bg-green-700'
+        }
+                                     transition-colors border border-transparent rounded-md py-3 px-8 flex items-center
+                                      justify-center text-base font-medium text-white focus:outline-none
+                                      focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full`}
+      disabled={activeOrderFetcher.state !== 'idle'}
+    >
+
+      Add to cart
+    </button>
+  ) : (
+    <QuantityChange
+      disabled={false}
+      selectedVariantId={selectedVariantId}
+      activeOrder={activeOrder}
+      adjustOrderLine={adjustOrderLine} />
+  );
+
   return (
     <div>
       <div className="mx-auto px-4">
@@ -211,37 +239,25 @@ export default function ProductSlug() {
                   ></Price>
                 </p>
                 <div className="flex sm:flex-col1 align-baseline">
-                  <button
-                    type="submit"
-                    className={`max-w-xs flex-1 ${
-                      activeOrderFetcher.state !== 'idle'
-                      ? 'bg-gray-400'
-                      : qtyInCart === 0
-                        ? 'bg-primary-600 hover:bg-primary-700'
-                        : 'bg-green-600 active:bg-green-700 hover:bg-green-700'
-                      }
-                                     transition-colors border border-transparent rounded-md py-3 px-8 flex items-center
-                                      justify-center text-base font-medium text-white focus:outline-none
-                                      focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full`}
-                    disabled={activeOrderFetcher.state !== 'idle'}
-                  >
-                    {qtyInCart ? (
-                      <span className="flex items-center">
-                        <CheckIcon className="w-5 h-5 mr-1" /> {qtyInCart} in
-                        cart
-                      </span>
-                    ) : (
-                      `Add to cart`
-                    )}
-                  </button>
+                  {addToCartButton}
                 </div>
               </div>
+
+              <div className="mt-2 flex items-center space-x-2">
+                <span className="text-gray-500">{selectedVariant?.sku}</span>
+                <StockLevelLabel stockLevel={selectedVariant?.stockLevel} />
+              </div>
+
+              {addItemToOrderError && (
+                <div className="mt-4">
+                  <Alert message={addItemToOrderError} />
+                </div>
+              )}
               <div className="mt-5">
                 <a className='inline-flex items-center justify-center p-3 text-base font-medium text-white rounded-lg bg-green-900 '
                   href={`https://wa.me/+918369536738?text=Hi,%0A%20I%20want%20to%20order%20this%20product:${encodeURI(product.name)}${encodeURI(selectedVariant?.name || "")}%0Ahttp://localhost:3001/products/${slug}`}>
-                  <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns: xlink="http://www.w3.org/1999/xlink"
-                    className="fill-current w-8 h-8 mr-2"  viewBox="0 0 30 31"
-                    xml: space="preserve">
+                  <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                    className="fill-current w-8 h-8 mr-2" viewBox="0 0 30 31">
                     <g>
                       <path d="M30.667,14.939c0,8.25-6.74,14.938-15.056,14.938c-2.639,0-5.118-0.675-7.276-1.857L0,30.667l2.717-8.017
 		c-1.37-2.25-2.159-4.892-2.159-7.712C0.559,6.688,7.297,0,15.613,0C23.928,0.002,30.667,6.689,30.667,14.939z M15.61,2.382
@@ -259,16 +275,6 @@ export default function ProductSlug() {
                   <span>Order on Whatsapp !</span>
                 </a>
               </div>
-              <div className="mt-2 flex items-center space-x-2">
-                <span className="text-gray-500">{selectedVariant?.sku}</span>
-                <StockLevelLabel stockLevel={selectedVariant?.stockLevel} />
-              </div>
-              {addItemToOrderError && (
-                <div className="mt-4">
-                  <Alert message={addItemToOrderError} />
-                </div>
-              )}
-
               <section className="mt-12 pt-12 border-t text-xs">
                 <h3 className="text-gray-600 font-bold mb-2">
                   Shipping

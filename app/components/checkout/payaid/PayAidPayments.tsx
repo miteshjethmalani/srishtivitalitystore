@@ -28,11 +28,24 @@ export function PayAidPayments(props: {
 
       let request: Request;
       request = new Request('');
+      const { nextOrderStates } = await getNextOrderStates({
+        request,
+      });
+      
+      if (nextOrderStates.includes('AddingItems')) {
+        const transitionResult = await transitionOrderToState(
+          'AddingItems',
+          { request },
+        );
 
-      await addPaymentToOrder(
-        { method: 'payaid', metadata: {} },
-        { request },
-      );
+        if (transitionResult.transitionOrderToState?.__typename !== 'Order') {
+          throw new Response('Not Found', {
+            status: 400,
+            statusText: transitionResult.transitionOrderToState?.message,
+          });
+        }
+      }
+
       submit(formData, { method: 'post' });
     } catch (e) {
       alert(e);
@@ -45,7 +58,7 @@ export function PayAidPayments(props: {
       setEnablePaymentButton(true);
     }
   }, [show]);
-  console.log(authorization)
+  
   return (
     <div
       style={{ display: `${show ? 'block' : 'none'}` }}
@@ -55,7 +68,9 @@ export function PayAidPayments(props: {
 
       <input type="hidden" name="paymentMethodCode" value="payaid" />
       {/* {enablePaymentButton?<Form name="paymentForm" config={{ url: "https://api.payaidpayments.com/v2/paymentrequest", method: "POST", data: authorization }} />:<></> } */}
-      
+      <div className='text-gray-600'>
+        Please do not refresh or press the back button while your transaction is processing to ensure a smooth and successful payment. 
+      </div>
       <button
         onClick={submitPayment}
         className={classNames(

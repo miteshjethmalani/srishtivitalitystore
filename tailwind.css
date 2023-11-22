@@ -25,4 +25,10 @@
   .text-inherit {
     color: inherit;
   }
+
+  .required:after {
+    content:" *";
+    color: red;
+  }
+
 }

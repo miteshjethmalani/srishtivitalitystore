@@ -1,6 +1,7 @@
 import { Form, Link, useFetcher, useNavigate, useOutletContext } from '@remix-run/react';
 import { Price } from '~/components/products/Price';
 import { ActiveOrderQuery, CurrencyCode } from '~/generated/graphql';
+import { QuantityChange } from './QuantityChange';
 
 export function CartContents({
   orderLines,
@@ -8,19 +9,21 @@ export function CartContents({
   editable = true,
   adjustOrderLine,
   removeItem,
+  activeOrderError,
 }: {
   orderLines: NonNullable<ActiveOrderQuery['activeOrder']>['lines'];
   currencyCode: CurrencyCode;
   editable: boolean;
   adjustOrderLine?: (lineId: string, quantity: number) => void;
   removeItem?: (lineId: string) => void;
+  activeOrderError: Error | undefined;
 }) {
   const isEditable = editable !== false;
   const navigate = useNavigate();
 
   return (
     <div className="flow-root">
-      <ul role="list" className="-my-6 divide-y divide-gray-200 p-0">
+      <ul role="list" className="-my-6 divide-y divide-gray-200 pr-2">
         {(orderLines ?? []).map((line) => (
           <li key={line.id} className="py-6 flex">
             <div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
@@ -28,7 +31,7 @@ export function CartContents({
                 src={line.featuredAsset?.preview + '?preset=thumb'}
                 alt={line.productVariant.name}
                 className="w-full h-full object-center object-cover"
-                onClick={()=>navigate(`/products/${line.productVariant.product.slug}`)}
+                onClick={() => navigate(`/products/${line.productVariant.product.slug}`)}
               />
             </div>
 
@@ -54,26 +57,11 @@ export function CartContents({
                     <label htmlFor={`quantity-${line.id}`} className="mr-2">
                       Quantity
                     </label>
-                    <select
+                    <QuantityChange
                       disabled={!isEditable}
-                      id={`quantity-${line.id}`}
-                      name={`quantity-${line.id}`}
-                      value={line.quantity}
-                      onChange={(e) =>
-                        adjustOrderLine &&
-                        adjustOrderLine(line.id, +e.target.value)
-                      }
-                      className="max-w-full rounded-md border border-gray-300 py-1.5 text-base leading-5 font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                    >
-                      <option value={1}>1</option>
-                      <option value={2}>2</option>
-                      <option value={3}>3</option>
-                      <option value={4}>4</option>
-                      <option value={5}>5</option>
-                      <option value={6}>6</option>
-                      <option value={7}>7</option>
-                      <option value={8}>8</option>
-                    </select>
+                      selectedVariantId={line.productVariant.id}
+                      activeOrder={{lines: [line]}}
+                      adjustOrderLine={adjustOrderLine} />
                   </Form>
                 ) : (
                   <div className="text-gray-800">
@@ -82,19 +70,6 @@ export function CartContents({
                   </div>
                 )}
                 <div className="flex-1"></div>
-                <div className="flex">
-                  {isEditable && (
-                    <button
-                      type="submit"
-                      name="removeItem"
-                      value={line.id}
-                      className="font-medium text-primary-600 hover:text-primary-500"
-                      onClick={() => removeItem && removeItem(line.id)}
-                    >
-                      Remove
-                    </button>
-                  )}
-                </div>
               </div>
             </div>
           </li>

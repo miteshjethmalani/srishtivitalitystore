@@ -28,7 +28,7 @@ export default function Checkout() {
   const location = useLocation();
   let state = 'shipping';
   // console.log(location.pathname)
-  if (location.pathname === '/checkout/payment' || location.pathname === '/checkout/payaidpaymentfoward') {
+  if (location.pathname === '/checkout/payment' || location.pathname === '/checkout/payaidpaymentfoward' || location.pathname.startsWith('/checkout/paymentfailed')) {
     state = 'payment';
   } else if (location.pathname.startsWith('/checkout/confirmation') || location.pathname.startsWith('/checkout/paymentresponse')) {
     state = 'confirmation';

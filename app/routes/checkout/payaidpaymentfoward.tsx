@@ -57,8 +57,6 @@ export async function loader({ params, request }: DataFunctionArgs) {
     };
 }
 
-
-
 export default function PayAidForwardPayment() {
     const {
         eligiblePaymentMethods,
@@ -70,8 +68,9 @@ export default function PayAidForwardPayment() {
     const payAIdRef = useRef(null);
 
     const paymentError = getPaymentError(error);
-    console.log(activeOrder, error);
+    // console.log(activeOrder, error);
     useEffect(() => {
+        console.log("asdasd=======>")
         payAIdRef.current && payAIdRef.current.submit()
     }, []);
 
@@ -87,7 +86,7 @@ export default function PayAidForwardPayment() {
                                 <p className="text-sm">{payAidError}</p>
                             </div>
                         ) : (
-                            <form action={"https://api.payaidpayments.com/v2/paymentrequest"} method={"POST"} ref={payAIdRef} onLoad={() => submitForm()}>
+                            <form action={"https://api.payaidpayments.com/v2/paymentrequest"} method={"POST"} ref={payAIdRef}>
                                 {Object.keys(payAidData).map((key) => (
                                     <input
                                         type={"hidden"}

@@ -98,7 +98,7 @@ function requester<R, V>(
       if (session) {
         session.set(AUTH_TOKEN_SESSION_KEY, token);
         const cook = await sessionStorage.commitSession(session);
-        console.log(cook);
+        
         headers['Set-Cookie'] = cook;
       }
     }

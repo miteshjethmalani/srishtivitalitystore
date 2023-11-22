@@ -8,7 +8,7 @@ import {
   transitionOrderToState,
   getPayAidApiToken,
 } from '~/providers/checkout/checkout';
-import { Form, useLoaderData, useOutletContext } from '@remix-run/react';
+import { Form, useBeforeUnload, useLoaderData, useOutletContext } from '@remix-run/react';
 import { CreditCardIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { OutletContext } from '~/types';
 import { sessionStorage } from '~/sessions';
@@ -78,6 +78,23 @@ export async function loader({ params, request }: DataFunctionArgs) {
     eligiblePaymentMethods.find((method: any) => method.code.includes('payaid'))
   ) {
     try {
+      const { nextOrderStates } = await getNextOrderStates({
+        request,
+      });
+      if (nextOrderStates.includes('AddingItems')) {
+        const transitionResult = await transitionOrderToState(
+          'AddingItems',
+          { request },
+        );
+  
+        if (transitionResult.transitionOrderToState?.__typename !== 'Order') {
+          throw new Response('Not Found', {
+            status: 400,
+            statusText: transitionResult.transitionOrderToState?.message,
+          });
+        }
+      }
+      
       const generatePayAidTokenResult = await getPayAidApiToken(
         { metadata: getSessionCookieString(request), method: "payaid" },
         {
@@ -99,6 +116,7 @@ export async function loader({ params, request }: DataFunctionArgs) {
     payAidData,
     payAidError,
     error,
+    request
   };
 }
 
@@ -159,8 +177,10 @@ export default function CheckoutPayment() {
     brainTreeError,
     payAidData,
     payAidError,
-    error
+    error, 
+    request
   } = useLoaderData<typeof loader>();
+
   const { activeOrderFetcher, activeOrder } = useOutletContext<OutletContext>();
   const payAIdRef = useRef(null);
 

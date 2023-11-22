@@ -21,10 +21,12 @@ export function Header({
   activeOrder,
   adjustOrderLine,
   removeItem,
+  activeOrderError,
 }: {
   activeOrder: any;
   adjustOrderLine?: (lineId: string, quantity: number) => void;
   removeItem?: (lineId: string) => void;
+  activeOrderError: any,
 }) {
   const [open, setOpen] = useState(false);
   const data = useRootLoader();
@@ -111,6 +113,7 @@ export function Header({
         activeOrder={activeOrder}
         adjustOrderLine={adjustOrderLine}
         removeItem={removeItem}
+        activeOrderError={activeOrderError}
       />
     </>
   );

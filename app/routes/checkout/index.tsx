@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { LockClosedIcon } from '@heroicons/react/24/solid';
 import {
   Form,
@@ -7,7 +7,7 @@ import {
   useOutletContext,
 } from '@remix-run/react';
 import { OutletContext } from '~/types';
-import { DataFunctionArgs, redirect } from '@remix-run/server-runtime';
+import { DataFunctionArgs, json, redirect } from '@remix-run/server-runtime';
 import {
   getAvailableCountries,
   getEligibleShippingMethods,
@@ -28,7 +28,7 @@ export async function loader({ request }: DataFunctionArgs) {
   const session = await sessionStorage.getSession(
     request?.headers.get('Cookie'),
   );
-    
+
   const activeOrder = await getActiveOrder({ request });
 
   //check if there is an active order if not redirect to homepage
@@ -46,12 +46,12 @@ export async function loader({ request }: DataFunctionArgs) {
   });
   const { activeCustomer } = await getActiveCustomerAddresses({ request });
   const error = session.get('activeOrderError');
-  return {
+  return json({
     availableCountries,
     eligibleShippingMethods,
     activeCustomer,
     error,
-  };
+  });
 }
 
 export default function CheckoutShipping() {
@@ -63,6 +63,11 @@ export default function CheckoutShipping() {
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
   let navigate = useNavigate();
 
+  useEffect(() => {
+    if (!activeOrder?.shippingLines[0]?.shippingMethod.id) {
+      submitSelectedShippingMethod(eligibleShippingMethods[0].id);
+    }
+  }, [])
   const { customer, shippingAddress } = activeOrder ?? {};
   const isSignedIn = !!activeCustomer?.id;
   const addresses = activeCustomer?.addresses ?? [];
@@ -71,10 +76,10 @@ export default function CheckoutShipping() {
     (customer ? `${customer.firstName} ${customer.lastName}` : ``);
   const canProceedToPayment =
     !isEmpty(customer) &&
-      ((!!shippingAddress?.streetLine1?.length && !!shippingAddress?.postalCode?.length) ||
-        selectedAddressIndex >= 0) &&
-      (activeOrder?.shippingLines?.length) &&
-      (activeOrder?.lines?.length ? true : false);
+    ((!!shippingAddress?.streetLine1?.length && !!shippingAddress?.postalCode?.length) ||
+      selectedAddressIndex >= 0) &&
+    (activeOrder?.shippingLines?.length) &&
+    (activeOrder?.lines?.length ? true : false);
   const submitCustomerForm = (event: FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const { emailAddress, firstName, lastName } = Object.fromEntries<any>(
@@ -171,7 +176,7 @@ export default function CheckoutShipping() {
             <div className="mt-4">
               <label
                 htmlFor="emailAddress"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 required"
               >
                 Email address
               </label>
@@ -195,7 +200,7 @@ export default function CheckoutShipping() {
               <div>
                 <label
                   htmlFor="firstName"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 required"
                 >
                   First name
                 </label>
@@ -214,7 +219,7 @@ export default function CheckoutShipping() {
               <div>
                 <label
                   htmlFor="lastName"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 required"
                 >
                   Last name
                 </label>

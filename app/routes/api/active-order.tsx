@@ -19,17 +19,17 @@ import {
 } from '~/generated/graphql';
 import { sessionStorage } from '~/sessions';
 import { shippingFormDataIsValid } from '~/utils/validation';
-import {
-  addPaymentToOrder,
-  getNextOrderStates,
-  transitionOrderToState,
-} from '~/providers/checkout/checkout';
 
 export type CartLoaderData = Awaited<ReturnType<typeof loader>>;
 
 export async function loader({ request }: DataFunctionArgs) {
+  const session = await sessionStorage.getSession(
+    request?.headers.get('Cookie'),
+  );
+  const error = session.get('activeOrderError');
   return {
     activeOrder: await getActiveOrder({ request }),
+    activeOrderError: error
   };
 }
 
@@ -127,6 +127,7 @@ export async function action({ request, params }: DataFunctionArgs) {
           error = result.adjustOrderLine;
         }
       }
+      console.log("error", error)
       break;
     }
     case 'addItemToOrder': {
@@ -170,8 +171,6 @@ export async function action({ request, params }: DataFunctionArgs) {
       
       if (result.removeCouponCode?.__typename === 'Order') {
         activeOrder = result.removeCouponCode;
-      } else {
-        error = result.removeCouponCode;
       }
       
       break;
@@ -191,7 +190,7 @@ export async function action({ request, params }: DataFunctionArgs) {
     'Set-Cookie': await sessionStorage.commitSession(session),
   };
   return json(
-    { activeOrder: activeOrder || (await getActiveOrder({ request })) },
+    { activeOrder: activeOrder || (await getActiveOrder({ request })), activeOrderError: error },
     {
       headers,
     },

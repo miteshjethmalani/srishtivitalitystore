@@ -56,7 +56,8 @@ export async function action({ request }: DataFunctionArgs) {
       },
     });
   }else{
-    return redirect(`/checkout/paymentfailed`, {
+    console.log(formData.get("error_desc") )
+    return redirect(`/checkout/paymentfailed/${encodeURIComponent(formData.get("error_desc")?.toString()||"")}`, {
       headers: {
         "Set-Cookie": await sessionStorage.commitSession(session),
       },
