@@ -7,7 +7,7 @@ import { Typography, Carousel, Button, IconButton } from '@material-tailwind/rea
 import { APP_META_DESCRIPTION, APP_META_TITLE } from '~/constants';
 
 export const meta: MetaFunction = () => {
-  return { title: `Home Page - ${APP_META_TITLE}`, description: APP_META_DESCRIPTION };
+  return { title: APP_META_TITLE, description: APP_META_DESCRIPTION };
 };
 
 export async function loader({ request }: LoaderArgs) {

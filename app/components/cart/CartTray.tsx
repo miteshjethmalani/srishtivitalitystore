@@ -12,15 +12,18 @@ export function CartTray({
   open,
   onClose,
   activeOrder,
+  activeOrderError,
   adjustOrderLine,
   removeItem,
 }: {
   open: boolean;
   onClose: (closed: boolean) => void;
   activeOrder: CartLoaderData['activeOrder'];
+  activeOrderError: CartLoaderData['activeOrderError'];
   adjustOrderLine?: (lineId: string, quantity: number) => void;
   removeItem?: (lineId: string) => void;
 }) {
+  // console.log("activeOrderError", activeOrderError)
   const currencyCode = activeOrder?.currencyCode || CurrencyCode.Inr;
   const location = useLocation();
   const editable = !location.pathname.startsWith('/checkout');
@@ -29,7 +32,7 @@ export function CartTray({
   }
   return (
     <Drawer className='z-[99999]' open={open} onClose={() => onClose(true)}>
-      <div className="mb-2 flex items-center justify-between p-4">
+      <div className="mt-2 ml-2 flex items-center justify-between">
         <Typography variant="h5" color="deep-purple">
           Shopping cart
         </Typography>
@@ -50,6 +53,7 @@ export function CartTray({
           </svg>
         </IconButton>
       </div>
+      <div className='text-red-600 ml-2 mr-2'>{activeOrderError? activeOrderError.message:""}</div>
       <List>
         <div className="mt-8 overflow-auto h-80">
           {activeOrder?.totalQuantity ? (
@@ -59,6 +63,7 @@ export function CartTray({
               editable={editable}
               removeItem={removeItem}
               adjustOrderLine={adjustOrderLine}
+              activeOrderError={activeOrderError}
             ></CartContents>
           ) : (
             <div className="flex items-center justify-center h-48 text-xl text-gray-400">

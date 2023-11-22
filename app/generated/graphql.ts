@@ -1700,7 +1700,7 @@ export type Mutation = {
   createContactUsSubscription: CreateContactUsSubscriptionResult;
   /** Create a new Customer Address */
   createCustomerAddress: Address;
-  createStripePaymentIntent: Scalars['String'];
+  createStripePaymentIntent?: Maybe<Scalars['String']>;
   /** Delete an existing Address */
   deleteCustomerAddress: Success;
   generatePayAidOrderId: GeneratePayAidOrderIdResult;
@@ -2302,6 +2302,28 @@ export type PayAidOrderIdGenerationError = {
 export type PayAidOrderIdSuccess = {
   __typename?: 'PayAidOrderIdSuccess';
   PayAidOrderId: Scalars['String'];
+};
+
+export type PayAidOrderRequest = {
+  __typename?: 'PayAidOrderRequest';
+  address_line_1: Scalars['String'];
+  address_line_2?: Maybe<Scalars['String']>;
+  amount: Scalars['Money'];
+  api_key: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  currency: Scalars['String'];
+  description: Scalars['String'];
+  email: Scalars['String'];
+  hash: Scalars['String'];
+  mode: Scalars['String'];
+  name: Scalars['String'];
+  order_id: Scalars['ID'];
+  phone: Scalars['String'];
+  return_url: Scalars['String'];
+  state: Scalars['String'];
+  udf1: Scalars['String'];
+  zip_code: Scalars['String'];
 };
 
 export type Payment = Node & {
@@ -2916,7 +2938,7 @@ export type Query = {
   /** A list of Facets available to the shop */
   facets: FacetList;
   generateBraintreeClientToken?: Maybe<Scalars['String']>;
-  generatePayAidClientToken: Scalars['String'];
+  generatePayAidClientToken: PayAidOrderRequest;
   /** Returns information about the current authenticated User */
   me?: Maybe<CurrentUser>;
   /** Returns the possible next states that the activeOrder can transition to */
@@ -2964,8 +2986,7 @@ export type QueryFacetsArgs = {
 
 
 export type QueryGeneratePayAidClientTokenArgs = {
-  includeCustomerId?: InputMaybe<Scalars['Boolean']>;
-  orderId?: InputMaybe<Scalars['ID']>;
+  input?: InputMaybe<PaymentInput>;
 };
 
 
@@ -3590,17 +3611,19 @@ export type TransitionOrderToStateMutation = { __typename?: 'Mutation', transiti
 export type CreateStripePaymentIntentMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateStripePaymentIntentMutation = { __typename?: 'Mutation', createStripePaymentIntent: string };
+export type CreateStripePaymentIntentMutation = { __typename?: 'Mutation', createStripePaymentIntent?: string | null };
 
 export type GenerateBraintreeClientTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GenerateBraintreeClientTokenQuery = { __typename?: 'Query', generateBraintreeClientToken?: string | null };
 
-export type GeneratePayAidClientTokenQueryVariables = Exact<{ [key: string]: never; }>;
+export type GeneratePayAidClientTokenQueryVariables = Exact<{
+  input: PaymentInput;
+}>;
 
 
-export type GeneratePayAidClientTokenQuery = { __typename?: 'Query', generatePayAidClientToken: string };
+export type GeneratePayAidClientTokenQuery = { __typename?: 'Query', generatePayAidClientToken: { __typename?: 'PayAidOrderRequest', amount: number, mode: string, name: string, email: string, phone: string, address_line_1: string, address_line_2?: string | null, order_id: string, description: string, return_url: string, currency: string, country: string, zip_code: string, state: string, city: string, api_key: string, hash: string, udf1: string } };
 
 export type CollectionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4118,8 +4141,27 @@ export const GenerateBraintreeClientTokenDocument = gql`
 }
     `;
 export const GeneratePayAidClientTokenDocument = gql`
-    query generatePayAidClientToken {
-  generatePayAidClientToken
+    query generatePayAidClientToken($input: PaymentInput!) {
+  generatePayAidClientToken(input: $input) {
+    amount
+    mode
+    name
+    email
+    phone
+    address_line_1
+    address_line_2
+    order_id
+    description
+    return_url
+    currency
+    country
+    zip_code
+    state
+    city
+    api_key
+    hash
+    udf1
+  }
 }
     `;
 export const CollectionsDocument = gql`
@@ -4498,7 +4540,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     generateBraintreeClientToken(variables?: GenerateBraintreeClientTokenQueryVariables, options?: C): Promise<GenerateBraintreeClientTokenQuery> {
       return requester<GenerateBraintreeClientTokenQuery, GenerateBraintreeClientTokenQueryVariables>(GenerateBraintreeClientTokenDocument, variables, options) as Promise<GenerateBraintreeClientTokenQuery>;
     },
-    generatePayAidClientToken(variables?: GeneratePayAidClientTokenQueryVariables, options?: C): Promise<GeneratePayAidClientTokenQuery> {
+    generatePayAidClientToken(variables: GeneratePayAidClientTokenQueryVariables, options?: C): Promise<GeneratePayAidClientTokenQuery> {
       return requester<GeneratePayAidClientTokenQuery, GeneratePayAidClientTokenQueryVariables>(GeneratePayAidClientTokenDocument, variables, options) as Promise<GeneratePayAidClientTokenQuery>;
     },
     collections(variables?: CollectionsQueryVariables, options?: C): Promise<CollectionsQuery> {

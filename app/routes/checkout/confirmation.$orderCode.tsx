@@ -1,5 +1,5 @@
 import { DataFunctionArgs } from '@remix-run/server-runtime';
-import { getOrderByCode } from '~/providers/orders/order';
+import { getActiveOrder, getOrderByCode } from '~/providers/orders/order';
 import { useLoaderData } from '@remix-run/react';
 import { CartContents } from '~/components/cart/CartContents';
 import { CartTotals } from '~/components/cart/CartTotals';
@@ -8,10 +8,12 @@ import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import { useRevalidator } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { OrderDetailFragment } from '~/generated/graphql';
+import { APP_META_TITLE } from '~/constants';
 
 export async function loader({ params, request }: DataFunctionArgs) {
   try {
-    const order = await getOrderByCode(`${params.orderCode}`!, { request });
+    const { orderCode } = params;
+    const order = await getOrderByCode(orderCode+"",{request});
     return {
       order,
       error: false,
@@ -28,7 +30,7 @@ export default function CheckoutConfirmation() {
   const { order, error } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
   const [retries, setRetries] = useState(1);
-
+  console.log(order, error);
   const orderNotFound = !order && !error;
   const orderErrored = !order && error;
   const maxRetries = 5;
@@ -100,16 +102,18 @@ export default function CheckoutConfirmation() {
     <div>
       <h2 className="text-3xl flex items-center space-x-2 sm:text-5xl font-light tracking-tight text-gray-900 my-8">
         <CheckCircleIcon className="text-green-600 w-8 h-8 sm:w-12 sm:h-12"></CheckCircleIcon>
-        <span>Order Summary</span>
+        <span>Order Received</span>
       </h2>
       <p className="text-lg text-gray-700">
-        Your order <span className="font-bold">{order!.code}</span> has been
-        received!
+        Dear {order?.customer?.firstName?.trim()},
       </p>
-      <p className="text-lg text-gray-700 mt-5">
+      <p className="text-lg text-gray-700 ml-4">
+      Thank you for choosing {APP_META_TITLE}! We're excited to inform you that we have received your order <span className="font-bold">{order!.code}</span> placed. Your trust in our products/services means a lot to us.
+      </p>
+      {/* <p className="text-lg text-gray-700 mt-5">
         Please make the payment through UPI on the below mentioned mobile number 
         <a href={`https://wa.me/+918369536738?text=Please%20send%20me%20the%20order%20of%20${order!.code}!`}>Please connect on WhatsApp on +918369536738</a>
-      </p>
+      </p> */}
       {order!.active && (
         <div className="rounded-md bg-blue-50 p-4 my-8">
           <div className="flex">

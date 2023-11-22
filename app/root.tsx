@@ -29,6 +29,7 @@ import Footer from '~/components/footer/Footer';
 import { useActiveOrder } from '~/utils/use-active-order';
 import { setApiUrl } from '~/graphqlWrapper';
 import * as gtag from "~/utils/gtags.client";
+import { getSession } from './services/session.server';
 
 export const meta: MetaFunction = () => {
   return { title: APP_META_TITLE, description: APP_META_DESCRIPTION };
@@ -70,6 +71,7 @@ export type RootLoaderData = {
   activeChannel: Awaited<ReturnType<typeof activeChannel>>;
   collections: Awaited<ReturnType<typeof getCollections>>;
   gaTrackingId: string | undefined;
+  activeOrderError: Error | undefined;
 };
 
 
@@ -83,9 +85,15 @@ export async function loader({ request, params, context }: DataFunctionArgs) {
   const topLevelCollections = collections.filter(
     (collection) => collection.parent?.name === '__root_collection__',
   );
+  const session = await getSession(
+    request?.headers.get('Cookie'),
+  );
+  const error = session.get('activeOrderError');
+  console.log("session",session.data)
   const activeCustomer = await getActiveCustomer({ request });
   const loaderData: RootLoaderData = {
     activeCustomer,
+    activeOrderError: error,
     activeChannel: await activeChannel({ request }),
     collections: topLevelCollections,
     gaTrackingId: process.env.GA_TRACKING_ID
@@ -107,6 +115,7 @@ export default function App() {
   const {
     activeOrderFetcher,
     activeOrder,
+    activeOrderError,
     adjustOrderLine,
     removeItem,
     refresh,
@@ -155,6 +164,7 @@ export default function App() {
           adjustOrderLine={adjustOrderLine}
           removeItem={removeItem}
           activeOrder={activeOrder}
+          activeOrderError={activeOrderError}
         />
         <main className="">
           <Outlet

@@ -1,10 +1,24 @@
 import { RootLoaderData, links } from '~/root';
 import { Typography } from '@material-tailwind/react';
-import { Link } from '@remix-run/react';
+import { Form, Link, useActionData, useFetcher } from '@remix-run/react';
 import { APP_META_TITLE } from '~/constants';
 import { chunk, isArray, map } from 'lodash';
+import { DataFunctionArgs } from '@remix-run/server-runtime';
+import { useRef } from 'react';
 
 
+export async function action({ request, params }: DataFunctionArgs) {
+  const body = await request.formData();
+  const formAction = body.get('action');
+  switch (formAction) {
+    case "decline":
+      console.log("decline")
+      break;
+    case "accept":
+      console.log("accept")
+      break;
+  }
+}
 
 export default function Footer({
   collections,
@@ -38,6 +52,8 @@ export default function Footer({
   ]
 
   const currentYear = new Date().getFullYear();
+  const cookieFetcher = useFetcher();
+  const data = useActionData<typeof action>();
 
   return (
     <footer className="relative w-full">
@@ -113,6 +129,26 @@ export default function Footer({
           </div>
         </div>
       </div>
+
+
+
+     {/*  <div className="text-white py-7">
+
+        <div
+          className="max-w-screen-lg mx-auto fixed bg-purple-600 inset-x-5 p-2 bottom-4 rounded-lg drop-shadow-2xl flex gap-4 flex-wrap md:flex-nowrap text-center md:text-left items-center justify-center md:justify-between">
+          <div className="w-full">This website uses cookies to ensure you get the best experience on our website.
+            <a href="#" className="text-grey-600 whitespace-nowrap  hover:underline">Learn more</a></div>
+          <div className="flex gap-4 items-center flex-shrink-0">
+            <cookieFetcher.Form method='post' action='enable-analytics'>
+              <button type="submit" value={"decline"} className="text-white-600 focus:outline-none hover:underline">Decline</button>
+              <button type="submit" value={"accept"} className="bg-indigo-500 px-5 py-2 text-white rounded-md hover:bg-indigo-700 focus:outline-none">Allow Coockies</button>
+            </cookieFetcher.Form>
+
+          </div>
+        </div>
+
+      </div> */}
+
     </footer>
   );
 }

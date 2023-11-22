@@ -1981,7 +1981,7 @@ type Mutation {
 
   """Create a new Customer Address"""
   createCustomerAddress(input: CreateAddressInput!): Address!
-  createStripePaymentIntent: String!
+  createStripePaymentIntent: String
 
   """Delete an existing Address"""
   deleteCustomerAddress(id: ID!): Success!
@@ -2495,6 +2495,27 @@ type PayAidOrderIdGenerationError {
 
 type PayAidOrderIdSuccess {
   PayAidOrderId: String!
+}
+
+type PayAidOrderRequest {
+  address_line_1: String!
+  address_line_2: String
+  amount: Money!
+  api_key: String!
+  city: String!
+  country: String!
+  currency: String!
+  description: String!
+  email: String!
+  hash: String!
+  mode: String!
+  name: String!
+  order_id: ID!
+  phone: String!
+  return_url: String!
+  state: String!
+  udf1: String!
+  zip_code: String!
 }
 
 type Payment implements Node {
@@ -3211,7 +3232,7 @@ type Query {
   """A list of Facets available to the shop"""
   facets(options: FacetListOptions): FacetList!
   generateBraintreeClientToken: String
-  generatePayAidClientToken(includeCustomerId: Boolean, orderId: ID): String!
+  generatePayAidClientToken(input: PaymentInput): PayAidOrderRequest!
 
   """Returns information about the current authenticated User"""
   me: CurrentUser

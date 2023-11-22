@@ -97,7 +97,9 @@ function requester<R, V>(
       );
       if (session) {
         session.set(AUTH_TOKEN_SESSION_KEY, token);
-        headers['Set-Cookie'] = await sessionStorage.commitSession(session);
+        const cook = await sessionStorage.commitSession(session);
+        
+        headers['Set-Cookie'] = cook;
       }
     }
     headers['x-vendure-api-url'] = API_URL;

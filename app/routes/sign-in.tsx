@@ -33,13 +33,13 @@ export default function SignInPage() {
     provider: SocialsProvider,
     label: string
   }
-  
+
   const SocialButton: React.FC<SocialButtonProps> = ({ provider, label }) => (
     <Form action={`/auth/${provider}`} method="post">
       <button>{label}</button>
     </Form>
   );
-  
+
   return (
     <>
       <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -57,11 +57,11 @@ export default function SignInPage() {
             </Link>
           </p>
         </div>
-        {searchParams.get('redirectTo') === '/checkout'? (
+        {searchParams.get('redirectTo') === '/checkout' ? (
           <div className='sm:mx-auto sm:w-full sm:max-w-md'>
             <h5 className="text-danger text-center">Please kindly log in before proceeding to checkout.</h5>
-          </div>): null}
-          {/* <SocialButton provider={SocialsProvider.GOOGLE} label="Login with Google" /> */}
+          </div>) : null}
+        {/* <SocialButton provider={SocialsProvider.GOOGLE} label="Login with Google" /> */}
 
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -131,10 +131,10 @@ export default function SignInPage() {
 
                 <div className="text-sm">
                   <Link to={'/forgot-password'}
-                   className="font-medium text-primary-600 hover:text-primary-500"
-                   >
+                    className="font-medium text-primary-600 hover:text-primary-500"
+                  >
                     Forgot your password?
-                   </Link>
+                  </Link>
                 </div>
               </div>
 
@@ -149,7 +149,7 @@ export default function SignInPage() {
                     </div>
                     <div className="ml-3">
                       <h3 className="text-sm font-medium text-red-800">
-                        We ran into a problem signing you in!
+                        Please check that you already have signed-up !
                       </h3>
                       <p className="text-sm text-red-700 mt-2">
                         {login.data.message}

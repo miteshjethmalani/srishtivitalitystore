@@ -54,7 +54,7 @@ export default function CouponCode({
                 <div className="mt-10 border-t border-gray-200 pt-10">Add Coupon</div>
                 <div className="mt-5">
                     <Input label="Coupon Code" onChange={(event) => setCouponCodeString(event.target.value)} name='couponCode'></Input>
-                    <Button type='submit' className="mt-5"> Submit</Button>
+                    <Button type='submit' className="mt-5">Apply</Button>
                 </div>
             </Form>
         </>

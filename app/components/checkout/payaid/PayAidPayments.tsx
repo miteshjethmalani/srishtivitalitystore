@@ -1,23 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dropin, { Dropin } from 'braintree-web-drop-in';
 import { classNames } from '~/utils/class-names';
 import { useSubmit } from '@remix-run/react';
-import { addPaymentToOrder } from '~/providers/checkout/checkout';
-import { CurrencyCode, OrderAddress } from '~/generated/graphql';
+import { addPaymentToOrder, getNextOrderStates, transitionOrderToState } from '~/providers/checkout/checkout';
+import { CurrencyCode, OrderAddress, PayAidOrderRequest } from '~/generated/graphql';
 
 export function PayAidPayments(props: {
   show: boolean;
-  authorization: string;
+  authorization: PayAidOrderRequest | any;
   fullAmount: number;
   currencyCode: CurrencyCode;
+  payAIdRef: any
   shippingAddress: OrderAddress | null | undefined;
 }) {
-  const { show, authorization, fullAmount, currencyCode, shippingAddress } = props;
-
-  const [braintreeInstance, setBraintreeInstance] = useState<Dropin>();
+  const { show, authorization, fullAmount, currencyCode, shippingAddress, payAIdRef } = props;
   const [enablePaymentButton, setEnablePaymentButton] = useState<boolean>();
   const [processing, setProcessing] = useState<boolean>(false);
-
   const submit = useSubmit();
 
   const submitPayment = async () => {
@@ -26,22 +24,33 @@ export function PayAidPayments(props: {
 
       const formData = new FormData();
       formData.set('paymentMethodCode', 'payaid');
-      formData.set('paymentNonce', '');
+      formData.set('paymentNonce', authorization);
 
       let request: Request;
       request = new Request('');
-      console.log(request);
-      await addPaymentToOrder(
-        { method: 'payaid', metadata: {} },
-        { request },
-      );
+      const { nextOrderStates } = await getNextOrderStates({
+        request,
+      });
+      
+      if (nextOrderStates.includes('AddingItems')) {
+        const transitionResult = await transitionOrderToState(
+          'AddingItems',
+          { request },
+        );
+
+        if (transitionResult.transitionOrderToState?.__typename !== 'Order') {
+          throw new Response('Not Found', {
+            status: 400,
+            statusText: transitionResult.transitionOrderToState?.message,
+          });
+        }
+      }
 
       submit(formData, { method: 'post' });
     } catch (e) {
       alert(e);
       setProcessing(false);
     }
-
   };
 
   useEffect(() => {
@@ -49,7 +58,7 @@ export function PayAidPayments(props: {
       setEnablePaymentButton(true);
     }
   }, [show]);
-
+  
   return (
     <div
       style={{ display: `${show ? 'block' : 'none'}` }}
@@ -58,6 +67,10 @@ export function PayAidPayments(props: {
       <div id={'payaid-drop-in-div'} />
 
       <input type="hidden" name="paymentMethodCode" value="payaid" />
+      {/* {enablePaymentButton?<Form name="paymentForm" config={{ url: "https://api.payaidpayments.com/v2/paymentrequest", method: "POST", data: authorization }} />:<></> } */}
+      <div className='text-gray-600'>
+        Please do not refresh or press the back button while your transaction is processing to ensure a smooth and successful payment. 
+      </div>
       <button
         onClick={submitPayment}
         className={classNames(

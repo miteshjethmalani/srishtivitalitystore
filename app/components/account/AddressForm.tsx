@@ -14,7 +14,7 @@ export function AddressForm({
       <div>
         <label
           htmlFor="fullName"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 required"
         >
           First name
         </label>
@@ -52,7 +52,7 @@ export function AddressForm({
       <div className="sm:col-span-2">
         <label
           htmlFor="streetLine1"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 required"
         >
           Address
         </label>
@@ -69,7 +69,7 @@ export function AddressForm({
         </div>
       </div>
 
-      {/* <div className="sm:col-span-2">
+       <div className="sm:col-span-2">
         <label
           htmlFor="streetLine2"
           className="block text-sm font-medium text-gray-700"
@@ -86,11 +86,11 @@ export function AddressForm({
           />
         </div>
       </div>
- */}
+ 
       <div>
         <label
           htmlFor="city"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 required"
         >
           City
         </label>
@@ -110,7 +110,7 @@ export function AddressForm({
       <div>
         <label
           htmlFor="countryCode"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 required"
         >
           Country
         </label>
@@ -135,7 +135,7 @@ export function AddressForm({
       <div>
         <label
           htmlFor="province"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 required"
         >
           State / Province
         </label>
@@ -155,7 +155,7 @@ export function AddressForm({
       <div>
         <label
           htmlFor="postalCode"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 required"
         >
           Postal code
         </label>
@@ -175,7 +175,7 @@ export function AddressForm({
       <div className="sm:col-span-2">
         <label
           htmlFor="phoneNumber"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 required"
         >
           Phone
         </label>

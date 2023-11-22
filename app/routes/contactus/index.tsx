@@ -19,7 +19,7 @@ export async function action({ params, request }: DataFunctionArgs) {
     return fieldErrors;
   }
   const variables = extractContactUsFormValues(body);
-  console.log(variables);
+  // console.log(variables);
   const result = await contactUs({ request }, variables);
   if (result.__typename === 'ContactUs') {
     return redirect('/contactus/success');
