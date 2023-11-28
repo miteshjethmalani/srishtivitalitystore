@@ -7,7 +7,17 @@ import { Typography, Carousel, Button, IconButton } from '@material-tailwind/rea
 import { APP_META_DESCRIPTION, APP_META_TITLE } from '~/constants';
 
 export const meta: MetaFunction = () => {
-  return { title: APP_META_TITLE, description: APP_META_DESCRIPTION };
+  const title = `Discover the Power of Healing Crystal Stones – Shop Online at ${APP_META_TITLE} for an Elevated Well-being Experience in India.`
+  return { title 
+    , "og:title":title
+    , description: APP_META_DESCRIPTION
+    , keywords:["crystal", "Healing crystals", "healing stones", "gifts", "positive", "positive energy", "crystals for sale", "Reiki Crystal", "pyrite", "rose quartz", "tiger eye", "black tourmaline", "green aventurine", "citrine", "selenite"] 
+    , "og:type": "website"
+    , "og:url": "https://srishtivitality.in/"
+    , "og:site_name": "Srishtivitality"
+    , "twitter:title": title
+    , "twitter:description": APP_META_DESCRIPTION
+  };
 };
 
 export async function loader({ request }: LoaderArgs) {
