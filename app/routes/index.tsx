@@ -89,6 +89,13 @@ export default function Index() {
         loop={true} autoplay={true} className="h-96">
         <div className="relative h-96 h-96">
           <img
+            src={"/Christmas banner.jpeg" + "?preset=medium"}
+            alt="Feature Product 1"
+            className="h-96 w-full"
+          />
+        </div>
+        <div className="relative h-96 h-96">
+          <img
             src={latestCollection?.featuredAsset?.preview + "?preset=medium"}
             alt="Feature Product 1"
             className="h-96 w-full object-cover"
