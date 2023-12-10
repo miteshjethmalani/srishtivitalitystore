@@ -34,6 +34,7 @@ gql`
       id
       name
       slug
+      description
       customFields {
         metaTitle
         metaDescription

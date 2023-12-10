@@ -139,16 +139,16 @@ export default function ProductSlug() {
         ></Breadcrumbs>
         <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start mt-4 md:mt-12">
           {/* Image gallery */}
-          <div className="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
+          <div className="w-80 mx-auto sm:block">
             <span className="rounded-md overflow-hidden">
-              <div className="w-full object-center object-cover rounded-lg">
+              <div className="rounded-lg">
                 <img
                   src={
                     (featuredAsset?.preview || product.featuredAsset?.preview) +
                     '?preset=large'
                   }
                   alt={product.name}
-                  className="hover:scale-105 transition-all duration-500 cursor-pointer"
+                  className="md:hover:scale-125 transition-all duration-500 cursor-pointer"
                 />
               </div>
             </span>
@@ -275,7 +275,17 @@ export default function ProductSlug() {
                   <span>Order on Whatsapp !</span>
                 </a>
               </div>
-              <section className="mt-12 pt-12 border-t text-xs">
+              <section className="mt-6 pt-6 border-t text-xs">
+                <h3 className="text-red-600 font-bold mb-2">
+                  Important
+                </h3>
+                <div className="text-gray-500 space-y-1">
+                  <p>
+                  Please note that the images displayed are for reference purposes only and the actual product in hand may slightly differ. We strive to provide accurate representations, but variations in color, texture, and details may occur. Rest assured, the quality and essence of the product remain our top priority. If you have any concerns or questions, feel free to contact our customer support for further assistance. Thank you for your understanding.
+                  </p>
+                </div>
+              </section>
+              <section className="mt-6 pt-6 border-t text-xs">
                 <h3 className="text-gray-600 font-bold mb-2">
                   Shipping
                 </h3>
@@ -289,6 +299,7 @@ export default function ProductSlug() {
                   </p>
                 </div>
               </section>
+              
             </activeOrderFetcher.Form>
           </div>
         </div>
