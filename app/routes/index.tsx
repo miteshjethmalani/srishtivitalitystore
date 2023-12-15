@@ -115,7 +115,7 @@ export default function Index() {
             <div className="w-3/4 text-center md:w-2/4">
               <Typography
                 variant="h4"
-                color="white"
+                color="red"
                 className="mb-4 text-3xl md:text-4xl lg:text-5xl"
               >
                 Crystal of the week!
