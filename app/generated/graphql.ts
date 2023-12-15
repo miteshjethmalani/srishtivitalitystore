@@ -3636,7 +3636,7 @@ export type CollectionQueryVariables = Exact<{
 }>;
 
 
-export type CollectionQuery = { __typename?: 'Query', collection?: { __typename?: 'Collection', id: string, name: string, slug: string, customFields?: { __typename?: 'CollectionCustomFields', metaTitle?: string | null, metaDescription?: string | null, metaKeywords?: string | null } | null, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, children?: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> | null } | null };
+export type CollectionQuery = { __typename?: 'Query', collection?: { __typename?: 'Collection', id: string, name: string, slug: string, description: string, customFields?: { __typename?: 'CollectionCustomFields', metaTitle?: string | null, metaDescription?: string | null, metaKeywords?: string | null } | null, breadcrumbs: Array<{ __typename?: 'CollectionBreadcrumb', id: string, name: string, slug: string }>, children?: Array<{ __typename?: 'Collection', id: string, name: string, slug: string, description: string, featuredAsset?: { __typename?: 'Asset', id: string, preview: string } | null }> | null } | null };
 
 export type CreateContactUsSubscriptionMutationVariables = Exact<{
   input: CreateContactUsInput;
@@ -4189,6 +4189,7 @@ export const CollectionDocument = gql`
     id
     name
     slug
+    description
     customFields {
       metaTitle
       metaDescription
@@ -4203,6 +4204,7 @@ export const CollectionDocument = gql`
       id
       name
       slug
+      description
       featuredAsset {
         id
         preview

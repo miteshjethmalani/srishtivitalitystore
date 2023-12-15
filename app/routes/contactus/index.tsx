@@ -52,14 +52,14 @@ export default function ContactUs() {
         You may contact us by filling the form below
       </Typography>
       <form method='post' action="/contactus" className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-        <div className="mb-4 flex flex-col gap-6">
-          <Input variant="static" placeholder='Your email' type='email' required size="lg" name='email' label="Email" />
+        <div className="mb-4 flex flex-col gap-6">            
+          <Input type='email' required name='email' label="Email" />
           {formErrors?.email && (
             <div className="text-xs text-red-700">
               {formErrors.email}
             </div>
           )}
-          <Textarea required name='message' variant="static" size="lg" label="Message" placeholder='Kindly start your message as QUERY/RESELLING/WHOLESALE ORDER, whatever suits you best... This will help us serve you better...' />
+          <Textarea required name='message' variant="outlined" size="lg" label="Message" placeholder='Kindly start your message as QUERY/RESELLING/WHOLESALE ORDER, whatever suits you best... This will help us serve you better...' />
           {formErrors?.message && (
             <div className="text-xs text-red-700">
               {formErrors.message}
@@ -87,7 +87,7 @@ export default function ContactUs() {
           </div>
         )}
 
-        <Button type='submit' className="mt-6" fullWidth>
+        <Button color='purple' type='submit' className="mt-6" fullWidth>
           Submit
         </Button>
 

@@ -2,11 +2,11 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { CartContents } from './CartContents';
-import { Link, useLocation } from '@remix-run/react';
+import { Link, useLocation, useNavigate } from '@remix-run/react';
 import { Price } from '~/components/products/Price';
 import { CartLoaderData } from '~/routes/api/active-order';
 import { CurrencyCode } from '~/generated/graphql';
-import { IconButton, Typography, Drawer, ListItemPrefix, List, ListItem, ListItemSuffix, Chip } from '@material-tailwind/react';
+import { IconButton, Typography, Drawer, ListItemPrefix, List, ListItem, ListItemSuffix, Chip, Button } from '@material-tailwind/react';
 
 export function CartTray({
   open,
@@ -30,6 +30,8 @@ export function CartTray({
   if (!open) {
     return <></>;
   }
+  const navigate = useNavigate();
+
   return (
     <Drawer className='z-[99999]' open={open} onClose={() => onClose(true)}>
       <div className="mt-2 ml-2 flex items-center justify-between">
@@ -88,13 +90,17 @@ export function CartTray({
               Shipping will be calculated at checkout.
             </p>
             <div className="mt-6">
-              <Link
-                to="/checkout"
-                onClick={() => onClose(false)}
-                className="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700"
+            
+              <Button
+                color='deep-purple'
+                variant="filled"
+                fullWidth={true}
+                size='lg'
+                onClick={() => {navigate(`/checkout`);onClose(false);}}
+                className="flex justify-center items-center px-6 py-3 border border-transparent "
               >
                 Checkout
-              </Link>
+              </Button>
             </div>
           </div>
         ) || ""}

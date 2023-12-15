@@ -5,13 +5,16 @@ import { BookOpenIcon } from '@heroicons/react/24/solid';
 import { LoaderArgs, MetaFunction } from '@remix-run/server-runtime';
 import { Typography, Carousel, Button, IconButton } from '@material-tailwind/react';
 import { APP_META_DESCRIPTION, APP_META_TITLE } from '~/constants';
+import { Collection } from '~/generated/graphql';
+import { keys } from 'lodash';
 
 export const meta: MetaFunction = () => {
   const title = `Discover the Power of Healing Crystal Stones – Shop Online at ${APP_META_TITLE} for an Elevated Well-being Experience in India.`
-  return { title 
-    , "og:title":title
+  return {
+    title
+    , "og:title": title
     , description: APP_META_DESCRIPTION
-    , keywords:["crystal", "Healing crystals", "healing stones", "gifts", "positive", "positive energy", "crystals for sale", "Reiki Crystal", "pyrite", "rose quartz", "tiger eye", "black tourmaline", "green aventurine", "citrine", "selenite"] 
+    , keywords: ["crystal", "Healing crystals", "healing stones", "gifts", "positive", "positive energy", "crystals for sale", "Reiki Crystal", "pyrite", "rose quartz", "tiger eye", "black tourmaline", "green aventurine", "citrine", "selenite"]
     , "og:type": "website"
     , "og:url": "https://srishtivitality.in/"
     , "og:site_name": "Srishtivitality"
@@ -24,18 +27,26 @@ export async function loader({ request }: LoaderArgs) {
   const collections = await getCollections(request);
   return {
     collections,
+    crystalOW: process.env.CRYSTAL_OW
   };
 }
 
 export default function Index() {
-  const { collections } = useLoaderData<typeof loader>();
+  const { collections, crystalOW } = useLoaderData<typeof loader>();
   const latestCollection = collections[collections.length - 1] || {};
-  const secondLatestCollection = collections[collections.length - 2] || {};
+  const secondLatestCollection: Collection | {} = collections.find((collection: Collection | {}) => {
+   if(collection && keys(collection).length){
+    return (collection as any).name == crystalOW;
+   }else{
+    return {}
+   }
+  }) || {};
   const navigate = useNavigate();
 
   return (
     <>
       <Carousel
+        autoplayDelay={5000}
         prevArrow={({ handlePrev }) => (
           <IconButton
             aria-label='Previous'
@@ -94,9 +105,9 @@ export default function Index() {
             className="h-96 w-full"
           />
         </div>
-        <div className="relative h-96 h-96">
+        <div onClick={() => navigate(`/collections/${(secondLatestCollection as any)?.slug}`)} className="relative h-96 cursor-pointer">
           <img
-            src={latestCollection?.featuredAsset?.preview + "?preset=medium"}
+            src={(secondLatestCollection as any)?.featuredAsset?.preview + "?preset=medium"}
             alt="Feature Product 1"
             className="h-96 w-full object-cover"
           />
@@ -107,14 +118,14 @@ export default function Index() {
                 color="white"
                 className="mb-4 text-3xl md:text-4xl lg:text-5xl"
               >
-                Discover the Best Deals!
+                Crystal of the week!
               </Typography>
               <Typography
                 variant="lead"
                 color="white"
                 className="mb-12 opacity-80"
               >
-                Explore our wide range of products and find unbeatable deals on your favorite items.
+                {(secondLatestCollection as any)?.mame} is the crystal for the week
               </Typography>
 
             </div>
@@ -122,7 +133,7 @@ export default function Index() {
         </div>
         <div className="relative h-96 h-96">
           <img
-            src={secondLatestCollection?.featuredAsset?.preview + "?preset=medium"}
+            src={(latestCollection as any)?.featuredAsset?.preview + "?preset=medium"}
             alt="Feature Product 2"
             className="h-96 w-full object-cover"
           />
@@ -140,8 +151,8 @@ export default function Index() {
                 color="white"
                 className="mb-12 opacity-80"
               >
-                <Button onClick={() => navigate(`/collections/${secondLatestCollection.slug}`)} variant="gradient" color='deep-purple' className="rounded-full">
-                  Shop {secondLatestCollection.name}
+                <Button onClick={() => navigate(`/collections/${(latestCollection as any).slug}`)} variant="gradient" color='deep-purple' className="rounded-full">
+                  Shop {(latestCollection as any).name}
                 </Button>
               </Typography>
 
@@ -151,7 +162,7 @@ export default function Index() {
       </Carousel>
 
       <section className="m-10 mx-3 text-center">
-        <Typography variant="h2" color="brown" className="divide-x-2 divide-gray-400">Shop by Category</Typography>
+        <Typography variant="h2" color="red" >Explore by Category: Unearth the Magic of Crystals</Typography>
         <div className="m-5 mx-auto w-full max-w-7xl px-8">
           <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {collections.map((collection) => (

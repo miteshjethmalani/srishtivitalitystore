@@ -49,6 +49,7 @@ gql`
         id
         name
         slug
+        description
         featuredAsset {
           id
           preview
