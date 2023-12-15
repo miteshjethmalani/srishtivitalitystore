@@ -125,7 +125,7 @@ export default function Index() {
                 color="white"
                 className="mb-12 opacity-80"
               >
-                {(secondLatestCollection as any)?.mame} is the crystal for the week
+                {(secondLatestCollection as any)?.name} is the crystal for the week
               </Typography>
 
             </div>
