@@ -16,7 +16,7 @@ import {
 } from '@remix-run/react';
 import { CheckIcon, HeartIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import { Breadcrumbs } from '~/components/Breadcrumbs';
-import { APP_META_TITLE } from '~/constants';
+import { APP_META_TITLE, ASSET_URL } from '~/constants';
 import { CartLoaderData } from '~/routes/api/active-order';
 // import { FetcherWithComponents } from '~/types';
 import { sessionStorage } from '~/sessions';
@@ -101,14 +101,14 @@ export default function ProductSlug() {
   );
 
   const addToCartButton = !qtyInCart ? (
-    <button
+    <Button
+      size="sm" 
+      color='purple'
       type="submit"
       className={`max-w-xs flex-1 ${activeOrderFetcher.state !== 'idle'
         ? 'bg-gray-400'
-        : qtyInCart === 0
-          ? 'bg-primary-600 hover:bg-primary-700'
-          : 'bg-green-600 active:bg-green-700 hover:bg-green-700'
-        }
+        :  ''
+          }
                                      transition-colors border border-transparent rounded-md py-3 px-8 flex items-center
                                       justify-center text-base font-medium text-white focus:outline-none
                                       focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full`}
@@ -116,7 +116,7 @@ export default function ProductSlug() {
     >
 
       Add to cart
-    </button>
+    </Button>
   ) : (
     <QuantityChange
       disabled={false}
@@ -253,6 +253,9 @@ export default function ProductSlug() {
                   <Alert message={addItemToOrderError} />
                 </div>
               )}
+              <div className='m-3'>
+                <img alt='genuine stamp' width={80} height={80} src={ASSET_URL +'/preview/0c/genuineimage__preview.png?preset=thumb'}></img>
+              </div>
               <div className="mt-5">
                 <a className='inline-flex items-center justify-center p-3 text-base font-medium text-white rounded-lg bg-green-900 '
                   href={`https://wa.me/+918369536738?text=Hi,%0A%20I%20want%20to%20order%20this%20product:${encodeURI(product.name)}${encodeURI(selectedVariant?.name || "")}%0Ahttp://localhost:3001/products/${slug}`}>

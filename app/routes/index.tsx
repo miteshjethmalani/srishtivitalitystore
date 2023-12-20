@@ -9,7 +9,7 @@ import { Collection } from '~/generated/graphql';
 import { keys } from 'lodash';
 
 export const meta: MetaFunction = () => {
-  const title = `Discover the Power of Healing Crystal Stones – Shop Online at ${APP_META_TITLE} for an Elevated Well-being Experience in India.`
+  const title = `Shop & Consult Healing Crystal Online at ${APP_META_TITLE}.`
   return {
     title
     , "og:title": title

@@ -7,6 +7,7 @@ import {
   RegisterValidationErrors,
   validateRegistrationForm,
 } from '~/utils/registration-helper';
+import { Button, Checkbox, Typography } from '@material-tailwind/react';
 
 export async function action({ params, request }: DataFunctionArgs) {
   const body = await request.formData();
@@ -160,15 +161,26 @@ export default function SignUpPage() {
                   )}
                 </div>
               </div>
-              <div>
-                <input
-                  type='checkbox'
-                  required={true}
-                ></input>
-                <span className='ms-2'>
-                  I have read and agree to the <Link to={'/termsofuse'}>terms and condtion</Link>
-                </span>
-              </div>
+
+              <Checkbox
+                required={true}
+                color='purple'
+                defaultChecked
+                label={
+                  <Typography color="blue-gray" className="flex font-medium">
+                    I agree with the
+                    <Typography
+                      as="a"
+                      href="/termsofuse"
+                      color="blue"
+                      className="font-medium transition-colors hover:text-blue-700"
+                    >
+                      &nbsp;terms and conditions
+                    </Typography>
+                    .
+                  </Typography>
+                }
+              />
               {formErrors?.form && (
                 <div className="rounded-md bg-red-50 p-4">
                   <div className="flex">
@@ -191,12 +203,13 @@ export default function SignUpPage() {
               )}
 
               <div>
-                <button
+                <Button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  color='purple'
+                  className="w-full justify-center"
                 >
                   Sign up
-                </button>
+                </Button>
               </div>
             </Form>
           </div>

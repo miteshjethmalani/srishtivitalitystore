@@ -3,9 +3,9 @@ import { DataFunctionArgs, json, redirect } from '@remix-run/server-runtime';
 import { login } from '~/providers/account/account';
 import { ErrorResult } from '~/generated/graphql';
 import { XCircleIcon } from '@heroicons/react/24/solid';
-import { Button } from '~/components/Button';
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import { SocialsProvider } from 'remix-auth-socials';
+import { Button } from '@material-tailwind/react';
 
 export async function action({ params, request }: DataFunctionArgs) {
   const body = await request.formData();
@@ -161,13 +161,12 @@ export default function SignInPage() {
 
               <div>
                 <Button
+                  color='purple'
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  className="w-full justify-center"
                 >
-                  <span className='flex gap-4 items-center'>
                     {login.state !== 'idle' && <ArrowPathIcon className="animate-spin h-5 w-5 text-gray-500" />}
                     Sign in
-                  </span>
                 </Button>
               </div>
             </fieldset></login.Form>
